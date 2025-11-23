@@ -97,6 +97,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Lifecycle
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // Save current state before layout changes
+        recomputeGPA(sender: nil)
+        
+        coordinator.animate(alongsideTransition: nil) { _ in
+            // Re-draw UI when the rotation animation is complete and bounds are updated
+            self.drawUI(doSave: false)
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -186,10 +198,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             let levels = activeSubjects[i].levels
-            _ = levels.reduce(0) { $0 + $1.name.count }
             
-            // more than 5 items, won't fit into the UI -> use a combobox
-            let isTooWide = levels.count > 5
+            let containerWidth = self.view.bounds.width - 40
+            let nameWidth = (activeSubjects[i].name as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 25)]).width
+            var segmentsWidth: CGFloat = 0
+            for l in levels {
+                segmentsWidth += (l.name as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 13)]).width + 24
+            }
+            let requiredWidth = 10 + nameWidth + 20 + segmentsWidth + 10
+
+            // if won't fit into the UI -> use a combobox
+            let isTooWide = requiredWidth > containerWidth
             
             var anchorView: UIView!
             
@@ -338,9 +357,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             let safeLvlIdx = min(max(0, lvlIdx), subj.levels.count - 1)
             let level = subj.levels[safeLvlIdx]
             
-            // LOGIC: Normalize offsets.
-            // Calculate the minimum offset available for this subject.
-            // Subtract minOffset from the current level's offset.
+            // calculate the minimum offset available for this subject
+            // subtract minOffset from the current level's offset
             let minOffset = subj.levels.map { $0.offset }.min() ?? 0.0
             let effectiveOffset = max(0, level.offset - minOffset)
             
