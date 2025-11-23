@@ -5,6 +5,10 @@
 //  Created by LegitMichel777 on 2020/11/10.
 //  Modified by willuhd on 2025/11/22.
 //
+//  - new level selection logic for more levels on many screen types
+//  - live update for autofetch
+//  - adapts to refined in-memory data models
+//
 
 import UIKit
 
@@ -205,7 +209,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             for l in levels {
                 segmentsWidth += (l.name as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 13)]).width + 24
             }
-            let requiredWidth = 10 + nameWidth + 20 + segmentsWidth + 10
+            let requiredWidth = nameWidth + segmentsWidth
 
             // if won't fit into the UI -> use a combobox
             let isTooWide = requiredWidth > containerWidth
