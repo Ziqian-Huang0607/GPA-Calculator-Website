@@ -471,12 +471,12 @@
                         <dict>
                             <key>name</key><string>Math</string><key>weight</key><real>6.0</real>
                             <key>levels</key><array>
-                                <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
-                                <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
-                                <dict><key>name</key><string>AP AB</string><key>offset</key><real>0.0</real></dict>
-                                <dict><key>name</key><string>AP BC</string><key>offset</key><real>0.0</real></dict>
+                                <dict><key>name</key><string>Advanced S</string><key>offset</key><real>0.5</real></dict>
+                                <dict><key>name</key><string>Advanced H</string><key>offset</key><real>0.2</real></dict>
+                                <dict><key>name</key><string>AP Calc AB</string><key>offset</key><real>0.0</real></dict>
+                                <dict><key>name</key><string>AP Calc BC</string><key>offset</key><real>0.0</real></dict>
                                 <dict><key>name</key><string>AP Stats</string><key>offset</key><real>0.0</real></dict>
-                                <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict>
+                                <dict><key>name</key><string>A-Level</string><key>offset</key><real>0.0</real></dict>
                             </array>
                         </dict>
                         <dict>
