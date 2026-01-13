@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   presets.plist
+   GPA Calculator
+    Back Up file incase the link is deprecated.
+   Original File by WIllUHD from github
+    Optimized for IDX GPA CALCULATOR by Ziqian Huang (https://github.com/Ziqian-Huang0607)
+    This version includes:
+    - grades 9-12 use the course catalog at https://file.garden/aJSHHExjjB1KFGN6/SHSID%20ARC/25-26%20Course%20Catalog%20SHSID%20High%20School_compressed.pdf
+        (from yunzhan365 link using tampermonkey PDF grabber, DO NOT share outside!)
+    - new module selection logic using lists, so G11 Module's are finally together!! (with the exception of IB Track)
+    - advanced cross-module and cross-course elimination logic for better course selections
+    - ..and will be continuously updated in the future
+    
+-->
+<plist version="1.0">
+<dict>
+    <key>catalogName</key>
+    <string>SHSID '25-26 Catalog, Winter 2025 Edition v2 by WillUHD</string>
+    <key>lastUpdated</key>
+    <string>2025-11-28</string>
+    <key>commonScoreMap</key>
+    <array>
+        <dict><key>percentageName</key><string>0</string><key>letterName</key><string>F</string><key>baseGPA</key><real>0</real></dict>
+        <dict><key>percentageName</key><string>60</string><key>letterName</key><string>C/C-</string><key>baseGPA</key><real>2.6</real></dict>
+        <dict><key>percentageName</key><string>68</string><key>letterName</key><string>C+</string><key>baseGPA</key><real>3.0</real></dict>
+        <dict><key>percentageName</key><string>73</string><key>letterName</key><string>B-</string><key>baseGPA</key><real>3.3</real></dict>
+        <dict><key>percentageName</key><string>78</string><key>letterName</key><string>B</string><key>baseGPA</key><real>3.6</real></dict>
+        <dict><key>percentageName</key><string>83</string><key>letterName</key><string>B+</string><key>baseGPA</key><real>3.9</real></dict>
+        <dict><key>percentageName</key><string>88</string><key>letterName</key><string>A-</string><key>baseGPA</key><real>4.2</real></dict>
+        <dict><key>percentageName</key><string>93</string><key>letterName</key><string>A/A+</string><key>baseGPA</key><real>4.5</real></dict>
+    </array>
+
+    <!-- main course catalog starts here -->
+    <key>presets</key>
+    <array>
+        <dict><key>id</key><string>stockshsidgrade6</string>
+            <key>name</key><string>Grade 6</string>
+            <key>modules</key><array><dict>
+                    <key>type</key><string>core</string><key>subjects</key>
+                    <array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>5.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>1-2</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>3-4</string><key>offset</key><real>0.3</real></dict>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Science</string><key>weight</key><real>2.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>History</string><key>weight</key><real>2.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+    
+        <dict><key>id</key><string>stockshsidgrade7</string>
+            <key>name</key><string>Grade 7</string>
+            <key>modules</key><array><dict>
+                    <key>type</key><string>core</string><key>subjects</key>
+                    <array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>History</string><key>weight</key><real>5.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>5.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>1-2</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>3-4</string><key>offset</key><real>0.3</real></dict>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Science</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>stockshsidgrade8</string>
+            <key>name</key><string>Grade 8</string>
+            <key>modules</key><array><dict>
+                    <key>type</key><string>core</string><key>subjects</key>
+                    <array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Geography</string><key>weight</key><real>5.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>5.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>1-2</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>3-4</string><key>offset</key><real>0.3</real></dict>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Biology</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Physics</string><key>weight</key><real>2.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>shsid2025grade9</string>
+            <key>name</key><string>Grade 9</string>
+            <key>modules</key><array>
+                <dict><key>type</key><string>core</string><key>subjects</key><array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>1-2</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>3-4</string><key>offset</key><real>0.4</real></dict>
+                            <dict><key>name</key><string>5-9</string><key>offset</key><real>0.3</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Physics</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chemistry</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>World History</string><key>weight</key><real>4.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string><key>name</key><string>Module 2 (4 credits)</string><key>selectionLimit</key><integer>1</integer><key>subjects</key><array>
+                        <dict><key>name</key><string>Biology</string><key>weight</key><real>4.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Computer Science</string><key>weight</key><real>4.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Physical Geography</string><key>weight</key><real>4.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string><key>name</key><string>Module 3 (2 credits)</string><key>selectionLimit</key><integer>1</integer><key>subjects</key><array>
+                        <dict><key>name</key><string>Music</string><key>weight</key><real>2.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Art</string><key>weight</key><real>2.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>shsid2025grade10</string>
+            <key>name</key><string>Grade 10</string>
+            <key>modules</key><array>
+                <dict><key>type</key><string>core</string><key>subjects</key><array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>5.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H+</string><key>offset</key><real>0.1</real></dict>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>5.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP PreCalc</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>AP Calc</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>0-6</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>AP (7)</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>S (8)</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>H (9)</string><key>offset</key><real>0.1</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>History</string><key>weight</key><real>4.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP World</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 1 (Sciences)</string>
+                    <key>selectionLimit</key><integer>2</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Physics</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chemistry</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Biology</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 2 (Electives)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Visual Arts</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Economics</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP Micro</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Computer Science</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Human Geography</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Western Theater</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Music Appreciation</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>shsid2025grade11</string>
+            <key>name</key><string>Grade 11</string>
+            <key>subtitle</key><string>AP/AS/school course</string>
+            <key>modules</key><array>
+                <dict><key>type</key><string>core</string><key>subjects</key><array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP Lang</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>Advanced S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>Advanced H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP Calc AB</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>AP Calc BC</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>AP Stats</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>A-Level</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>L1-L7</string><key>offset</key><real>0.3</real></dict>
+                            <dict><key>name</key><string>L8-L9</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 1 (Sciences)</string>
+                    <key>selectionLimit</key><integer>2</integer>
+                    <key>rules</key><array>
+                        <dict><key>type</key><string>limit</string>
+                            <key>targetModule</key><integer>3</integer><key>value</key><integer>0</integer>
+                            <key>triggerThreshold</key><integer>1</integer>
+                        </dict>
+                        <dict><key>type</key><string>limit</string>
+                            <key>targetModule</key><integer>4</integer><key>value</key><integer>0</integer>
+                            <key>triggerThreshold</key><integer>1</integer>
+                        </dict>
+                    </array>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Physics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Physics 1</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AS Physics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>1</integer>
+                                    <key>targetMatch</key><string>Physics</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AS Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>1</integer>
+                                    <key>targetMatch</key><string>Biology</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AS Economics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>2</integer>
+                                    <key>targetMatch</key><string>Economics</string>
+                                </dict>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>4</integer>
+                                    <key>targetMatch</key><string>Economics</string>
+                                </dict>
+                            </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 2 (Humanities)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>US Overview</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Human Geography 2</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese History</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Western Civ 1</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Psychology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Comp Sci A</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Human Geo</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP US History</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP World History</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Microeconomics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>4</integer>
+                                    <key>targetMatch</key><string>Microeconomics</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AP Macroeconomics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>4</integer>
+                                    <key>targetMatch</key><string>Macroeconomics</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AP Art History</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AS Psychology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AS Further Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 3 (Electives)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Env. Engineering</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Philosophy</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Creative Writing</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Business Mgmt</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Computer Skills</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Intro to Law</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Psychology</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>French</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Spanish</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Japanese</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Sociology</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Music Theory</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>4</integer>
+                                    <key>targetMatch</key><string>Economics</string>
+                                </dict>
+                            </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 4 (Others)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Opera/Singing</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Acting</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A Cappella</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Arts 1</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>French</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Spanish</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Japanese</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Microeconomics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>2</integer>
+                                    <key>targetMatch</key><string>Microeconomics</string>
+                                </dict>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>3</integer>
+                                    <key>targetMatch</key><string>Music Theory</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AP Macroeconomics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>2</integer>
+                                    <key>targetMatch</key><string>Macroeconomics</string>
+                                </dict>
+                                <dict><key>type</key><string>exclude</string>
+                                    <key>targetModule</key><integer>3</integer>
+                                    <key>targetMatch</key><string>Music Theory</string>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AP Env Science</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>limit</string>
+                                    <key>targetModule</key><integer>3</integer>
+                                    <key>value</key><integer>0</integer>
+                                </dict>
+                                <dict><key>type</key><string>limit</string>
+                                    <key>targetModule</key><integer>1</integer>
+                                    <key>value</key><integer>1</integer>
+                                </dict>
+                            </array></dict>
+                        <dict><key>name</key><string>AP Drawing</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP 3D Art</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AS Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AS</string><key>offset</key><real>0.0</real></dict></array>
+                            <key>rules</key><array>
+                                <dict><key>type</key><string>limit</string>
+                                    <key>targetModule</key><integer>3</integer>
+                                    <key>value</key><integer>0</integer>
+                                </dict>
+                                <dict><key>type</key><string>limit</string>
+                                    <key>targetModule</key><integer>1</integer>
+                                    <key>value</key><integer>1</integer>
+                                </dict>
+                            </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>shsid2025grade12</string>
+            <key>name</key><string>Grade 12</string>
+            <key>subtitle</key><string>AP/AS/school course</string>
+            <key>modules</key><array>
+                <dict><key>type</key><string>core</string><key>subjects</key><array>
+                        <dict><key>name</key><string>English</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>S+</string><key>offset</key><real>0.35</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP Lit</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>Advanced S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>Advanced H</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>Stats</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>Further Maths</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>Multi-Variable</string><key>offset</key><real>0.2</real></dict>
+                            <dict><key>name</key><string>AP Stats</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>AP Calc AB</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>L1-L7</string><key>offset</key><real>0.3</real></dict>
+                            <dict><key>name</key><string>L8-L9</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 1 (Sciences)</string>
+                    <key>selectionLimit</key><integer>2</integer>
+                    <key>rules</key><array>
+                        <dict><key>type</key><string>limit</string>
+                            <key>targetModule</key><integer>3</integer><key>value</key><integer>0</integer>
+                            <key>triggerThreshold</key><integer>1</integer>
+                        </dict>
+                        <dict><key>type</key><string>limit</string>
+                            <key>targetModule</key><integer>4</integer><key>value</key><integer>0</integer>
+                            <key>triggerThreshold</key><integer>1</integer>
+                        </dict>
+                    </array>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Physics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Physics 2</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Physics C</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Env Science</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A-Level Physics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>A2</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A-Level Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>A2</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A-Level Chem</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>A2</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 2 (Humanities)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Philosophy</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Am. Gov &amp; Pol</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Western Civ 2</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Accounting</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Psychology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP US History</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Macroeconomics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>AP Music Theory</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>AP</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A-Level Econ</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>A2</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>A-Level Psych</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>A2</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 3 (Electives)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>Business Mgmt</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Energy &amp; Env</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Adv Creative Writing</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Computer Skills</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Intro to Law</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Psychology</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Sociology</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                    </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Module 4 (Others)</string>
+                    <key>selectionLimit</key><integer>1</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>World Languages</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Arts 2</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Digital Music</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Opera/Singing</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Dramaturgy</string><key>weight</key><real>4.5</real><key>levels</key><array>
+                            <dict><key>name</key><string>S</string><key>offset</key><real>0.5</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Organic Chem</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>H</string><key>offset</key><real>0.2</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+
+        <dict><key>id</key><string>shsid2025-G11G12-IB</string>
+            <key>name</key><string>IB Track</string>
+            <key>subtitle</key><string>2-year IB for G11/G12</string>
+            <key>modules</key><array>
+                <dict><key>type</key><string>core</string><key>subjects</key><array>
+                        <dict><key>name</key><string>English A/B</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Math AA/AI</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>Chinese A/B</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>ToK</string><key>weight</key><real>3.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>IB</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                </array></dict>
+                <dict><key>type</key><string>choice</string>
+                    <key>name</key><string>Electives</string>
+                    <key>selectionLimit</key><integer>3</integer>
+                    <key>subjects</key><array>
+                        <dict><key>name</key><string>IB Physics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Chemistry</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Biology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Economics</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Business Mgmt</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Psychology</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB History</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Philosophy</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Visual Arts</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Music</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Theatre</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB Comp Sci</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>HL</string><key>offset</key><real>0.0</real></dict>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+                        <dict><key>name</key><string>IB ESS</string><key>weight</key><real>6.0</real><key>levels</key><array>
+                            <dict><key>name</key><string>SL</string><key>offset</key><real>0.0</real></dict>
+                        </array></dict>
+        </array></dict></array></dict>
+    </array>
+</dict>
+</plist>

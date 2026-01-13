@@ -4,7 +4,11 @@ import { useStorage } from '@vueuse/core'
 import { Zap, ShieldCheck, Sparkles, ExternalLink, AlertTriangle } from 'lucide-vue-next'
 import gsap from 'gsap'
 
-// --- 1. DATA MODELS ---
+// --- 1. LOCAL BACKUP IMPORT ---
+// Vite's ?raw suffix imports the file content as a string at build time
+import localPlist from './presets.plist?raw'
+
+// --- 2. DATA MODELS ---
 interface ScoreMap { percentageName: string; letterName: string; baseGPA: number; }
 interface Level { name: string; offset: number; weightOverride?: number; }
 interface Subject { name: string; weight: number; levels: Level[]; customScoreToBaseGPAMap?: ScoreMap[]; }
@@ -12,7 +16,7 @@ interface Module { type: 'core' | 'choice'; name?: string; selectionLimit?: numb
 interface Preset { id: string; name: string; subtitle?: string; modules: Module[]; }
 interface RootData { commonScoreMap: ScoreMap[]; presets: Preset[]; lastUpdated?: string; }
 
-// --- 2. ENGINE STATE ---
+// --- 3. ENGINE STATE ---
 const data = ref<RootData | null>(null)
 const selectedPreset = ref<Preset | null>(null)
 const scoreMode = useStorage<'percentage' | 'letter' | 'ib'>('shsid-v-final-release-mode', 'percentage')
@@ -21,8 +25,9 @@ const userSelections = useStorage<Record<string, { levelIdx: number; scoreIdx: n
 
 const gpaDisplay = ref(0)
 const isLoading = ref(true)
+const isUsingLocalBackup = ref(false)
 
-// --- 3. TYPESAFE PLIST PARSER ---
+// --- 4. TYPESAFE PLIST PARSER ---
 const parsePlist = (xml: string): any => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, "text/xml");
@@ -45,26 +50,39 @@ const parsePlist = (xml: string): any => {
   return parseNode(rootDict);
 };
 
-// --- 4. DATA SYNC (INDEXADEMICS OTA) ---
-onMounted(async () => {
+// --- 5. DUAL-BOOT SYNC LOGIC ---
+const initializeEngine = async () => {
   try {
-    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/presets.plist");
+    // Attempt 1: Fetch Live Data (CDN)
+    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/presets.plist", {
+        cache: 'no-store'
+    });
+    if (!res.ok) throw new Error("CDN Offline");
+    
     const xml = await res.text();
-    const parsed = parsePlist(xml);
-    data.value = parsed;
-    if (parsed && parsed.presets) selectedPreset.value = parsed.presets[0];
+    data.value = parsePlist(xml);
+    console.log("Indexademics: Live Sync Successful");
+  } catch (e) {
+    // Attempt 2: Failover to Local Backup
+    console.warn("Indexademics: CDN Sync Failed. Activating Local Backup...");
+    data.value = parsePlist(localPlist);
+    isUsingLocalBackup.value = true;
+  } finally {
+    if (data.value && data.value.presets) {
+      selectedPreset.value = data.value.presets[0];
+    }
     isLoading.value = false;
-  } catch (e) { isLoading.value = false; }
-});
+  }
+};
 
-// --- 5. THE CORE ENGINE ---
+onMounted(initializeEngine);
+
+// --- 6. THE CORE ENGINE ---
 const activeSubjects = computed(() => {
   if (!selectedPreset.value) return [];
   const list: Subject[] = [];
   selectedPreset.value.modules.forEach((mod, mIdx) => {
-    // Core (Mandatory): TOK, Math, English
     if (mod.type === 'core') list.push(...mod.subjects);
-    // Choice (Electives): Physics, Chem, CS
     else if (mod.type === 'choice') {
       const key = `${selectedPreset.value?.id}_${mIdx}`;
       const chosen = moduleChoices.value[key] || [];
@@ -121,8 +139,13 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
           <p class="text-[9px] text-blue-400 font-bold tracking-[0.5em] ml-1">SHSID PRO ENGINE</p>
         </div>
       </div>
-      <div class="hidden md:block px-6 py-2 glass-panel rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 border-white/5 bg-white/5">
-        SHSID Institutional Utility // V2.5.0
+      <div class="hidden md:flex gap-4">
+        <div v-if="isUsingLocalBackup" class="px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-[9px] font-black uppercase text-yellow-500">
+            Local Backup Mode
+        </div>
+        <div class="px-6 py-2 glass-panel rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 border-white/5 bg-white/5">
+          SHSID Official Utility // V2.5.0
+        </div>
       </div>
     </nav>
 
@@ -143,7 +166,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
               <span class="text-[9px] font-black uppercase tracking-widest">Unofficial Reference</span>
             </div>
             <p class="text-[9px] text-slate-500 font-bold uppercase leading-relaxed">
-              SHSID does not propose GPA scores to universities. This result is an unofficial prediction only for reference.
+              SHSID does not propose GPA scores to universities. This result is an inofficial prediction only.
             </p>
           </div>
 
@@ -165,7 +188,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
           </div>
         </div>
 
-        <!-- Elective Module logic -->
+        <!-- Choice Electives -->
         <div v-if="selectedPreset" class="space-y-4">
           <div v-for="(mod, mIdx) in selectedPreset.modules" :key="mIdx">
             <div v-if="mod.type === 'choice'" class="glass-panel p-8 rounded-[2rem] border-white/5">
@@ -271,7 +294,3 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
     </footer>
   </div>
 </template>
-
-<style>
-/* Keep your neural-bg, noise-overlay, and glass-panel styles from previous steps */
-</style>
