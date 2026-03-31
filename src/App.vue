@@ -5,7 +5,6 @@ import { Zap, ShieldCheck, Sparkles, ExternalLink, AlertTriangle } from 'lucide-
 import gsap from 'gsap'
 
 // --- 1. LOCAL FALLBACK IMPORT ---
-// Imports the XML plist as a raw string for fallback purposes
 import localPlistRaw from './presets.plist?raw'
 
 // --- 2. DATA MODELS ---
@@ -34,8 +33,6 @@ const isLoading = ref(true)
 const dataSourceDebug = ref<string>('INITIALIZING...')
 
 // --- 4. PARSERS ---
-
-// A. Advanced DSL Parser (for your remote course.gpa file)
 const parseGpaFormat = (rawText: string): RootData => {
   const cleanJson = rawText
     .replace(/\/\/.*$/gm, '') 
@@ -97,7 +94,6 @@ const parseGpaFormat = (rawText: string): RootData => {
   };
 };
 
-// B. Plist Parser (for the local fallback presets.plist)
 const parsePlist = (xml: string): RootData => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, "text/xml");
@@ -124,7 +120,6 @@ const parsePlist = (xml: string): RootData => {
 const initializeEngine = async () => {
   try {
     dataSourceDebug.value = 'FETCHING REMOTE REPO...';
-    // Attempt to load from YOUR Github repo
     const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/Ziqian-Huang0607/GPA-Calc-Resources/main/course.gpa", {
         cache: 'no-store'
     });
@@ -134,16 +129,13 @@ const initializeEngine = async () => {
     const rawText = await res.text();
     data.value = parseGpaFormat(rawText);
     dataSourceDebug.value = 'REMOTE: github.com/Ziqian-Huang0607/.../course.gpa (SUCCESS)';
-    console.log("Indexademics: Remote source loaded successfully.");
 
   } catch (e) {
-    console.warn("Indexademics: Remote fetch failed. Activating local Plist fallback.", e);
     try {
       dataSourceDebug.value = 'FALLBACK: local presets.plist (LOADING...)';
       data.value = parsePlist(localPlistRaw);
       dataSourceDebug.value = 'FALLBACK: local presets.plist (SUCCESS)';
     } catch (plistErr) {
-      console.error("Indexademics: Local fallback failed to parse.", plistErr);
       dataSourceDebug.value = 'FATAL ERROR: BOTH SOURCES FAILED';
     }
   } finally {
@@ -237,7 +229,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
         </div>
       </div>
       <div class="hidden md:flex gap-4">
-        <div class="px-6 py-2 glass-panel rounded-full text-[10px] font-black uppercase tracking-widest text-blue-400 border-blue-500/20 bg-blue-500/5 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+        <div class="px-6 py-2 bg-white/[0.02] backdrop-blur-3xl border rounded-full text-[10px] font-black uppercase tracking-widest text-blue-400 border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
           Self-Hosted Core // V{{ data?.version || '4.0' }}
         </div>
       </div>
@@ -247,13 +239,12 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
       <!-- Left Sidebar -->
       <aside class="lg:col-span-4 space-y-8">
         <!-- GPA Card + Disclaimer -->
-        <div class="gpa-card glass-panel p-10 text-center rounded-[2.5rem] border-white/10">
+        <div class="gpa-card bg-white/[0.02] backdrop-blur-3xl border p-10 text-center rounded-[2.5rem] border-white/10">
           <span class="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-2 block">Weighted GPA Index</span>
           <div class="text-8xl font-black font-mono tracking-tighter text-white gpa-number-glow leading-none my-4">
             {{ gpaDisplay.toFixed(3) }}
           </div>
           
-          <!-- OFFICIAL DISCLAIMER BLOCK -->
           <div class="mt-6 mb-6 px-4 py-3 bg-blue-500/5 border border-blue-500/20 rounded-2xl text-left">
             <div class="flex items-center gap-2 text-blue-400 mb-1">
               <AlertTriangle :size="14" />
@@ -271,7 +262,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
         </div>
 
         <!-- Curriculum Presets -->
-        <div class="glass-panel p-8 rounded-[2rem] border-white/5">
+        <div class="bg-white/[0.02] backdrop-blur-3xl border p-8 rounded-[2rem] border-white/5">
           <h3 class="text-xs font-black text-slate-500 uppercase mb-6 tracking-widest">Academic Curriculum</h3>
           <div class="space-y-3">
             <button v-for="p in data?.presets" :key="p.id" @click="selectedPreset = p"
@@ -285,7 +276,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
         <!-- Choice Electives -->
         <div v-if="selectedPreset" class="space-y-4">
           <div v-for="(mod, mIdx) in selectedPreset.modules" :key="mIdx">
-            <div v-if="mod.type === 'choice'" class="glass-panel p-8 rounded-[2rem] border-white/5">
+            <div v-if="mod.type === 'choice'" class="bg-white/[0.02] backdrop-blur-3xl border p-8 rounded-[2rem] border-white/5">
               <h4 class="text-[10px] font-black text-blue-500 uppercase mb-5 tracking-[0.2em]">{{ mod.name || 'Elective Choice' }}</h4>
               <div class="grid grid-cols-1 gap-3">
                 <button v-for="(subj, sIdx) in mod.subjects" :key="sIdx"
@@ -320,7 +311,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
 
         <!-- Subject Rows -->
         <div class="space-y-6 pb-20">
-          <div v-for="subj in activeSubjects" :key="subj.name" class="glass-panel p-8 md:p-12 rounded-[3rem] hover:border-blue-500/30 transition-all group">
+          <div v-for="subj in activeSubjects" :key="subj.name" class="bg-white/[0.02] backdrop-blur-3xl border p-8 md:p-12 rounded-[3rem] hover:border-blue-500/30 transition-all group">
             <div class="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-12">
               <h4 class="text-4xl font-black group-hover:text-blue-400 transition-colors tracking-tight leading-none">{{ subj.name }}</h4>
               <div class="flex bg-black/60 p-1.5 rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
@@ -341,7 +332,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
                    levelIdx: userSelections[`${selectedPreset?.id}_${subj.name}`]?.levelIdx ?? 0,
                    scoreIdx: sIdx 
                 }"
-                :class="['grade-btn py-4 text-xs', (userSelections[`${selectedPreset?.id}_${subj.name}`]?.scoreIdx || 0) === sIdx ? 'active' : '']">
+                :class="['py-4 text-xs border-2 rounded-xl font-black transition-all', (userSelections[`${selectedPreset?.id}_${subj.name}`]?.scoreIdx || 0) === sIdx ? 'bg-blue-500 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)]' : 'bg-black/40 border-transparent text-slate-500 hover:bg-white/5 hover:text-slate-300']">
                 {{ scoreMode === 'percentage' ? score.percentageName : score.letterName }}
               </button>
             </div>
@@ -388,15 +379,6 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
 </template>
 
 <style scoped>
-.grade-btn {
-  @apply bg-black/40 border-2 border-transparent text-slate-500 rounded-xl font-black transition-all hover:bg-white/5 hover:text-slate-300;
-}
-.grade-btn.active {
-  @apply bg-blue-500 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)];
-}
-.glass-panel {
-  @apply bg-white/[0.02] backdrop-blur-3xl border;
-}
 .gpa-number-glow {
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
 }
