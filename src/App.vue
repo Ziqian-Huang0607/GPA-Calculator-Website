@@ -5,16 +5,20 @@ import { Zap, ShieldCheck, Sparkles, ExternalLink, AlertTriangle } from 'lucide-
 import gsap from 'gsap'
 
 // --- 1. LOCAL BACKUP IMPORT ---
-// Vite's ?raw suffix imports the file content as a string at build time
 import localPlist from './presets.plist?raw'
 
 // --- 2. DATA MODELS ---
 interface ScoreMap { percentageName: string; letterName: string; baseGPA: number; }
-interface Level { name: string; offset: number; weightOverride?: number; }
+interface Level { name: string; offset: number; weightOverride?: number; tags?: string[]; }
 interface Subject { name: string; weight: number; levels: Level[]; customScoreToBaseGPAMap?: ScoreMap[]; }
 interface Module { type: 'core' | 'choice'; name?: string; selectionLimit?: number; subjects: Subject[]; }
 interface Preset { id: string; name: string; subtitle?: string; modules: Module[]; }
-interface RootData { commonScoreMap: ScoreMap[]; presets: Preset[]; lastUpdated?: string; }
+interface RootData { 
+  commonScoreMap: ScoreMap[]; 
+  extendedScoreMaps?: Record<string, ScoreMap[]>; 
+  presets: Preset[]; 
+  lastUpdated?: string; 
+}
 
 // --- 3. ENGINE STATE ---
 const data = ref<RootData | null>(null)
@@ -27,8 +31,10 @@ const gpaDisplay = ref(0)
 const isLoading = ref(true)
 const isUsingLocalBackup = ref(false)
 
-// --- 4. TYPESAFE PLIST PARSER ---
-const parsePlist = (xml: string): any => {
+// --- 4. PARSERS ---
+
+// Plist (XML) Parser for the local backup fallback
+const parsePlist = (xml: string): RootData => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, "text/xml");
   const rootDict = xmlDoc.getElementsByTagName("dict")[0];
@@ -50,21 +56,82 @@ const parsePlist = (xml: string): any => {
   return parseNode(rootDict);
 };
 
+// .gpa (JSON-DSL) Parser for the new live CDN file
+const parseGpaFormat = (rawText: string): RootData => {
+  // Strip out comments and trailing commas to make it valid standard JSON
+  const cleanJson = rawText
+    .replace(/\/\/.*$/gm, '') // single-line comments
+    .replace(/\/\*[\s\S]*?\*\//g, '') // multi-line comments
+    .replace(/,\s*([\]}])/g, '$1'); // trailing commas
+
+  const gpaData = JSON.parse(cleanJson);
+
+  const mapScoreMap = (smArray: any[]) => (smArray || []).map((sm: any) => ({
+    percentageName: sm.percent,
+    letterName: sm.letter,
+    baseGPA: sm.gpa
+  }));
+
+  const extendedScoreMaps = {
+    AP: mapScoreMap(gpaData.scoreMaps?.AP),
+    ASA2: mapScoreMap(gpaData.scoreMaps?.ASA2),
+    IB: mapScoreMap(gpaData.scoreMaps?.IB)
+  };
+
+  const templates: any = {};
+  if (gpaData.templates) {
+    gpaData.templates.forEach((t: any) => { templates[t.id] = t; });
+  }
+
+  const presets = (gpaData.presets || []).map((p: any) => ({
+    id: p.id,
+    name: p.name,
+    subtitle: p.subtitle || p.track?.displayName || '',
+    modules: (p.modules || []).map((m: any) => ({
+      type: m.type,
+      name: m.name,
+      selectionLimit: m.limit || m.selectionLimit || 1,
+      subjects: (m.subjects || []).map((s: any) => {
+        const tpl = s.template ? templates[s.template] : null;
+        const weight = s.weight !== undefined ? s.weight : (tpl?.weight || 0);
+        const rawLevels = s.levels || tpl?.levels || [];
+        
+        return {
+          name: s.name,
+          weight: weight,
+          levels: rawLevels.map((l: any) => ({
+            name: l.name,
+            offset: l.offset,
+            weightOverride: l.weightOverride,
+            tags: l.tags
+          }))
+        };
+      })
+    }))
+  }));
+
+  return {
+    commonScoreMap: mapScoreMap(gpaData.scoreMaps?.default),
+    extendedScoreMaps,
+    presets
+  };
+};
+
 // --- 5. DUAL-BOOT SYNC LOGIC ---
 const initializeEngine = async () => {
   try {
-    // Attempt 1: Fetch Live Data (CDN)
-    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/presets.plist", {
+    // Attempt 1: Fetch Live Data (New .gpa DSL format)
+    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/Courses.gpa", {
         cache: 'no-store'
     });
     if (!res.ok) throw new Error("CDN Offline");
     
-    const xml = await res.text();
-    data.value = parsePlist(xml);
-    console.log("Indexademics: Live Sync Successful");
+    const rawText = await res.text();
+    data.value = parseGpaFormat(rawText);
+    console.log("Indexademics: Live Sync Successful (.gpa format parsed)");
   } catch (e) {
-    // Attempt 2: Failover to Local Backup
-    console.warn("Indexademics: CDN Sync Failed. Activating Local Backup...");
+    // Attempt 2: Failover to Local Backup (XML Plist format)
+    console.warn("Indexademics: CDN Sync Failed. Activating Local Backup...", e);
     data.value = parsePlist(localPlist);
     isUsingLocalBackup.value = true;
   } finally {
@@ -92,17 +159,38 @@ const activeSubjects = computed(() => {
   return list;
 });
 
+// Helper: Dynamically get the correct score map based on the active level (AP, AS, IB, or Default)
+const getScoreMapForSubject = (presetId: string, subj: Subject) => {
+  const sel = userSelections.value[`${presetId}_${subj.name}`] || { levelIdx: 0, scoreIdx: 0 };
+  const level = subj.levels[sel.levelIdx];
+  
+  if (level?.tags?.includes('AP') && data.value?.extendedScoreMaps?.AP) {
+    return data.value.extendedScoreMaps.AP;
+  }
+  if (level?.tags?.includes('ASA2') && data.value?.extendedScoreMaps?.ASA2) {
+    return data.value.extendedScoreMaps.ASA2;
+  }
+  if (level?.tags?.includes('IB') && data.value?.extendedScoreMaps?.IB) {
+    return data.value.extendedScoreMaps.IB;
+  }
+  return subj.customScoreToBaseGPAMap || data.value?.commonScoreMap || [];
+};
+
 const calculateGPA = () => {
   if (!data.value || !selectedPreset.value) return 0;
   let pts = 0, crd = 0;
   activeSubjects.value.forEach(s => {
-    const selKey = `${selectedPreset.value?.id}_${s.name}`;
+    const presetId = selectedPreset.value!.id;
+    const selKey = `${presetId}_${s.name}`;
     const sel = userSelections.value[selKey] || { levelIdx: 0, scoreIdx: 0 };
+    
     const level = s.levels[sel.levelIdx] || s.levels[0] || { name: 'S', offset: 0 };
-    const map = s.customScoreToBaseGPAMap || data.value?.commonScoreMap || [];
+    const map = getScoreMapForSubject(presetId, s);
     const base = map[sel.scoreIdx]?.baseGPA || 0;
+    
     const minOff = Math.min(...s.levels.map(l => l.offset));
     const subGPA = Math.max(0, base - Math.max(0, level.offset - minOff));
+    
     pts += (subGPA * (level.weightOverride ?? s.weight));
     crd += s.weight;
   });
@@ -232,7 +320,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
               <div class="flex bg-black/60 p-1.5 rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
                 <button v-for="(lvl, lIdx) in subj.levels" :key="lvl.name" 
                   @click="userSelections[`${selectedPreset?.id}_${subj.name}`] = { 
-                    scoreIdx: userSelections[`${selectedPreset?.id}_${subj.name}`]?.scoreIdx ?? 0,
+                    scoreIdx: 0, // Reset to 0 when level switches so arrays don't go out of bounds
                     levelIdx: lIdx 
                   }"
                   :class="['px-5 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase whitespace-nowrap tracking-widest', (userSelections[`${selectedPreset?.id}_${subj.name}`]?.levelIdx || 0) === lIdx ? 'bg-white text-black shadow-2xl' : 'text-slate-600 hover:text-slate-300']">
@@ -242,7 +330,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
             </div>
 
             <div class="grid grid-cols-4 md:grid-cols-8 gap-3">
-              <button v-for="(score, sIdx) in (subj.customScoreToBaseGPAMap || data?.commonScoreMap || [])" :key="sIdx"
+              <button v-for="(score, sIdx) in getScoreMapForSubject(selectedPreset?.id || '', subj)" :key="sIdx"
                 @click="userSelections[`${selectedPreset?.id}_${subj.name}`] = { 
                    levelIdx: userSelections[`${selectedPreset?.id}_${subj.name}`]?.levelIdx ?? 0,
                    scoreIdx: sIdx 
