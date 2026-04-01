@@ -368,7 +368,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
                </a>
                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Course Catalog Contributor </span>
                <a href="https://github.com/willuhd" target="_blank" class="flex items-center gap-2 text-sm font-black text-blue-400 hover:text-white transition-all justify-end">
-                 Michelg10  <ExternalLink :size="14" />
+                 Will Chen(WillUHD)  <ExternalLink :size="14" />
                </a>
              </div>
           </div>
