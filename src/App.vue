@@ -120,7 +120,7 @@ const parsePlist = (xml: string): RootData => {
 const initializeEngine = async () => {
   try {
     dataSourceDebug.value = 'FETCHING REMOTE REPO...';
-    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/Ziqian-Huang0607/GPA-Calc-Resources/main/course.gpa", {
+    const res = await fetch("https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/Courses.gpa", {
         cache: 'no-store'
     });
     
@@ -128,7 +128,7 @@ const initializeEngine = async () => {
     
     const rawText = await res.text();
     data.value = parseGpaFormat(rawText);
-    dataSourceDebug.value = 'REMOTE: github.com/Ziqian-Huang0607/.../course.gpa (SUCCESS)';
+    dataSourceDebug.value = 'REMOTE: github.com/WillUHD/.../course.gpa (SUCCESS)';
 
   } catch (e) {
     try {
@@ -364,6 +364,10 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
                </a>
                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Original Project </span>
                <a href="https://github.com/michelg10" target="_blank" class="flex items-center gap-2 text-sm font-black text-blue-400 hover:text-white transition-all justify-end">
+                 Michelg10  <ExternalLink :size="14" />
+               </a>
+               <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Course Catalog Contributor </span>
+               <a href="https://github.com/willuhd" target="_blank" class="flex items-center gap-2 text-sm font-black text-blue-400 hover:text-white transition-all justify-end">
                  Michelg10  <ExternalLink :size="14" />
                </a>
              </div>
