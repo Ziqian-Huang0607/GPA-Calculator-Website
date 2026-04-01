@@ -366,7 +366,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
                <a href="https://github.com/michelg10" target="_blank" class="flex items-center gap-2 text-sm font-black text-blue-400 hover:text-white transition-all justify-end">
                  Michelg10  <ExternalLink :size="14" />
                </a>
-               <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Course Catalog Contributor </span>
+               <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Catalog / iOS version Co-developer </span>
                <a href="https://github.com/willuhd" target="_blank" class="flex items-center gap-2 text-sm font-black text-blue-400 hover:text-white transition-all justify-end">
                  Will Chen(WillUHD)  <ExternalLink :size="14" />
                </a>
@@ -375,7 +375,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
           <div class="text-[10px] font-mono text-slate-800 font-black bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
             PLATFORM // V{{ data?.version || '4.0.0' }}-ULTIMATE
           </div>
-        </div>
+        </div>C
       </div>
       
       <!-- DEBUG STATEMENT SECTION -->
