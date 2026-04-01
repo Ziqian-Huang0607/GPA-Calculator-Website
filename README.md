@@ -55,4 +55,4 @@ Platform Maintenance: Indexademics
 ---
 Original Project Contributors: 
 Initial iOS Concept: Michel (michelg10)
-Note: License rights for previous resources used has been changed, however it does not effect this software as the software acquired open source resource before the license change. IDX and the developer will NOT remove previous open source resources, please do not contact for removal.
+Note: License rights for previous resources used has been changed, so from now on the website loads IDX's customized version of course catalog from https://github.com/Ziqian-Huang0607/GPA-Calc-Resources
