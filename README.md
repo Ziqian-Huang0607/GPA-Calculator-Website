@@ -55,4 +55,4 @@ Platform Maintenance: Indexademics
 ---
 Original Project Contributors: 
 Initial iOS Concept: Michel (michelg10)
-Note: License rights for previous resources used has been changed, so from now on the website loads IDX's customized version of course catalog from https://github.com/Ziqian-Huang0607/GPA-Calc-Resources
+Course Catalog Assistant : Will Chen(Willuhd)
