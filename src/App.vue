@@ -167,7 +167,7 @@ const getScoreMapForSubject = (presetId: string, subj: Subject) => {
   const sel = userSelections.value[`${presetId}_${subj.name}`] || { levelIdx: 0, scoreIdx: 0 };
   const level = subj.levels[sel.levelIdx] || subj.levels[0];
   
-  if (level?.tags?.includes('AP') && data.value?.extendedScoreMaps?.AP) return data.value.extendedScoreMaps.AP;
+  // Removed AP check so it uses standard school grades instead of 1-5 AP Score mapping
   if (level?.tags?.includes('ASA2') && data.value?.extendedScoreMaps?.ASA2) return data.value.extendedScoreMaps.ASA2;
   if (level?.tags?.includes('IB') && data.value?.extendedScoreMaps?.IB) return data.value.extendedScoreMaps.IB;
   
@@ -375,7 +375,7 @@ const toggleMod = (mIdx: number, sIdx: number, limit: number) => {
           <div class="text-[10px] font-mono text-slate-800 font-black bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
             PLATFORM // V{{ data?.version || '4.0.0' }}-ULTIMATE
           </div>
-        </div>C
+        </div>
       </div>
       
       <!-- DEBUG STATEMENT SECTION -->

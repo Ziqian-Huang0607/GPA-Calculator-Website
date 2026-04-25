@@ -54,5 +54,5 @@ Platform Maintenance: Indexademics
 
 ---
 Original Project Contributors: 
-Original System Overhaul: WillUHD
 Initial iOS Concept: Michel (michelg10)
+Course Catalog Assistant : Will Chen(Willuhd)
