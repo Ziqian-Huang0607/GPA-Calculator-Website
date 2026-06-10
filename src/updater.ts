@@ -12,80 +12,50 @@ function stripCommentLines(data: string): string {
     .join('\n')
 }
 
-function getLocalFileURL(): string | null {
-  // On web, we use localStorage to simulate the document directory
-  const saved = localStorage.getItem(`${FILE_NAME}.${FILE_EXT}`)
-  if (saved) return saved
-  return null
+function getLocalCatalog(): string | null {
+  return localStorage.getItem(`${FILE_NAME}.${FILE_EXT}`)
 }
 
 function saveToLocal(rawData: string) {
   localStorage.setItem(`${FILE_NAME}.${FILE_EXT}`, rawData)
 }
 
-export function fetchRemoteCatalog(
+export async function fetchRemoteCatalog(
   currentVersion?: string
 ): Promise<CourseModel | null> {
-  return new Promise((resolve) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', REMOTE_URL, true)
-    xhr.cache = 'no-store'
-    xhr.timeout = 30000
+  try {
+    const res = await fetch(REMOTE_URL, { cache: 'no-store' })
 
-    xhr.onload = function () {
-      if (xhr.status !== 200) {
-        console.error('Updater: fetch failed:', xhr.status)
-        resolve(null)
-        return
-      }
-
-      try {
-        const rawData = xhr.responseText
-        const stripped = stripCommentLines(rawData)
-        const parsed: CourseModel = JSON.parse(stripped)
-
-        // Save raw (unstripped) data to local storage
-        saveToLocal(rawData)
-
-        console.log(
-          'Updater: downloaded version',
-          parsed.version ?? 'unknown'
-        )
-
-        // If version changed, notify the app
-        if (parsed.version !== currentVersion) {
-          resolve(parsed)
-        } else {
-          resolve(null) // no update needed
-        }
-      } catch (err) {
-        console.error('Updater: invalid data received:', err)
-        resolve(null)
-      }
+    if (!res.ok) {
+      console.error('Updater: fetch failed:', res.status, res.statusText)
+      return null
     }
 
-    xhr.onerror = function () {
-      console.error('Updater: network error')
-      resolve(null)
-    }
+    const rawData = await res.text()
+    const stripped = stripCommentLines(rawData)
+    const parsed: CourseModel = JSON.parse(stripped)
 
-    xhr.ontimeout = function () {
-      console.error('Updater: request timed out')
-      resolve(null)
-    }
+    saveToLocal(rawData)
 
-    xhr.send()
-  })
+    console.log('Updater: downloaded version', parsed.version ?? 'unknown')
+
+    if (parsed.version !== currentVersion) {
+      return parsed
+    }
+    return null
+  } catch (err) {
+    console.error('Updater: fetch error:', err)
+    return null
+  }
 }
 
 export function loadLocalCatalog(): CourseModel | null {
-  const saved = getLocalFileURL()
+  const saved = getLocalCatalog()
   if (saved) {
     try {
       const stripped = stripCommentLines(saved)
       return JSON.parse(stripped) as CourseModel
     } catch {
-      // corrupted, remove
       localStorage.removeItem(`${FILE_NAME}.${FILE_EXT}`)
     }
   }
@@ -95,7 +65,6 @@ export function loadLocalCatalog(): CourseModel | null {
 export function checkForUpdates(currentVersion?: string) {
   fetchRemoteCatalog(currentVersion).then((newRoot) => {
     if (newRoot) {
-      // Dispatch custom event so the backend can pick it up
       window.dispatchEvent(
         new CustomEvent('courses-updated', { detail: newRoot })
       )

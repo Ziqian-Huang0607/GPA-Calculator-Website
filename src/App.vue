@@ -33,10 +33,10 @@ onMounted(() => {
 
     <!-- Main Content -->
     <div v-else class="min-h-screen">
-      <!-- Navbar — matches SwiftUI NavigationView title -->
+      <!-- Navbar — no title, heading below handles it -->
       <div class="navbar sticky top-0 z-40">
         <div />
-        <span>GPA Calculator</span>
+        <div />
         <div />
       </div>
 
