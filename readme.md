@@ -15,5 +15,5 @@
 
 ### Support
 - **Maintenance**: Indexademics team
-- **Contact**: Will Chen `willcxd` for course catalog issues
+- **Contact**: Will Chen (`willcxd` on WeChat) 
 - **⚠️ Disclaimer**: This is an unofficial tool that is not affiliated with SHSID. All course information is based on the SHSID Course Catalog and is for reference purposes only. Course availability and policies are subject to change by the school administration.
