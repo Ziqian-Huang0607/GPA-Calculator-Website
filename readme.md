@@ -1,58 +1,19 @@
-# 🎓 SHSID GPA Calculator Online
-### *Powered by Indexademics Developer Team*
+# GPA Calculator website
 
-![Indexademics Banner](public/indexademics-logo.png)
 
-> **The fastest, most convenient, and most powerful academic intelligence tool ever built for the SHSID community.**
 
-SHSID GPA Calculator Online is a professional-grade predictive analytics platform designed exclusively for students of the Shanghai High School International Division. Engineered for precision and speed, it handles complex academic weighting (H/AP/CP) with zero latency.
+### Tech stack & usage
+- **Frontend**: [Vue 3](https://vuejs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [GSAP](https://gsap.com/)
+- **Run locally**: [Node.js](https://nodejs.org/) (v18+), `brew install node`
+    ```zsh
+    git clone https://github.com/Ziqian-Huang0607/GPA-Calculator-Website.git
+    cd GPA-Calculator-Website
+    npm install
+    npm run dev
+    ```
+    The local page [http://localhost:5173](http://localhost:5173) will automatically open in your browser.
 
----
-
-## ⚡ Key Features
-
-- **SHSID Precise Engine™**: Mathematically verified calculation logic supporting `minOffset` difficulty scaling and `weightOverride` credit systems.
-- **Indexademics Live Sync**: Dynamically fetches the latest course catalogs and grade boundaries over-the-air (OTA) via GitHub resources.
-- **Aurora GUI Architecture**: A high-end web interface featuring Neural Mesh backgrounds, Glassmorphism 2.0, and GSAP-powered motion intelligence.
-- **Intelligent Elective Logic**: Seamlessly manage elective slots (Physics, Chem, CS, etc.) with integrated FIFO selection limits.
-- **Cross-Platform Convenience**: Optimized for everything from mobile devices to high-resolution desktop displays.
-
-## 🛠 Tech Stack
-
-- **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
-- **Build Tool**: [Vite](https://vitejs.dev/) (High-speed HMR)
-- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strictly Typed Logic)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) & PostCSS
-- **Animations**: [GSAP](https://greensock.com/gsap/) (Numeric Tweening)
-
----
-
-## 🏗 Installation & Local Development
-
-To run the Indexademics Engine locally:
-
-```bash
-# Clone the repository
-git clone https://github.com/Ziqian-Huang0607/GPA-Calculator-Website.git
-
-# Navigate to project directory
-cd GPA-Calculator-Website
-
-# Install professional dependencies
-npm install
-
-# Launch development server
-npm run dev
-```
-
-## 🏛 Credits & Contribution
-- This platform is a web-based evolution of the original iOS GPA Calculator. We honor the architectural foundations laid by the original developers.
----
-Website Developers:
-Senior Developer & Maintainer: Ziqian Huang — Indexademics Developer Team
-Platform Maintenance: Indexademics
-
----
-Original Project Contributors: 
-Initial iOS Concept: Michel (michelg10)
-Course Catalog Assistant : Will Chen(Willuhd)
+### Support
+- **Maintenance**: Indexademics team
+- **Contact**: Will Chen `willcxd` for course catalog issues
+- **⚠️ Disclaimer**: This is an unofficial tool that is not affiliated with SHSID. All course information is based on the SHSID Course Catalog and is for reference purposes only. Course availability and policies are subject to change by the school administration.
