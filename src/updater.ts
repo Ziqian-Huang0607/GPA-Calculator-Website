@@ -5,11 +5,16 @@ const FILE_EXT = 'gpa'
 const REMOTE_URL =
   'https://edgeone.gh-proxy.org/https://raw.githubusercontent.com/WillUHD/GPAResources/refs/heads/main/Courses.gpa'
 
-function stripCommentLines(data: string): string {
-  return data
+function parseGpaFormat(raw: string): CourseModel {
+  // Strip // comments (line-level)
+  const withoutComments = raw
     .split('\n')
     .filter((line) => !line.trimStart().startsWith('//'))
     .join('\n')
+  // Remove trailing commas before ] or } — the .gpa dialect allows them
+  const cleanJson = withoutComments
+    .replace(/,\s*([\]}])/g, '$1')
+  return JSON.parse(cleanJson)
 }
 
 function getLocalCatalog(): string | null {
@@ -32,8 +37,7 @@ export async function fetchRemoteCatalog(
     }
 
     const rawData = await res.text()
-    const stripped = stripCommentLines(rawData)
-    const parsed: CourseModel = JSON.parse(stripped)
+    const parsed = parseGpaFormat(rawData)
 
     saveToLocal(rawData)
 
@@ -53,8 +57,7 @@ export function loadLocalCatalog(): CourseModel | null {
   const saved = getLocalCatalog()
   if (saved) {
     try {
-      const stripped = stripCommentLines(saved)
-      return JSON.parse(stripped) as CourseModel
+      return parseGpaFormat(saved)
     } catch {
       localStorage.removeItem(`${FILE_NAME}.${FILE_EXT}`)
     }
