@@ -13,11 +13,7 @@ const backend = useBackend()
 const expanded = ref(false)
 
 const isLocked = computed(() => backend.publishedEffectiveLimit(props.modIndex) === 0)
-
-const isRequiredModule = computed(() =>
-  backend.modulesRequiringSelection.value.has(props.modIndex)
-)
-
+const isRequiredModule = computed(() => backend.modulesRequiringSelection.value.has(props.modIndex))
 const statusText = computed(() => backend.moduleStatusText(props.modIndex))
 const statusColor = computed(() => backend.moduleStatusColor(props.modIndex))
 
@@ -33,8 +29,8 @@ function toggleSubject(sIdx: number) {
 
 <template>
   <div
-    class="bg-card rounded-[var(--radius)] overflow-hidden"
-    :class="isLocked ? 'module-disabled' : ''"
+    class="bg-white dark:bg-ios-dark-surface-2 rounded-xl overflow-hidden"
+    :class="isLocked ? 'opacity-50 pointer-events-none' : ''"
   >
     <!-- Header -->
     <button
@@ -44,7 +40,7 @@ function toggleSubject(sIdx: number) {
       <div class="flex-1 min-w-0">
         <div
           class="text-[17px] font-bold"
-          :class="isRequiredModule ? 'text-destructive' : isLocked ? 'text-gray-400' : 'text-foreground'"
+          :class="isRequiredModule ? 'text-red-500' : isLocked ? 'text-gray-400' : 'text-ios-light-label dark:text-ios-dark-label'"
         >
           {{ module.name || 'Module' }}
         </div>
@@ -60,7 +56,7 @@ function toggleSubject(sIdx: number) {
     </button>
 
     <!-- Expanded list -->
-    <div v-if="expanded" class="border-t border-separator">
+    <div v-if="expanded" class="border-t border-ios-light-separator dark:border-ios-dark-separator">
       <div
         v-for="(subj, sIdx) in module.subjects"
         :key="sIdx"
@@ -69,14 +65,14 @@ function toggleSubject(sIdx: number) {
           class="w-full flex items-center justify-between px-4 py-3.5 text-left border-none cursor-pointer transition-colors"
           :class="[
             backend.isDisabled(modIndex, sIdx)
-              ? 'bg-transparent text-gray-400 module-item-disabled'
-              : 'bg-transparent text-foreground hover:bg-surface-3 active:bg-surface-4',
+              ? 'bg-transparent text-gray-400 opacity-50 pointer-events-none'
+              : 'bg-transparent text-ios-light-label dark:text-ios-dark-label hover:bg-ios-light-secondary-grouped dark:hover:bg-ios-dark-secondary-grouped active:bg-ios-light-tertiary-grouped dark:active:bg-ios-dark-tertiary-grouped',
           ]"
           :disabled="backend.isDisabled(modIndex, sIdx)"
           @click="toggleSubject(sIdx)"
         >
           <span class="text-[15px]">{{ subj.name }}</span>
-          <span v-if="backend.isSelected(modIndex, sIdx)" class="text-primary">
+          <span v-if="backend.isSelected(modIndex, sIdx)" class="text-ios-light-tint dark:text-ios-dark-tint">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>

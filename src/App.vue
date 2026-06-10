@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useBackend } from './logic/useBackend'
 import SubjectRow from './components/SubjectRow.vue'
 import CustomizeView from './components/CustomizeView.vue'
+import { kApp, kPage, kNavbar } from 'konsta/vue'
 
 const backend = useBackend()
 const showCustomize = ref(false)
@@ -13,11 +14,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="cider min-h-screen bg-grouped">
+  <k-app theme="ios">
     <!-- Loading State -->
     <div
       v-if="backend.isLoading.value"
-      class="min-h-screen flex items-center justify-center"
+      class="k-ios min-h-screen flex items-center justify-center bg-ios-light-surface dark:bg-ios-dark-surface"
     >
       <div class="text-center">
         <div
@@ -25,50 +26,46 @@ onMounted(() => {
           role="progressbar"
           aria-label="Loading"
         />
-        <p class="text-[13px] text-tertiary-foreground font-medium">
+        <p class="text-[13px] text-ios-light-secondary-label dark:text-ios-dark-secondary-label font-medium">
           Loading catalog...
         </p>
       </div>
     </div>
 
     <!-- Main Content -->
-    <div v-else class="min-h-screen">
-      <!-- Navbar — no title, heading below handles it -->
-      <div class="navbar sticky top-0 z-40">
-        <div />
-        <div />
-        <div />
-      </div>
+    <k-page v-else>
+      <k-navbar
+        title="GPA Calculator"
+        class="top-0 sticky"
+      />
 
-      <!-- Content Area -->
       <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <!-- Header: Title + Result -->
+        <!-- GPA Result -->
         <div class="text-center py-6">
-          <h1 class="text-[28px] font-semibold text-foreground tracking-tight">
-            GPA Calculator
-          </h1>
           <p
             class="text-[16px] mt-1"
-            :class="backend.isInvalidated.value ? 'text-destructive' : 'text-tertiary-foreground'"
+            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-ios-light-secondary-label dark:text-ios-dark-secondary-label'"
           >
             {{ backend.calculationResultText.value }}
           </p>
         </div>
 
-        <!-- Action Buttons: Customize + Reset -->
+        <!-- Action Buttons -->
         <div class="flex gap-4 mb-6">
-          <button
-            class="btn-gray flex-1"
+          <k-button
+            class="flex-1"
+            outline
             @click="showCustomize = true"
           >
             Customize
-          </button>
-          <button
-            class="btn-gray flex-1"
+          </k-button>
+          <k-button
+            class="flex-1"
+            outline
             @click="backend.resetAllLevelsAndScores()"
           >
             Reset
-          </button>
+          </k-button>
         </div>
 
         <!-- Subject Rows -->
@@ -87,6 +84,6 @@ onMounted(() => {
         :show="showCustomize"
         @close="showCustomize = false"
       />
-    </div>
-  </div>
+    </k-page>
+  </k-app>
 </template>

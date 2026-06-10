@@ -16,11 +16,8 @@ const isRequired = computed(() =>
 )
 
 const levelIndex = computed(() => backend.getLevelIndex(props.subject))
-
 const scoreIndex = computed(() => backend.getScoreIndex(props.subject))
-
 const levelItems = computed(() => props.subject.levels.map((l) => l.name))
-
 const scoreItems = computed(() => {
   const map = backend.scoreMapForSubject(props.subject)
   return map.map((s) =>
@@ -38,11 +35,11 @@ function setScore(idx: number) {
 </script>
 
 <template>
-  <div class="subject-card p-5">
-    <div class="flex items-center gap-3 mb-4">
+  <div class="bg-white dark:bg-ios-dark-surface-2 rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-3 mb-3">
       <span
-        class="text-[20px] font-normal leading-tight flex-shrink min-w-0"
-        :class="isRequired ? 'text-required' : 'text-foreground'"
+        class="text-[17px] font-normal leading-tight flex-shrink min-w-0"
+        :class="isRequired ? 'text-red-500' : 'text-ios-light-label dark:text-ios-dark-label'"
       >
         {{ subject.name }}
       </span>
