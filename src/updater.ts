@@ -6,20 +6,15 @@ const REMOTE_URL =
 export async function fetchCatalog(): Promise<CourseModel | null> {
   try {
     const res = await fetch(REMOTE_URL, { cache: 'no-store' })
-    if (!res.ok) {
-      console.error('Fetch failed:', res.status)
-      return null
-    }
+    if (!res.ok) return null
     const raw = await res.text()
-    // Strip // comment lines, then strip trailing commas (the .gpa dialect allows them)
     const cleaned = raw
       .split('\n')
       .filter((l) => !l.trimStart().startsWith('//'))
       .join('\n')
       .replace(/,\s*([\]}])/g, '$1')
     return JSON.parse(cleaned) as CourseModel
-  } catch (err) {
-    console.error('fetchCatalog error:', err)
+  } catch {
     return null
   }
 }

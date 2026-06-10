@@ -68,20 +68,20 @@ function toggleSubject(sIdx: number) {
         <button
           class="w-full flex items-center justify-between px-4 py-3.5 text-left border-none cursor-pointer transition-colors"
           :class="[
-            isDisabled(modIndex, sIdx)
+            backend.isDisabled(modIndex, sIdx)
               ? 'bg-transparent text-gray-400 module-item-disabled'
               : 'bg-transparent text-foreground hover:bg-surface-3 active:bg-surface-4',
           ]"
-          :disabled="isDisabled(modIndex, sIdx)"
+          :disabled="backend.isDisabled(modIndex, sIdx)"
           @click="toggleSubject(sIdx)"
         >
           <span class="text-[15px]">{{ subj.name }}</span>
-          <span v-if="isSelected(modIndex, sIdx)" class="text-primary">
+          <span v-if="backend.isSelected(modIndex, sIdx)" class="text-primary">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
           </span>
-          <span v-else-if="isDisabled(modIndex, sIdx)" class="text-gray-400">
+          <span v-else-if="backend.isDisabled(modIndex, sIdx)" class="text-gray-400">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
             </svg>

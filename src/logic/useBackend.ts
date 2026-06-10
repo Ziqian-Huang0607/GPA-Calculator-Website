@@ -1,5 +1,13 @@
 import { ref, computed } from 'vue'
-import type { CourseModel, Preset, Subject, Module, ScoreEntry, Level } from '../types'
+import type {
+  CourseModel,
+  Preset,
+  Subject,
+  Module,
+  ScoreEntry,
+  Level,
+  Template,
+} from '../types'
 import { fetchCatalog } from '../updater'
 
 function subjectKey(subj: Subject): string {
@@ -14,11 +22,11 @@ function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
 }
 
-// ── State ──
+// ── Reactive State (module-level singletons) ──
 const root = ref<CourseModel | null>(null)
 const currentPreset = ref<Preset | null>(null)
 const activeSubjects = ref<Subject[]>([])
-const calculationResultText = ref('whoops')
+const calculationResultText = ref('Loading...')
 const isInvalidated = ref(false)
 const isLoading = ref(true)
 const scoreMapsById = ref<Record<string, ScoreEntry[]>>({})
@@ -29,7 +37,9 @@ const trackToggleByPreset = ref<Record<string, boolean>>({})
 const selectedLevelIndicesBySubject = ref<Record<string, number>>({})
 const selectedScoreIndicesBySubject = ref<Record<string, number>>({})
 const selectedScoreMapIdBySubject = ref<Record<string, string>>({})
-const selectionsByModule = ref<Record<number, { itemIndex: number; subjectId: string }[]>>({})
+const selectionsByModule = ref<
+  Record<number, { itemIndex: number; subjectId: string }[]>
+>({})
 const disabledIndicesByModule = ref<Record<number, Set<number>>>({})
 const effectiveLimitsByModule = ref<Record<number, number>>({})
 const requirementWarning = ref<string | null>(null)
@@ -38,26 +48,30 @@ const modulesRequiringSelection = ref<Set<number>>(new Set())
 
 // ── Persistence ──
 function persistSelections() {
-  const p = currentPreset.value
-  if (!p) return
-  const allIds = new Set(p.modules.flatMap((m) => m.subjects.map(subjectKey)))
-  const filterValid = (dict: Record<string, number>) => {
-    const out: Record<string, number> = {}
-    for (const [k, v] of Object.entries(dict)) {
-      if (allIds.has(k)) out[k] = v
+  try {
+    const p = currentPreset.value
+    if (!p) return
+    const allIds = new Set(p.modules.flatMap((m) => m.subjects.map(subjectKey)))
+    const filterValid = (dict: Record<string, number>) => {
+      const out: Record<string, number> = {}
+      for (const [k, v] of Object.entries(dict)) {
+        if (allIds.has(k)) out[k] = v
+      }
+      return out
     }
-    return out
-  }
-  selectedLevelIndicesBySubject.value = filterValid(selectedLevelIndicesBySubject.value)
-  selectedScoreIndicesBySubject.value = filterValid(selectedScoreIndicesBySubject.value)
-  selectedScoreMapIdBySubject.value = filterValid(selectedScoreMapIdBySubject.value)
-  localStorage.setItem(`config_${p.id}_levels`, JSON.stringify(selectedLevelIndicesBySubject.value))
-  localStorage.setItem(`config_${p.id}_scores`, JSON.stringify(selectedScoreIndicesBySubject.value))
-  localStorage.setItem(`config_${p.id}_scoreMapChoice`, JSON.stringify(selectedScoreMapIdBySubject.value))
-  localStorage.setItem(`config_${p.id}_trackToggle`, JSON.stringify(trackToggleByPreset.value[p.id] ?? true))
-  for (let i = 0; i < p.modules.length; i++) {
-    const entries = selectionsByModule.value[i] || []
-    localStorage.setItem(`config_${p.id}_mod_ids_${i}`, JSON.stringify(entries.map((e) => e.subjectId)))
+    selectedLevelIndicesBySubject.value = filterValid(selectedLevelIndicesBySubject.value)
+    selectedScoreIndicesBySubject.value = filterValid(selectedScoreIndicesBySubject.value)
+    selectedScoreMapIdBySubject.value = filterValid(selectedScoreMapIdBySubject.value)
+    localStorage.setItem(`config_${p.id}_levels`, JSON.stringify(selectedLevelIndicesBySubject.value))
+    localStorage.setItem(`config_${p.id}_scores`, JSON.stringify(selectedScoreIndicesBySubject.value))
+    localStorage.setItem(`config_${p.id}_scoreMapChoice`, JSON.stringify(selectedScoreMapIdBySubject.value))
+    localStorage.setItem(`config_${p.id}_trackToggle`, JSON.stringify(trackToggleByPreset.value[p.id] ?? true))
+    for (let i = 0; i < p.modules.length; i++) {
+      const entries = selectionsByModule.value[i] || []
+      localStorage.setItem(`config_${p.id}_mod_ids_${i}`, JSON.stringify(entries.map((e) => e.subjectId)))
+    }
+  } catch (e) {
+    console.warn('[persistSelections] error:', e)
   }
 }
 
@@ -77,13 +91,17 @@ function loadPersistedSelections(presetId: string, modules: Module[]) {
   for (let i = 0; i < modules.length; i++) {
     const idsRaw = localStorage.getItem(`config_${presetId}_mod_ids_${i}`)
     if (idsRaw) {
-      const ids: string[] = JSON.parse(idsRaw)
-      selectionsByModule.value[i] = ids
-        .map((sid) => {
-          const idx = modules[i].subjects.findIndex((s) => subjectKey(s) === sid)
-          return idx >= 0 ? { itemIndex: idx, subjectId: sid } : null
-        })
-        .filter(Boolean) as { itemIndex: number; subjectId: string }[]
+      try {
+        const ids: string[] = JSON.parse(idsRaw)
+        selectionsByModule.value[i] = ids
+          .map((sid) => {
+            const idx = modules[i].subjects.findIndex((s) => subjectKey(s) === sid)
+            return idx >= 0 ? { itemIndex: idx, subjectId: sid } : null
+          })
+          .filter(Boolean) as { itemIndex: number; subjectId: string }[]
+      } catch {
+        selectionsByModule.value[i] = []
+      }
     } else {
       selectionsByModule.value[i] = []
     }
@@ -96,19 +114,19 @@ function loadPersistedSelections(presetId: string, modules: Module[]) {
 function ensureDefaultIndices(subjects: Subject[]) {
   for (const subj of subjects) {
     const key = subjectKey(subj)
-    if (selectedLevelIndicesBySubject.value[key] === undefined) {
+    if (selectedLevelIndicesBySubject.value[key] === undefined)
       selectedLevelIndicesBySubject.value[key] = 0
-    }
-    if (selectedScoreIndicesBySubject.value[key] === undefined) {
+    if (selectedScoreIndicesBySubject.value[key] === undefined)
       selectedScoreIndicesBySubject.value[key] = 0
-    }
   }
 }
 
-// ── Active Subjects ──
 function rebuildActiveSubjects() {
   const p = currentPreset.value
-  if (!p) { activeSubjects.value = []; return }
+  if (!p) {
+    activeSubjects.value = []
+    return
+  }
   const list: Subject[] = []
   for (let mIdx = 0; mIdx < p.modules.length; mIdx++) {
     const m = p.modules[mIdx]
@@ -125,7 +143,6 @@ function rebuildActiveSubjects() {
   ensureDefaultIndices(list)
 }
 
-// ── Score Map ──
 function scoreMapForSubject(subj: Subject): ScoreEntry[] {
   if (subj.customMap && subj.customMap.length > 0) return subj.customMap
   const p = currentPreset.value
@@ -141,7 +158,6 @@ function scoreMapForSubject(subj: Subject): ScoreEntry[] {
   return scoreMapsById.value[subj.scoreMapId ?? ''] ?? scoreMapsById.value[defaultScoreMapId.value] ?? []
 }
 
-// ── Rule Evaluation ──
 function evaluateRulesInternal() {
   const p = currentPreset.value
   if (!p) return
@@ -203,7 +219,10 @@ function evaluateRulesInternal() {
     }
     if (rules.requirements) {
       for (const req of rules.requirements) {
-        if ((activeTagCounts[req.triggerTag] ?? 0) > 0 && !req.requiredAnyTag.some((t) => (activeTagCounts[t] ?? 0) > 0)) {
+        if (
+          (activeTagCounts[req.triggerTag] ?? 0) > 0 &&
+          !req.requiredAnyTag.some((t) => (activeTagCounts[t] ?? 0) > 0)
+        ) {
           requirementWarning.value = req.errorMessage
         }
       }
@@ -222,7 +241,12 @@ function evaluateRulesInternal() {
             return true
           })
         }
-        const triggered = trigger.selectedSubjectIds && trigger.moduleConditions ? idTrig && modTrig : trigger.selectedSubjectIds ? idTrig : modTrig
+        const triggered =
+          trigger.selectedSubjectIds && trigger.moduleConditions
+            ? idTrig && modTrig
+            : trigger.selectedSubjectIds
+              ? idTrig
+              : modTrig
         if (triggered) {
           if (cond.enforceModuleLimits) {
             for (const ml of cond.enforceModuleLimits) effLimits[ml.moduleIndex] = ml.newLimit
@@ -238,7 +262,9 @@ function evaluateRulesInternal() {
   }
   for (let i = 0; i < p.modules.length; i++) {
     const m = p.modules[i]
-    if ((m.minSelection ?? 0) > (selectionsByModule.value[i]?.length ?? 0)) modulesRequiringSelection.value.add(i)
+    if ((m.minSelection ?? 0) > (selectionsByModule.value[i]?.length ?? 0)) {
+      modulesRequiringSelection.value.add(i)
+    }
   }
   const disabled: Record<number, Set<number>> = {}
   for (let mIdx = 0; mIdx < p.modules.length; mIdx++) {
@@ -249,7 +275,10 @@ function evaluateRulesInternal() {
       if (sel.has(sIdx)) continue
       const subj = m.subjects[sIdx]
       const key = subjectKey(subj)
-      if (effLimits[mIdx] === 0 || excludedIds.has(key) || allIds.has(key)) { d.add(sIdx); continue }
+      if (effLimits[mIdx] === 0 || excludedIds.has(key) || allIds.has(key)) {
+        d.add(sIdx)
+        continue
+      }
       const tags = subj.tags ?? []
       if (tags.some((t) => excludedTags.has(t) || cappedTags.has(t))) d.add(sIdx)
     }
@@ -259,9 +288,11 @@ function evaluateRulesInternal() {
   effectiveLimitsByModule.value = effLimits
 }
 
-// ── GPA Computation ──
 function recomputeGPA() {
-  if (!currentPreset.value) { calculationResultText.value = 'whoops'; return }
+  if (!currentPreset.value) {
+    calculationResultText.value = 'No preset selected'
+    return
+  }
   let pts = 0
   let wgt = 0
   for (const subj of activeSubjects.value) {
@@ -275,58 +306,7 @@ function recomputeGPA() {
     pts += Math.max(0, baseGPA - Math.max(0, lvl.offset)) * w
     wgt += w
   }
-  calculationResultText.value = wgt > 0 ? `Your GPA: ${(pts / wgt).toFixed(3)}` : 'whoops'
-}
-
-// ── Apply Root ──
-function applyRoot(newRoot: CourseModel) {
-  const prevId = currentPreset.value?.id
-  const r = deepClone(newRoot)
-  const tpls: Record<string, any> = {}
-  if (r.templates) {
-    for (const t of r.templates) tpls[t.id] = t
-  }
-  for (const p of r.presets ?? []) {
-    for (const m of p.modules) {
-      for (const s of m.subjects) {
-        const t = tpls[s.template ?? '']
-        if (t) {
-          s.weight = s.weight ?? t.weight
-          s.levels = s.levels.length > 0 ? s.levels : t.levels
-          s.tags = (!s.tags || s.tags.length === 0) ? t.tags : s.tags
-          s.scoreMapId = !s.scoreMapId || s.scoreMapId.length === 0 ? t.scoreMapId : s.scoreMapId
-        }
-      }
-    }
-  }
-  root.value = r
-  if (r.scoreMaps) {
-    scoreMapsById.value = r.scoreMaps
-  } else if (r.scoreMap) {
-    scoreMapsById.value = { default: r.scoreMap }
-  } else {
-    scoreMapsById.value = {}
-  }
-  defaultScoreMapId.value = scoreMapsById.value['default'] ? 'default' : Object.keys(scoreMapsById.value).sort()[0] ?? 'default'
-  const preset = r.presets?.find((pr) => pr.id === prevId) ?? r.presets?.[0]
-  if (preset) {
-    selectPreset(preset.id)
-  } else {
-    currentPreset.value = null
-    activeSubjects.value = []
-    calculationResultText.value = 'No presets in catalog'
-  }
-}
-
-// ── Public API ──
-function selectPreset(id: string) {
-  const p = root.value?.presets?.find((pr) => pr.id === id)
-  if (!p) return
-  currentPreset.value = p
-  loadPersistedSelections(p.id, p.modules)
-  rebuildActiveSubjects()
-  ensureDefaultIndices(activeSubjects.value)
-  evaluateRulesAndRecompute()
+  calculationResultText.value = wgt > 0 ? `Your GPA: ${(pts / wgt).toFixed(3)}` : 'No GPA data'
 }
 
 function evaluateRulesAndRecompute() {
@@ -334,11 +314,6 @@ function evaluateRulesAndRecompute() {
   requiredSubjectIDs.value = new Set()
   modulesRequiringSelection.value = new Set()
   isInvalidated.value = false
-  evaluateRulesAndRecomputeInternal()
-  recomputeGPA()
-}
-
-function evaluateRulesAndRecomputeInternal() {
   evaluateRulesInternal()
   let needsRebuild = true
   let loops = 0
@@ -360,7 +335,128 @@ function evaluateRulesAndRecomputeInternal() {
       evaluateRulesInternal()
     }
   }
-  if (requirementWarning.value || modulesRequiringSelection.value.size > 0) isInvalidated.value = true
+  if (requirementWarning.value || modulesRequiringSelection.value.size > 0) {
+    isInvalidated.value = true
+  }
+  recomputeGPA()
+}
+
+function selectPreset(id: string) {
+  const p = root.value?.presets?.find((pr) => pr.id === id)
+  if (!p) return
+  currentPreset.value = p
+  loadPersistedSelections(p.id, p.modules)
+  rebuildActiveSubjects()
+  ensureDefaultIndices(activeSubjects.value)
+  evaluateRulesAndRecompute()
+}
+
+function applyRoot(newRoot: CourseModel) {
+  const prevId = currentPreset.value?.id
+  const r = deepClone(newRoot)
+
+  // Apply templates to subjects
+  const tpls: Record<string, Template> = {}
+  if (r.templates) {
+    for (const t of r.templates) tpls[t.id] = t
+  }
+  for (const pr of r.presets ?? []) {
+    for (const m of pr.modules) {
+      for (const s of m.subjects) {
+        if (!Array.isArray(s.levels)) s.levels = []
+        if (!Array.isArray(s.tags)) s.tags = []
+        const t = tpls[s.template ?? '']
+        if (t) {
+          s.weight = s.weight ?? t.weight
+          s.levels = s.levels.length > 0 ? s.levels : (t.levels ?? [])
+          s.tags = s.tags.length === 0 ? (t.tags ?? []) : s.tags
+          s.scoreMapId = !s.scoreMapId || s.scoreMapId.length === 0 ? t.scoreMapId : s.scoreMapId
+        }
+      }
+    }
+  }
+
+  root.value = r
+
+  // Build score maps
+  if (r.scoreMaps) {
+    scoreMapsById.value = r.scoreMaps
+  } else if (r.scoreMap) {
+    scoreMapsById.value = { default: r.scoreMap }
+  } else {
+    scoreMapsById.value = {}
+  }
+  defaultScoreMapId.value = scoreMapsById.value['default'] ? 'default' : Object.keys(scoreMapsById.value).sort()[0] ?? 'default'
+
+  // Select first preset
+  const preset = r.presets?.find((pr) => pr.id === prevId) ?? r.presets?.[0]
+  if (preset) {
+    selectPreset(preset.id)
+  } else {
+    currentPreset.value = null
+    activeSubjects.value = []
+    calculationResultText.value = 'No presets in catalog'
+  }
+}
+
+// ── Load Data ──
+async function loadInitialData() {
+  isLoading.value = true
+
+  try {
+    const catalog = await fetchCatalog()
+
+    if (!catalog) {
+      console.error('[GPA] fetchCatalog returned null')
+      calculationResultText.value = 'Failed to load catalog'
+      return
+    }
+
+    applyRoot(catalog)
+
+  } catch (err) {
+    console.error('[GPA] loadInitialData error:', err)
+    root.value = null
+    calculationResultText.value = 'Failed to load catalog'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+export function useBackend() {
+  return {
+    root,
+    currentPreset,
+    activeSubjects,
+    calculationResultText,
+    isInvalidated,
+    isLoading,
+    scoreDisplay,
+    trackActive,
+    requirementWarning,
+    requiredSubjectIDs,
+    modulesRequiringSelection,
+    choiceModules: computed(() => {
+      const p = currentPreset.value
+      if (!p) return []
+      return p.modules.map((m, i) => ({ modIndex: i, module: m })).filter(({ module }) => module.type === 'choice')
+    }),
+    loadInitialData,
+    selectPreset,
+    setLevelIndex,
+    setScoreIndex,
+    getLevelIndex,
+    getScoreIndex,
+    toggleSelection,
+    isSelected,
+    isDisabled,
+    publishedEffectiveLimit,
+    setTrackActive,
+    resetAllLevelsAndScores,
+    moduleStatusText,
+    moduleStatusColor,
+    scoreMapForSubject,
+  }
 }
 
 function setLevelIndex(idx: number, forSubjectIndex: number) {
@@ -451,9 +547,7 @@ function setTrackActive(isActive: boolean) {
     const key = subjectKey(subj)
     const map = scoreMapForSubject(subj)
     const cur = selectedScoreIndicesBySubject.value[key]
-    if (cur !== undefined && cur >= map.length) {
-      selectedScoreIndicesBySubject.value[key] = Math.max(0, map.length - 1)
-    }
+    if (cur !== undefined && cur >= map.length) selectedScoreIndicesBySubject.value[key] = Math.max(0, map.length - 1)
   }
   persistSelections()
   recomputeGPA()
@@ -483,60 +577,4 @@ function moduleStatusText(modIndex: number): string {
 function moduleStatusColor(modIndex: number): string {
   if (publishedEffectiveLimit(modIndex) === 0) return 'text-gray-400'
   return modulesRequiringSelection.value.has(modIndex) ? 'text-destructive' : 'text-tertiary-foreground'
-}
-
-// ── Load Data ──
-async function loadInitialData() {
-  try {
-    console.log('[GPA] Fetching catalog...')
-    const catalog = await fetchCatalog()
-    if (catalog) {
-      console.log('[GPA] Got catalog, version:', catalog.version)
-      applyRoot(catalog)
-      console.log('[GPA] Done, subjects:', activeSubjects.value.length)
-    } else {
-      console.error('[GPA] fetchCatalog returned null')
-      root.value = null
-      calculationResultText.value = 'Failed to load catalog'
-    }
-  } catch (err) {
-    console.error('[GPA] loadInitialData error:', err)
-    root.value = null
-    calculationResultText.value = 'Failed to load catalog'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-export function useBackend() {
-  return {
-    root,
-    currentPreset,
-    activeSubjects,
-    calculationResultText,
-    isInvalidated,
-    isLoading,
-    scoreDisplay,
-    trackActive,
-    choiceModules: computed(() => {
-      const p = currentPreset.value
-      if (!p) return []
-      return p.modules.map((m, i) => ({ modIndex: i, module: m })).filter(({ module }) => module.type === 'choice')
-    }),
-    loadInitialData,
-    selectPreset,
-    setLevelIndex,
-    setScoreIndex,
-    getLevelIndex,
-    getScoreIndex,
-    toggleSelection,
-    isSelected,
-    isDisabled,
-    publishedEffectiveLimit,
-    setTrackActive,
-    resetAllLevelsAndScores,
-    moduleStatusText,
-    moduleStatusColor,
-    scoreMapForSubject,
-  }
 }
