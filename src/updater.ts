@@ -29,7 +29,14 @@ export async function fetchRemoteCatalog(
   currentVersion?: string
 ): Promise<CourseModel | null> {
   try {
-    const res = await fetch(REMOTE_URL, { cache: 'no-store' })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15000)
+
+    const res = await fetch(REMOTE_URL, {
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+    clearTimeout(timeout)
 
     if (!res.ok) {
       console.error('Updater: fetch failed:', res.status, res.statusText)
@@ -47,8 +54,12 @@ export async function fetchRemoteCatalog(
       return parsed
     }
     return null
-  } catch (err) {
-    console.error('Updater: fetch error:', err)
+  } catch (err: any) {
+    if (err?.name === 'AbortError') {
+      console.error('Updater: fetch timed out')
+    } else {
+      console.error('Updater: fetch error:', err)
+    }
     return null
   }
 }

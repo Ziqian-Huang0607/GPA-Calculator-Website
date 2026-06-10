@@ -716,33 +716,43 @@ function applyRoot(newRoot: CourseModel) {
 
 // ── Load Data ──
 async function loadInitialData() {
-  // Try local first
-  const local = loadLocalCatalog()
-  if (local) {
-    applyRoot(local)
-    isLoading.value = false
-    // Check for remote updates
-    checkForUpdates(local.version)
-    return
-  }
+  try {
+    // Try local first
+    const local = loadLocalCatalog()
+    if (local) {
+      applyRoot(local)
+      isLoading.value = false
+      // Check for remote updates
+      checkForUpdates(local.version)
+      return
+    }
 
-  // Fetch remote
-  const remote = await fetchRemoteCatalog()
-  if (remote) {
-    applyRoot(remote)
-  } else {
+    // Fetch remote
+    const remote = await fetchRemoteCatalog()
+    if (remote) {
+      applyRoot(remote)
+    } else {
+      root.value = null
+      calculationResultText.value = 'No catalog available'
+    }
+  } catch (err) {
+    console.error('loadInitialData error:', err)
     root.value = null
-    calculationResultText.value = 'No catalog available'
+    calculationResultText.value = 'Failed to load catalog'
+  } finally {
+    isLoading.value = false
   }
-
-  isLoading.value = false
 }
 
 // ── Listen for updates ──
 window.addEventListener('courses-updated', ((e: CustomEvent) => {
-  const newRoot = e.detail as CourseModel
-  if (newRoot.version !== root.value?.version) {
-    applyRoot(newRoot)
+  try {
+    const newRoot = e.detail as CourseModel
+    if (newRoot.version !== root.value?.version) {
+      applyRoot(newRoot)
+    }
+  } catch (err) {
+    console.error('courses-updated handler error:', err)
   }
 }) as EventListener)
 
