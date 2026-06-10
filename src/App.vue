@@ -4,6 +4,7 @@ import { useBackend } from './logic/useBackend'
 import SubjectRow from './components/SubjectRow.vue'
 import CustomizeView from './components/CustomizeView.vue'
 import { kApp, kPage, kNavbar } from 'konsta/vue'
+import KonstaClassScanner from './components/KonstaClassScanner.vue'
 
 const backend = useBackend()
 const showCustomize = ref(false)
@@ -15,6 +16,7 @@ onMounted(() => {
 
 <template>
   <k-app theme="ios">
+    <KonstaClassScanner />
     <!-- Loading State -->
     <div
       v-if="backend.isLoading.value"

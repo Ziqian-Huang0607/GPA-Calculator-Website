@@ -1,5 +1,9 @@
-@import "konsta/vue/theme.css";
 @import "tailwindcss";
+@import "konsta/theme.css";
+
+@source "./konsta-src/shared";
+@source "./konsta-src/components";
+@source "./konsta-src/styles";
 
 /* App-specific styles */
 .activity-indicator {
