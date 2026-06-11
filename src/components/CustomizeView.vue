@@ -137,7 +137,10 @@ const presets = computed(() => backend.root.value?.presets ?? [])
               Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
             </div>
             <div>
-              Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
+              Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+            </div>
+            <div>
+              This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
             </div>
           </div>
           <div class="flex flex-col shrink-0 ml-3 gap-1">
@@ -250,7 +253,10 @@ const presets = computed(() => backend.root.value?.presets ?? [])
                   Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
                 </div>
                 <div>
-                  Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
+                  Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+                </div>
+                <div>
+                  This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
                 </div>
               </div>
               <div class="flex flex-col shrink-0 ml-3 gap-1">

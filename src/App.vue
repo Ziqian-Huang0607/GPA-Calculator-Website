@@ -157,20 +157,20 @@ function onDragEnd() {
               </button>
               <div
                 v-if="showInstallMenu"
-                class="absolute top-full left-0 right-0 mt-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden z-50"
+                class="absolute top-full left-0 mt-1 min-w-[160px] bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden z-50"
               >
-                <button
-                  class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
-                  @click="handleInstallClick('appstore')"
-                >
-                  App Store
-                </button>
                 <button
                   class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
                   :class="{ 'opacity-40 pointer-events-none': !deferredPrompt }"
                   @click="handleInstallClick('webpage')"
                 >
                   Webpage
+                </button>
+                <button
+                  class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
+                  @click="handleInstallClick('appstore')"
+                >
+                  App Store
                 </button>
               </div>
             </div>
