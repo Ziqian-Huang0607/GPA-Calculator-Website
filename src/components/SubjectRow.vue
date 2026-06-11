@@ -35,11 +35,11 @@ function setScore(idx: number) {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-ios-dark-surface-2 rounded-xl p-4 shadow-sm">
+  <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
     <div class="flex items-center gap-3 mb-3">
       <span
         class="text-[17px] font-normal leading-tight flex-shrink min-w-0"
-        :class="isRequired ? 'text-red-500' : 'text-ios-light-label dark:text-ios-dark-label'"
+        :class="isRequired ? 'text-red-500' : 'text-black dark:text-white'"
       >
         {{ subject.name }}
       </span>

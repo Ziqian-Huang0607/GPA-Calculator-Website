@@ -1,16 +1,10 @@
 @import "tailwindcss";
-@import "konsta/theme.css";
 
-@source "./konsta-src/shared";
-@source "./konsta-src/components";
-@source "./konsta-src/styles";
-
-/* App-specific styles */
 .activity-indicator {
   width: 20px;
   height: 20px;
-  border: 2.5px solid var(--k-color-border);
-  border-top-color: var(--k-color-primary);
+  border: 2.5px solid #d1d5db;
+  border-top-color: #007aff;
   border-radius: 50%;
   animation: activity-spin 0.75s linear infinite;
   margin: 0 auto;
@@ -36,7 +30,11 @@
 
 .list-separator {
   height: 0.5px;
-  background: var(--k-color-separator);
+  background: #e5e5ea;
   margin-left: 16px;
   margin-right: 16px;
+}
+
+.dark .list-separator {
+  background: #38383a;
 }

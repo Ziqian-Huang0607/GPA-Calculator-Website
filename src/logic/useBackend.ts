@@ -576,5 +576,5 @@ function moduleStatusText(modIndex: number): string {
 
 function moduleStatusColor(modIndex: number): string {
   if (publishedEffectiveLimit(modIndex) === 0) return 'text-gray-400'
-  return modulesRequiringSelection.value.has(modIndex) ? 'text-destructive' : 'text-tertiary-foreground'
+  return modulesRequiringSelection.value.has(modIndex) ? 'text-red-500' : 'text-gray-500'
 }

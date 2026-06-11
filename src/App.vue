@@ -3,8 +3,6 @@ import { onMounted, ref } from 'vue'
 import { useBackend } from './logic/useBackend'
 import SubjectRow from './components/SubjectRow.vue'
 import CustomizeView from './components/CustomizeView.vue'
-import { kApp, kPage, kNavbar } from 'konsta/vue'
-import KonstaClassScanner from './components/KonstaClassScanner.vue'
 
 const backend = useBackend()
 const showCustomize = ref(false)
@@ -15,77 +13,74 @@ onMounted(() => {
 </script>
 
 <template>
-  <k-app theme="ios">
-    <KonstaClassScanner />
-    <!-- Loading State -->
-    <div
-      v-if="backend.isLoading.value"
-      class="k-ios min-h-screen flex items-center justify-center bg-ios-light-surface dark:bg-ios-dark-surface"
-    >
-      <div class="text-center">
-        <div
-          class="activity-indicator mb-4"
-          role="progressbar"
-          aria-label="Loading"
-        />
-        <p class="text-[13px] text-ios-light-secondary-label dark:text-ios-dark-secondary-label font-medium">
-          Loading catalog...
+  <!-- Loading State -->
+  <div
+    v-if="backend.isLoading.value"
+    class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
+  >
+    <div class="text-center">
+      <div
+        class="activity-indicator mb-4"
+        role="progressbar"
+        aria-label="Loading"
+      />
+      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">
+        Loading catalog...
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div v-else class="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+      <div class="px-4 py-3 max-w-2xl mx-auto">
+        <h1 class="text-[17px] font-semibold text-center text-black dark:text-white">GPA Calculator</h1>
+      </div>
+    </header>
+
+    <div class="px-4 pb-8 max-w-2xl mx-auto">
+      <!-- GPA Result -->
+      <div class="text-center py-6">
+        <p
+          class="text-[16px] mt-1 font-medium"
+          :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
+        >
+          {{ backend.calculationResultText.value }}
         </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+          @click="showCustomize = true"
+        >
+          Customize
+        </button>
+        <button
+          class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+          @click="backend.resetAllLevelsAndScores()"
+        >
+          Reset
+        </button>
+      </div>
+
+      <!-- Subject Rows -->
+      <div class="space-y-4">
+        <SubjectRow
+          v-for="(subj, idx) in backend.activeSubjects.value"
+          :key="subj.id || subj.name"
+          :subject="subj"
+          :index="idx"
+        />
       </div>
     </div>
 
-    <!-- Main Content -->
-    <k-page v-else>
-      <k-navbar
-        title="GPA Calculator"
-        class="top-0 sticky"
-      />
-
-      <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <!-- GPA Result -->
-        <div class="text-center py-6">
-          <p
-            class="text-[16px] mt-1"
-            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-ios-light-secondary-label dark:text-ios-dark-secondary-label'"
-          >
-            {{ backend.calculationResultText.value }}
-          </p>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex gap-4 mb-6">
-          <k-button
-            class="flex-1"
-            outline
-            @click="showCustomize = true"
-          >
-            Customize
-          </k-button>
-          <k-button
-            class="flex-1"
-            outline
-            @click="backend.resetAllLevelsAndScores()"
-          >
-            Reset
-          </k-button>
-        </div>
-
-        <!-- Subject Rows -->
-        <div class="space-y-4">
-          <SubjectRow
-            v-for="(subj, idx) in backend.activeSubjects.value"
-            :key="subj.id || subj.name"
-            :subject="subj"
-            :index="idx"
-          />
-        </div>
-      </div>
-
-      <!-- Customize Modal -->
-      <CustomizeView
-        :show="showCustomize"
-        @close="showCustomize = false"
-      />
-    </k-page>
-  </k-app>
+    <!-- Customize Modal -->
+    <CustomizeView
+      :show="showCustomize"
+      @close="showCustomize = false"
+    />
+  </div>
 </template>
