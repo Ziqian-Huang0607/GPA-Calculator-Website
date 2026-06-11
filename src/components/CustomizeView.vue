@@ -122,30 +122,32 @@ const presets = computed(() => backend.root.value?.presets ?? [])
         </div>
 
         <!-- Custom Credits Area (Desktop) -->
-        <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
-          <div class="space-y-1">
-            <div class="font-medium text-gray-500 dark:text-gray-400">
-              {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+        <div class="pt-6 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
+          <div class="flex items-start justify-between text-left">
+            <div class="space-y-1">
+              <div class="font-medium text-gray-500 dark:text-gray-400">
+                {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+              </div>
+              <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
+                Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
+              </div>
+              <div class="pt-1">
+                Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+              </div>
+              <div>
+                Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
+              </div>
+              <div>
+                Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+              </div>
             </div>
-            <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
-              Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
-            </div>
-            <div class="pt-1">
-              Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
-            </div>
-            <div>
-              Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
-            </div>
-            <div>
-              Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
-            </div>
-            <div>
-              This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
+            <div class="flex flex-col shrink-0 ml-3 gap-1">
+              <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
+              <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
             </div>
           </div>
-          <div class="flex flex-col shrink-0 ml-3 gap-1">
-            <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
-            <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
+          <div class="text-center pt-2">
+            This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
           </div>
         </div>
       </div>
@@ -238,30 +240,32 @@ const presets = computed(() => backend.root.value?.presets ?? [])
             />
 
             <!-- Custom Credits Area (Mobile) -->
-            <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
-              <div class="space-y-1">
-                <div class="font-medium text-gray-500 dark:text-gray-400">
-                  {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+            <div class="pt-6 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
+              <div class="flex items-start justify-between text-left">
+                <div class="space-y-1">
+                  <div class="font-medium text-gray-500 dark:text-gray-400">
+                    {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+                  </div>
+                  <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
+                    Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
+                  </div>
+                  <div class="pt-1">
+                    Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+                  </div>
+                  <div>
+                    Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
+                  </div>
+                  <div>
+                    Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+                  </div>
                 </div>
-                <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
-                  Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
-                </div>
-                <div class="pt-1">
-                  Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
-                </div>
-                <div>
-                  Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
-                </div>
-                <div>
-                  Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
-                </div>
-                <div>
-                  This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
+                <div class="flex flex-col shrink-0 ml-3 gap-1">
+                  <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
+                  <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
                 </div>
               </div>
-              <div class="flex flex-col shrink-0 ml-3 gap-1">
-                <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
-                <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
+              <div class="text-center pt-2">
+                This is an unofficial tool unaffiliated with SHSID. All content is derived from the Course Catalog and is for internal reference purposes only. Course availability and policies are subject to change by the school administration.
               </div>
             </div>
           </div>
