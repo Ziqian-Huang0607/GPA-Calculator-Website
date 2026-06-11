@@ -1,113 +1,256 @@
 @import "tailwindcss";
 
-:root {
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.4);
-  --bg-dark: #020617;
-}
-
-body {
-  background-color: var(--bg-dark);
-  color: white;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  overflow-x: hidden;
-}
-
-/* --- THE NEURAL AURORA BACKGROUND --- */
-.neural-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--bg-dark);
-  overflow: hidden;
-}
-
-.neural-bg::before {
-  content: "";
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  top: -25%;
-  left: -25%;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
-  filter: blur(80px);
-  animation: aurora-move 20s infinite alternate ease-in-out;
-}
-
-.neural-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(ellipse at center, black, transparent 80%);
-}
-
-@keyframes aurora-move {
-  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  100% { transform: translate(5%, 5%) rotate(5deg) scale(1.1); }
-}
-
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.03;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* --- ENHANCED GLASSMORPHISM --- */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(30px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
-}
-
-.gpa-card {
+/* --- IDIOMATIC APPLE LOADING SPINNER --- */
+.apple-spinner {
   position: relative;
-  overflow: hidden;
-  border-radius: 2.5rem;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
 }
-
-.gpa-card::before {
-  content: "";
+.apple-spinner div {
   position: absolute;
-  top: -50%; left: -50%; width: 200%; height: 200%;
-  background: conic-gradient(transparent, #3b82f6, transparent, transparent);
-  animation: spinGlow 6s infinite linear;
-  opacity: 0.2;
-  z-index: 0;
+  left: 11px;
+  top: 0;
+  width: 2px;
+  height: 6px;
+  background: #8e8e93;
+  border-radius: 1px;
+  transform-origin: 1px 12px;
+  animation: apple-spinner-fade 1s linear infinite;
+}
+.apple-spinner div:nth-child(1) { transform: rotate(0deg); animation-delay: -1s; }
+.apple-spinner div:nth-child(2) { transform: rotate(30deg); animation-delay: -0.916s; }
+.apple-spinner div:nth-child(3) { transform: rotate(60deg); animation-delay: -0.833s; }
+.apple-spinner div:nth-child(4) { transform: rotate(90deg); animation-delay: -0.75s; }
+.apple-spinner div:nth-child(5) { transform: rotate(120deg); animation-delay: -0.666s; }
+.apple-spinner div:nth-child(6) { transform: rotate(150deg); animation-delay: -0.583s; }
+.apple-spinner div:nth-child(7) { transform: rotate(180deg); animation-delay: -0.5s; }
+.apple-spinner div:nth-child(8) { transform: rotate(210deg); animation-delay: -0.416s; }
+.apple-spinner div:nth-child(9) { transform: rotate(240deg); animation-delay: -0.333s; }
+.apple-spinner div:nth-child(10) { transform: rotate(270deg); animation-delay: -0.25s; }
+.apple-spinner div:nth-child(11) { transform: rotate(300deg); animation-delay: -0.166s; }
+.apple-spinner div:nth-child(12) { transform: rotate(330deg); animation-delay: -0.083s; }
+
+@keyframes apple-spinner-fade {
+  from { opacity: 1; }
+  to { opacity: 0.25; }
 }
 
-@keyframes spinGlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* --- LAYOUT STRUCTURES --- */
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.gpa-number-glow {
-  text-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.2);
+.chevron-rotate {
+  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transform: rotate(0deg);
+}
+.chevron-rotate.open { transform: rotate(90deg); }
+
+.list-separator {
+  height: 0.5px;
+  background: #e5e5ea;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
-.grade-btn {
-  background: rgba(255, 255, 255, 0.03);
+.dark .list-separator {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.resize-divider {
+  width: 5px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+  transition: background 0.15s ease;
+}
+
+.resize-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2px;
+  width: 1px;
+  background: #e5e5ea;
+}
+
+.dark .resize-divider::after {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.resize-divider:hover,
+.resize-divider:active {
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.resize-divider:hover::after,
+.resize-divider:active::after {
+  background: #007aff;
+}
+
+/* --- ENHANCED UNIVERSAL DARK MODE SCHEME --- */
+.dark .app-layout {
+  background-color: #020617;
+  background-image: 
+    radial-gradient(circle at 12% 15%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 88% 85%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.02) 0%, transparent 60%);
+}
+
+/* Matte noise pattern texturing */
+.dark .app-layout::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Glassmorphic Panel Overrides */
+.dark .main-content .bg-white.rounded-xl {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Pinned mobile bottom sheet */
+.dark .bg-white.dark\:bg-gray-900.rounded-t-2xl {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(35px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(35px) saturate(180%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Frosted Sticky Header */
+.dark .bg-white\/90.dark\:bg-gray-900\/90 {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Desktop Sidebar */
+.dark .sidebar {
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(30px) !important;
+  -webkit-backdrop-filter: blur(30px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .sidebar-inner {
+  background: transparent !important;
+}
+
+/* Score format background tracks */
+.dark .bg-gray-100 {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Segmented Control indicators and styling */
+.dark .segmented-track {
+  background: rgba(15, 23, 42, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #64748b;
-  border-radius: 1rem;
-  font-weight: 800;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.grade-btn.active {
-  background: #3b82f6;
-  color: white;
-  border-color: #60a5fa;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-  transform: translateY(-2px);
+.dark .segmented-indicator {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.dark .segmented-item--active {
+  color: #60a5fa !important;
+}
+
+/* Choice module selectors */
+.dark .module-selector {
+  background: rgba(15, 23, 42, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .module-selector.border-blue-500\/50 {
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.15) !important;
+}
+
+.dark .module-selector button:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Non-active Preset buttons */
+.dark .bg-gray-100.border-transparent {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark .bg-gray-100.border-transparent:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Active Preset buttons */
+.dark .bg-blue-500.border-blue-500 {
+  background: #3b82f6 !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Custom select dropdown selectors */
+.dark .custom-select-menu {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+}
+
+.dark .custom-select-option.selected {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+/* Action buttons (Customize/Reset) */
+.dark .bg-white.dark\:bg-gray-800 {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .bg-white.dark\:bg-gray-800:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Dynamic GPA number glow text shadows */
+.dark .main-content .text-center p {
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  color: #f8fafc !important;
+}
+
+/* Apple loading spinners ticks */
+.dark .apple-spinner div {
+  background: #a1a1aa;
 }
