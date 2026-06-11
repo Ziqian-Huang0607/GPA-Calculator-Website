@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onBeforeUnmount } from 'vue'
 import { useBackend } from './logic/useBackend'
 import SubjectRow from './components/SubjectRow.vue'
 import CustomizeView from './components/CustomizeView.vue'
@@ -7,9 +7,49 @@ import CustomizeView from './components/CustomizeView.vue'
 const backend = useBackend()
 const showCustomize = ref(false)
 
+const isWide = ref(false)
+let mql: MediaQueryList | null = null
+function checkWide() { isWide.value = mql?.matches ?? false }
+
 onMounted(() => {
   backend.loadInitialData()
+  mql = window.matchMedia('(min-width: 768px)')
+  checkWide()
+  mql.addEventListener('change', checkWide)
 })
+onBeforeUnmount(() => { mql?.removeEventListener('change', checkWide) })
+
+// Resizable sidebar
+const sidebarWidth = ref(380)
+const MIN_SIDEBAR = 280
+const MAX_SIDEBAR = 600
+let dragging = false
+let startX = 0
+let startWidth = 0
+
+function onDragStart(e: MouseEvent) {
+  dragging = true
+  startX = e.clientX
+  startWidth = sidebarWidth.value
+  document.addEventListener('mousemove', onDragMove)
+  document.addEventListener('mouseup', onDragEnd)
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+}
+
+function onDragMove(e: MouseEvent) {
+  if (!dragging) return
+  const delta = startX - e.clientX
+  sidebarWidth.value = Math.min(MAX_SIDEBAR, Math.max(MIN_SIDEBAR, startWidth + delta))
+}
+
+function onDragEnd() {
+  dragging = false
+  document.removeEventListener('mousemove', onDragMove)
+  document.removeEventListener('mouseup', onDragEnd)
+  document.body.style.cursor = ''
+  document.body.style.userSelect = ''
+}
 </script>
 
 <template>
@@ -19,14 +59,8 @@ onMounted(() => {
     class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
   >
     <div class="text-center">
-      <div
-        class="activity-indicator mb-4"
-        role="progressbar"
-        aria-label="Loading"
-      />
-      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">
-        Loading catalog...
-      </p>
+      <div class="activity-indicator mb-4" role="progressbar" aria-label="Loading" />
+      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Loading catalog...</p>
     </div>
   </div>
 
@@ -41,27 +75,32 @@ onMounted(() => {
       </header>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <div class="text-center py-6">
+        <!-- GPA Result + Reset pill -->
+        <div class="flex items-center justify-center gap-2 py-6">
           <p
-            class="text-[16px] mt-1 font-medium"
+            class="text-[16px] mt-0.5 font-medium"
             :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
           >
             {{ backend.calculationResultText.value }}
           </p>
-        </div>
-
-        <div class="flex gap-4 mb-6">
           <button
-            class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
-            @click="showCustomize = !showCustomize"
-          >
-            {{ showCustomize ? 'Hide Customize' : 'Customize' }}
-          </button>
-          <button
-            class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+            class="text-[12px] font-medium px-2.5 py-1 rounded-full transition-colors border-none cursor-pointer shrink-0"
+            :class="backend.isInvalidated.value
+              ? 'bg-red-100 dark:bg-red-900/30 text-red-500'
+              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'"
             @click="backend.resetAllLevelsAndScores()"
           >
             Reset
+          </button>
+        </div>
+
+        <!-- Mobile: Customize button -->
+        <div v-if="!isWide" class="mb-6">
+          <button
+            class="w-full px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+            @click="showCustomize = !showCustomize"
+          >
+            {{ showCustomize ? 'Hide Customize' : 'Customize' }}
           </button>
         </div>
 
@@ -76,9 +115,17 @@ onMounted(() => {
       </div>
     </div>
 
+    <!-- Resizable divider (desktop only) -->
+    <div
+      v-if="isWide"
+      class="resize-divider"
+      @mousedown.prevent="onDragStart"
+    />
+
     <!-- Sidebar (desktop) / Sheet (mobile) -->
     <CustomizeView
       :show="showCustomize"
+      :sidebar-width="isWide ? sidebarWidth : undefined"
       @close="showCustomize = false"
     />
   </div>

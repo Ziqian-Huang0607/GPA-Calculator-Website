@@ -53,3 +53,37 @@
   flex: 1;
   min-width: 0;
 }
+
+.resize-divider {
+  width: 5px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+  transition: background 0.15s ease;
+}
+
+.resize-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2px;
+  width: 1px;
+  background: #e5e5ea;
+}
+
+.dark .resize-divider::after {
+  background: #38383a;
+}
+
+.resize-divider:hover,
+.resize-divider:active {
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.resize-divider:hover::after,
+.resize-divider:active::after {
+  background: #007aff;
+}

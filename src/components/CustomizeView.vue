@@ -4,8 +4,9 @@ import { useBackend } from '../logic/useBackend'
 import SegmentedControl from './SegmentedControl.vue'
 import ModuleSelector from './ModuleSelector.vue'
 
-defineProps<{
+const props = defineProps<{
   show: boolean
+  sidebarWidth?: number
 }>()
 
 const emit = defineEmits<{
@@ -16,25 +17,18 @@ const backend = useBackend()
 
 const isWide = ref(false)
 let mql: MediaQueryList | null = null
-
-function checkWide() {
-  isWide.value = mql?.matches ?? false
-}
+function checkWide() { isWide.value = mql?.matches ?? false }
 
 onMounted(() => {
   mql = window.matchMedia('(min-width: 768px)')
   checkWide()
   mql.addEventListener('change', checkWide)
 })
-
-onBeforeUnmount(() => {
-  mql?.removeEventListener('change', checkWide)
-})
+onBeforeUnmount(() => { mql?.removeEventListener('change', checkWide) })
 
 const scoreFormatIndex = computed(() =>
   backend.scoreDisplay.value === 'percentage' ? 0 : 1
 )
-
 function setScoreFormat(idx: number) {
   backend.scoreDisplay.value = idx === 0 ? 'percentage' : 'letter'
 }
@@ -48,21 +42,15 @@ const catalogInfo = computed(() => {
 </script>
 
 <template>
-  <!-- Desktop: Sidebar (part of flex layout) -->
+  <!-- Desktop: Always-visible sidebar -->
   <aside
     v-if="isWide"
     class="sidebar"
-    :class="show ? 'sidebar--open' : ''"
+    :style="{ width: (sidebarWidth ?? 380) + 'px' }"
   >
     <div class="sidebar-inner">
       <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
         <h2 class="text-[17px] font-semibold text-black dark:text-white">Customize</h2>
-        <button
-          class="text-[15px] font-medium text-blue-500 dark:text-blue-400 bg-transparent border-none cursor-pointer px-2 py-1"
-          @click="emit('close')"
-        >
-          Close
-        </button>
       </div>
       <div class="overflow-y-auto flex-1 px-4 py-4 space-y-4">
         <!-- Score Format -->
@@ -128,16 +116,10 @@ const catalogInfo = computed(() => {
                 class="flex-shrink-0"
                 :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'"
               >
-                <svg
-                  v-if="backend.currentPreset.value?.id === p.id"
-                  width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
-                >
+                <svg v-if="backend.currentPreset.value?.id === p.id" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                 </svg>
-                <svg
-                  v-else
-                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                >
+                <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10" />
                 </svg>
               </div>
@@ -162,14 +144,8 @@ const catalogInfo = computed(() => {
   <!-- Mobile: Bottom Sheet -->
   <Teleport v-if="!isWide" to="body">
     <Transition name="sheet">
-      <div
-        v-if="show"
-        class="fixed inset-0 z-50 flex items-end justify-center"
-      >
-        <div
-          class="absolute inset-0 bg-black/40"
-          @click="emit('close')"
-        />
+      <div v-if="show" class="fixed inset-0 z-50 flex items-end justify-center">
+        <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
         <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-t-2xl max-h-[85vh] overflow-y-auto pb-8 z-10">
           <div class="flex justify-center pt-3 pb-2">
             <div class="w-9 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
@@ -183,11 +159,8 @@ const catalogInfo = computed(() => {
             </button>
           </div>
           <div class="px-4 space-y-4">
-            <!-- Score Format -->
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
-              <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">
-                Score Format
-              </span>
+              <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">Score Format</span>
               <button
                 v-if="backend.currentPreset.value?.track"
                 class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
@@ -207,10 +180,7 @@ const catalogInfo = computed(() => {
               </div>
             </div>
 
-            <div
-              v-if="backend.requirementWarning.value"
-              class="text-red-500 text-[15px] px-2"
-            >
+            <div v-if="backend.requirementWarning.value" class="text-red-500 text-[15px] px-2">
               {{ backend.requirementWarning.value }}
             </div>
 
@@ -226,36 +196,18 @@ const catalogInfo = computed(() => {
               >
                 <div class="flex items-center gap-3 w-full">
                   <div class="flex-1 min-w-0">
-                    <div
-                      class="text-[18px] font-semibold"
-                      :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-blue-500'"
-                    >
+                    <div class="text-[18px] font-semibold" :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-blue-500'">
                       {{ p.name }}
                     </div>
-                    <div
-                      class="text-[13px]"
-                      :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'"
-                    >
-                      {{
-                        p.subtitle ||
-                        p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items'
-                      }}
+                    <div class="text-[13px]" :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'">
+                      {{ p.subtitle || p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items' }}
                     </div>
                   </div>
-                  <div
-                    class="flex-shrink-0"
-                    :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'"
-                  >
-                    <svg
-                      v-if="backend.currentPreset.value?.id === p.id"
-                      width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
-                    >
+                  <div class="flex-shrink-0" :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'">
+                    <svg v-if="backend.currentPreset.value?.id === p.id" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
-                    <svg
-                      v-else
-                      width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    >
+                    <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="12" cy="12" r="10" />
                     </svg>
                   </div>
@@ -282,12 +234,10 @@ const catalogInfo = computed(() => {
 
 <style scoped>
 .sidebar {
-  width: 0;
   height: 100vh;
   overflow: hidden;
   background: white;
   border-left: 1px solid #e5e5ea;
-  transition: width 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -298,16 +248,11 @@ const catalogInfo = computed(() => {
   border-left-color: #38383a;
 }
 
-.sidebar--open {
-  width: 380px;
-}
-
 .sidebar-inner {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  width: 380px;
 }
 
 /* Mobile sheet transition */
