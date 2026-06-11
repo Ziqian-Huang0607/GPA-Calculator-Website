@@ -204,6 +204,7 @@ function updateDropdown() {
   border: none;
   background: transparent;
   cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: 500;
   line-height: 1;
@@ -236,6 +237,7 @@ function updateDropdown() {
   border: 1px solid #d1d5db;
   background: #f2f2f7;
   color: #1c1c1e;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: 500;
   appearance: none;

@@ -69,7 +69,7 @@ function onDragEnd() {
     <!-- Main Content -->
     <div class="main-content">
       <div class="px-4 pt-8 pb-2 max-w-2xl mx-auto">
-        <h1 class="text-[32px] font-semibold text-black dark:text-white">GPA Calculator</h1>
+        <h1 class="text-[32px] font-semibold text-center text-black dark:text-white">GPA Calculator</h1>
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
