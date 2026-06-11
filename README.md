@@ -20,6 +20,6 @@ Web version of the updated [iOS GPA Calculator](https://github.com/WillUHD/GPA-C
     The local page [http://localhost:5173](http://localhost:5173) will automatically open in your browser.
 
 ### Support
-- **Maintenance**: Indexademics team (Ziqian Huang, Will Chen)
-- **Contact**: Will Chen (`willcxd` on WeChat) 
+- **Maintenance**: Indexademics team (Ziqian Huang)
+- **Contact**: IDX TECH-Gordon Huang(General Purposes, mlfusion@outlook.com) or Will Chen (`willcxd` on WeChat for software specific purposes) 
 - **⚠️ Disclaimer**: This is an unofficial tool that is not affiliated with SHSID. All course information is based on the SHSID Course Catalog and is for reference purposes only. Course availability and policies are subject to change by the school administration.
