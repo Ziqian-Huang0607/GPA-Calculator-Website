@@ -1,6 +1,6 @@
 # GPA Calculator website
 
-Web based GPA calculator of IDX, based on original project [iOS GPA Calculator](https://github.com/WillUHD/GPA-Calculator-3), developed by the Indexademics team (Ziqian Huang) and refined by Data Science (Will Chen). 
+Web based GPA calculator of IDX, based on original project [iOS GPA Calculator](https://github.com/WillUHD/GPA-Calculator-3), developed by the Indexademics team (Ziqian Huang) and reworked by Data Science (Will Chen). 
 
 ### Key features
 - The same algorithm with the original App Store version
