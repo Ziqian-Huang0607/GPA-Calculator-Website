@@ -16,6 +16,7 @@ const useDropdown = ref(false)
 const measureRef = ref<HTMLElement | null>(null)
 
 const COMPONENT_HEIGHT = 32
+const TRACK_PADDING = 2
 const ITEM_H_PADDING = 12
 const INTER_ITEM_SPACING = 4
 
@@ -35,38 +36,54 @@ const evenWidth = computed(() => (maxTextWidth.value + 24) * props.items.length 
 const evenlySpaced = computed(() => containerWidth.value >= evenWidth.value)
 const canFit = computed(() => containerWidth.value >= minRequiredWidth.value && props.items.length > 1)
 
-// Calculate indicator position based on measured text widths
+// Shared calculation for content-proportional mode
+const proportionalLayout = computed(() => {
+  const availableWidth = containerWidth.value - (TRACK_PADDING * 2)
+  const totalContentWidth = totalTextWidth.value + totalPadding.value + totalSpacing.value
+  const scale = availableWidth / totalContentWidth
+
+  const widths: number[] = []
+  const positions: number[] = []
+  let left = TRACK_PADDING
+
+  for (let i = 0; i < props.items.length; i++) {
+    positions.push(left)
+    const btnWidth = (textWidths.value[i] + ITEM_H_PADDING) * scale
+    widths.push(btnWidth)
+    left += btnWidth + INTER_ITEM_SPACING * scale
+  }
+
+  return { widths, positions, scale }
+})
+
+// Each button's width + text-align for content-proportional mode
+const buttonStyles = computed(() => {
+  if (!canFit.value || evenlySpaced.value) {
+    return props.items.map(() => ({}))
+  }
+
+  const { widths } = proportionalLayout.value
+  return widths.map((w) => ({
+    width: `${w}px`,
+    flex: 'none',
+  }))
+})
+
 const indicatorStyle = computed(() => {
   if (!canFit.value || props.items.length === 0) {
     return { width: '0px', opacity: '0' }
   }
 
-  const trackPadding = 2 // track padding: 2px
-  const availableWidth = containerWidth.value - (trackPadding * 2)
-
   if (evenlySpaced.value) {
-    // Even mode: all segments equal width
+    const availableWidth = containerWidth.value - (TRACK_PADDING * 2)
     const segWidth = availableWidth / props.items.length
-    const left = trackPadding + props.modelValue * segWidth
+    const left = TRACK_PADDING + props.modelValue * segWidth
     return { width: `${segWidth}px`, transform: `translateX(${left}px)`, opacity: '1' }
   } else {
-    // Content-proportional mode: calculate based on text widths
-    const totalTextW = textWidths.value.reduce((a, b) => a + b, 0)
-    const totalHpad = props.items.length * ITEM_H_PADDING
-    const totalIpad = Math.max(0, props.items.length - 1) * INTER_ITEM_SPACING
-    const totalContentWidth = totalTextW + totalHpad + totalIpad
-
-    // Scale to fit available width
-    const scale = availableWidth / totalContentWidth
-
-    let left = trackPadding
-    for (let i = 0; i < props.modelValue; i++) {
-      const btnWidth = (textWidths.value[i] + ITEM_H_PADDING) * scale
-      left += btnWidth + INTER_ITEM_SPACING * scale
-    }
-
-    const activeBtnWidth = (textWidths.value[props.modelValue] + ITEM_H_PADDING) * scale
-    return { width: `${activeBtnWidth}px`, transform: `translateX(${left}px)`, opacity: '1' }
+    const { widths, positions } = proportionalLayout.value
+    const left = positions[props.modelValue] ?? TRACK_PADDING
+    const width = widths[props.modelValue] ?? 0
+    return { width: `${width}px`, transform: `translateX(${left}px)`, opacity: '1' }
   }
 })
 
@@ -110,33 +127,23 @@ function updateDropdown() {
     class="segmented-root"
     :style="{ height: COMPONENT_HEIGHT + 'px' }"
   >
-    <!-- Dropdown fallback -->
     <select
       v-if="useDropdown"
       class="segmented-select"
       :value="modelValue"
       @change="emit('update:modelValue', Number(($event.target as HTMLSelectElement).value))"
     >
-      <option
-        v-for="(item, idx) in items"
-        :key="idx"
-        :value="idx"
-      >
-        {{ item }}
-      </option>
+      <option v-for="(item, idx) in items" :key="idx" :value="idx">{{ item }}</option>
     </select>
 
-    <!-- Segmented control -->
     <div v-else class="segmented-track">
-      <div
-        class="segmented-indicator"
-        :style="indicatorStyle"
-      />
+      <div class="segmented-indicator" :style="indicatorStyle" />
       <button
         v-for="(item, idx) in items"
         :key="idx"
         class="segmented-item"
-        :class="{ 'segmented-item--active': modelValue === idx, 'segmented-item--even': evenlySpaced }"
+        :class="{ 'segmented-item--active': modelValue === idx }"
+        :style="buttonStyles[idx]"
         @click="emit('update:modelValue', idx)"
       >
         {{ item }}
@@ -206,10 +213,6 @@ function updateDropdown() {
   text-overflow: ellipsis;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-}
-
-.segmented-item--even {
-  padding: 0;
 }
 
 :root.dark .segmented-item {
