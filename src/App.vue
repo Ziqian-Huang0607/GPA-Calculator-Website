@@ -107,7 +107,7 @@ function onDragEnd() {
               {{ showCustomize ? 'Hide Customize' : 'Customize' }}
             </button>
             <button
-              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 active:bg-gray-400 dark:active:bg-gray-500 cursor-pointer transition-colors"
+              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
               @click="backend.resetAllLevelsAndScores()"
             >
               Reset
