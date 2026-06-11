@@ -26,7 +26,7 @@ function toggleSubject(sIdx: number) {
   backend.toggleSelection(props.modIndex, sIdx)
 }
 
-// Watch locked state to animate-collapse the panel instantly when disabled
+// Watch locked state to collapse panel instantly when disabled
 watch(isLocked, (lockedVal) => {
   if (lockedVal) {
     expanded.value = false
@@ -122,6 +122,7 @@ watch(isLocked, (lockedVal) => {
   display: grid;
   grid-template-rows: 1fr;
   transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden; /* Added to prevent line bleed when collapsed */
 }
 
 .collapse-wrapper.collapsed {

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed } from 'vue'
 import { useBackend } from '../useBackend'
 import SegmentedControl from './SegmentedControl.vue'
 import ModuleSelector from './ModuleSelector.vue'
 
-const props = defineProps<{
+defineProps<{
   show: boolean
   sidebarWidth?: number
+  isWide: boolean
 }>()
 
 const emit = defineEmits<{
@@ -14,17 +15,6 @@ const emit = defineEmits<{
 }>()
 
 const backend = useBackend()
-
-const isWide = ref(false)
-let mql: MediaQueryList | null = null
-function checkWide() { isWide.value = mql?.matches ?? false }
-
-onMounted(() => {
-  mql = window.matchMedia('(min-width: 768px)')
-  checkWide()
-  mql.addEventListener('change', checkWide)
-})
-onBeforeUnmount(() => { mql?.removeEventListener('change', checkWide) })
 
 const scoreFormatIndex = computed(() =>
   backend.scoreDisplay.value === 'percentage' ? 0 : 1
@@ -132,18 +122,19 @@ const presets = computed(() => backend.root.value?.presets ?? [])
         </div>
 
         <!-- Custom Credits Area (Desktop) -->
-        <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal">
+        <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
           <div class="space-y-1">
-            <div>
-              Indexademics team (
-              <a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, 
-              <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>
-              )
+            <div class="font-medium text-gray-500 dark:text-gray-400">
+              {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+            </div>
+            <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
+              Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
+            </div>
+            <div class="pt-1">
+              Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
             </div>
             <div>
-              Original project by 
-              <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. 
-              For reference only.
+              Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
             </div>
             <div>
               <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
@@ -151,7 +142,7 @@ const presets = computed(() => backend.root.value?.presets ?? [])
               </a>
             </div>
           </div>
-          <img src="../assets/idx-icon.png" alt="IDX" class="w-8 h-8 rounded-lg shrink-0 ml-3 object-cover shadow-sm" />
+          <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg shrink-0 ml-3 object-cover" />
         </div>
       </div>
     </div>
@@ -243,18 +234,19 @@ const presets = computed(() => backend.root.value?.presets ?? [])
             />
 
             <!-- Custom Credits Area (Mobile) -->
-            <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal">
+            <div class="flex items-start justify-between pt-6 border-t border-gray-100 dark:border-gray-800 text-left text-[11px] text-gray-400 dark:text-gray-500 font-normal leading-normal select-none">
               <div class="space-y-1">
-                <div>
-                  Indexademics team (
-                  <a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, 
-                  <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>
-                  )
+                <div class="font-medium text-gray-500 dark:text-gray-400">
+                  {{ backend.root.value?.catalogName ?? 'Unspecified catalog' }}
+                </div>
+                <div class="text-[10px] text-gray-400 dark:text-gray-500 pb-1">
+                  Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
+                </div>
+                <div class="pt-1">
+                  Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
                 </div>
                 <div>
-                  Original project by 
-                  <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. 
-                  For reference only.
+                  Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
                 </div>
                 <div>
                   <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
@@ -262,7 +254,7 @@ const presets = computed(() => backend.root.value?.presets ?? [])
                   </a>
                 </div>
               </div>
-              <img src="../assets/idx-icon.png" alt="IDX" class="w-8 h-8 rounded-lg shrink-0 ml-3 object-cover shadow-sm" />
+              <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg shrink-0 ml-3 object-cover" />
             </div>
           </div>
         </div>
@@ -292,7 +284,7 @@ const presets = computed(() => backend.root.value?.presets ?? [])
   overflow: hidden;
 }
 
-/* Mobile SwiftUI panel dynamic slide transitions */
+/* Mobile SwiftUI panel transitions */
 .sheet-enter-active,
 .sheet-leave-active {
   transition: opacity 0.25s ease;

@@ -71,7 +71,6 @@ async function updateIndicator() {
   }
 }
 
-// Coordinate Drag-and-Slide Calculation system matching iOS/SwiftUI drag selection
 function getIndexFromCoords(clientX: number): number {
   if (!containerRef.value) return props.modelValue
   const track = containerRef.value.querySelector('.segmented-track')
@@ -87,7 +86,6 @@ function getIndexFromCoords(clientX: number): number {
     return Math.max(0, Math.min(props.items.length - 1, idx))
   } else {
     const { widths } = proportionalLayout.value
-    // Proportional layout boundaries check
     let accumulated = 0
     for (let i = 0; i < props.items.length; i++) {
       const nextBound = accumulated + widths[i]
@@ -118,7 +116,7 @@ function onDragStart(e: MouseEvent | TouchEvent) {
 
 function onDragMove(e: MouseEvent | TouchEvent) {
   if (!dragging.value) return
-  if (e.cancelable) e.preventDefault() // Prevents page bounce during scroll-dragging
+  if (e.cancelable) e.preventDefault()
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   const targetIdx = getIndexFromCoords(clientX)
   if (targetIdx !== props.modelValue) {
@@ -272,7 +270,7 @@ function updateDropdown() {
     <!-- Segmented Control Mode with Drag/Slide Touch Interactions -->
     <div
       v-else
-      class="segmented-track select-none cursor-grab active:cursor-grabbing"
+      class="segmented-track select-none cursor-default"
       @mousedown="onDragStart"
       @touchstart="onDragStart"
     >

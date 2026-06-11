@@ -108,7 +108,7 @@ function onDragEnd() {
               class="flex-1 px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
               @click="showCustomize = !showCustomize"
             >
-              {{ showCustomize ? 'Hide Customize' : 'Customize' }}
+              Customize
             </button>
             <button
               class="flex-1 px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
@@ -140,6 +140,7 @@ function onDragEnd() {
     <!-- Sidebar (desktop) / Sheet (mobile) -->
     <CustomizeView
       :show="showCustomize"
+      :is-wide="isWide"
       :sidebar-width="isWide ? sidebarWidth : undefined"
       @close="showCustomize = false"
     />
