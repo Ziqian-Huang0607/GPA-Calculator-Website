@@ -23,9 +23,7 @@ function handleBeforeInstallPrompt(e: Event) {
 
 function handleInstallClick(option: 'appstore' | 'webpage') {
   showInstallMenu.value = false
-  if (option === 'appstore') {
-    window.open('https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715', '_blank')
-  } else if (option === 'webpage' && deferredPrompt.value) {
+  if (option === 'webpage' && deferredPrompt.value) {
     deferredPrompt.value.prompt()
     deferredPrompt.value.userChoice.then(() => { deferredPrompt.value = null })
   }
@@ -105,7 +103,7 @@ function onDragEnd() {
     <!-- Main Content -->
     <div class="main-content">
       <div class="px-4 pt-6 pb-0 max-w-2xl mx-auto">
-        <h1 class="text-[32px] font-semibold text-center text-black dark:text-white">GPA Calculator</h1>
+        <h1 class="text-[32px] font-semibold text-center text-black dark:text-white">Indexademics GPA Calculator</h1>
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
