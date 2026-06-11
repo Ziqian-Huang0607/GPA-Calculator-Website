@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Apple Idiomatic System Spinner Ticks */
+/* --- IDIOMATIC APPLE LOADING SPINNER --- */
 .apple-spinner {
   position: relative;
   width: 24px;
@@ -36,6 +36,7 @@
   to { opacity: 0.25; }
 }
 
+/* --- LAYOUT STRUCTURES --- */
 .preset-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -56,7 +57,7 @@
 }
 
 .dark .list-separator {
-  background: #38383a;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .app-layout {
@@ -65,13 +66,11 @@
   background: #f9fafb;
 }
 
-.dark .app-layout {
-  background: #111827;
-}
-
 .main-content {
   flex: 1;
   min-width: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .resize-divider {
@@ -95,7 +94,7 @@
 }
 
 .dark .resize-divider::after {
-  background: #38383a;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .resize-divider:hover,
@@ -106,4 +105,152 @@
 .resize-divider:hover::after,
 .resize-divider:active::after {
   background: #007aff;
+}
+
+/* --- ENHANCED UNIVERSAL DARK MODE SCHEME --- */
+.dark .app-layout {
+  background-color: #020617;
+  background-image: 
+    radial-gradient(circle at 12% 15%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 88% 85%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.02) 0%, transparent 60%);
+}
+
+/* Matte noise pattern texturing */
+.dark .app-layout::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Glassmorphic Panel Overrides */
+.dark .main-content .bg-white.rounded-xl {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Pinned mobile bottom sheet */
+.dark .bg-white.dark\:bg-gray-900.rounded-t-2xl {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(35px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(35px) saturate(180%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Frosted Sticky Header */
+.dark .bg-white\/90.dark\:bg-gray-900\/90 {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Desktop Sidebar */
+.dark .sidebar {
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(30px) !important;
+  -webkit-backdrop-filter: blur(30px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .sidebar-inner {
+  background: transparent !important;
+}
+
+/* Score format background tracks */
+.dark .bg-gray-100 {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Segmented Control indicators and styling */
+.dark .segmented-track {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark .segmented-indicator {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.dark .segmented-item--active {
+  color: #60a5fa !important;
+}
+
+/* Choice module selectors */
+.dark .module-selector {
+  background: rgba(15, 23, 42, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .module-selector.border-blue-500\/50 {
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.15) !important;
+}
+
+.dark .module-selector button:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Non-active Preset buttons */
+.dark .bg-gray-100.border-transparent {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark .bg-gray-100.border-transparent:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Active Preset buttons */
+.dark .bg-blue-500.border-blue-500 {
+  background: #3b82f6 !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Custom select dropdown selectors */
+.dark .custom-select-menu {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+}
+
+.dark .custom-select-option.selected {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+/* Action buttons (Customize/Reset) */
+.dark .bg-white.dark\:bg-gray-800 {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .bg-white.dark\:bg-gray-800:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Dynamic GPA number glow text shadows */
+.dark .main-content .text-center p {
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  color: #f8fafc !important;
+}
+
+/* Apple loading spinners ticks */
+.dark .apple-spinner div {
+  background: #a1a1aa;
 }
