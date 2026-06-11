@@ -7,8 +7,8 @@ import type {
   ScoreEntry,
   Level,
   Template,
-} from '../types'
-import { fetchCatalog } from '../updater'
+} from './types'
+import { fetchCatalog } from './updater'
 
 function subjectKey(subj: Subject): string {
   return subj.id || subj.name

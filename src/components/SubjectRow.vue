@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Subject } from '../types'
-import { useBackend } from '../logic/useBackend'
+import { useBackend } from '../useBackend'
 import SegmentedControl from './SegmentedControl.vue'
 
 const props = defineProps<{

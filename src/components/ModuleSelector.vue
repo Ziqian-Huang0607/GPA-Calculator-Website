@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Module } from '../types'
-import { useBackend } from '../logic/useBackend'
+import { useBackend } from '../useBackend'
 import { ChevronRight } from 'lucide-vue-next'
 
 const props = defineProps<{

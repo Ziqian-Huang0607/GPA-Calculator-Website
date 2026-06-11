@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, onBeforeUnmount } from 'vue'
-import { useBackend } from './logic/useBackend'
+import { useBackend } from './useBackend'
 import SubjectRow from './components/SubjectRow.vue'
 import CustomizeView from './components/CustomizeView.vue'
 
@@ -60,7 +60,7 @@ function onDragEnd() {
   >
     <div class="text-center">
       <div class="activity-indicator mb-4" role="progressbar" aria-label="Loading" />
-      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Loading catalog...</p>
+      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Downloading catalog...</p>
     </div>
   </div>
 
