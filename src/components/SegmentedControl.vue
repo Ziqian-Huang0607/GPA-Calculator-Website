@@ -24,6 +24,9 @@ const ITEM_H_PADDING = 24 // 12px left + 12px right padding
 const textWidths = ref<number[]>([])
 const activeIndicatorStyle = ref({ width: '0px', transform: 'translateX(0px)', opacity: '0' })
 
+let isDragging = false
+let trackRect: DOMRect | null = null
+
 function measureTextWidth(text: string): number {
   if (!measureRef.value) return text.length * 7
   measureRef.value.textContent = text
@@ -69,6 +72,68 @@ async function updateIndicator() {
     transform: `translateX(${left}px)`,
     opacity: '1'
   }
+}
+
+// SwiftUI Touch Gesture Coordinator: real-time slide/pan select
+function onDragStart(e: MouseEvent | TouchEvent) {
+  if (useDropdown.value) return
+  isDragging = true
+  trackRect = containerRef.value?.getBoundingClientRect() ?? null
+  
+  handleDragMove(e)
+
+  window.addEventListener('mousemove', onDragMoveGlobal)
+  window.addEventListener('mouseup', onDragEndGlobal)
+  window.addEventListener('touchmove', onDragMoveGlobal, { passive: false })
+  window.addEventListener('touchend', onDragEndGlobal)
+}
+
+function onDragMoveGlobal(e: MouseEvent | TouchEvent) {
+  if (!isDragging) return
+  if (e.cancelable) e.preventDefault() // Prevents document scrolling during slide
+  handleDragMove(e)
+}
+
+function handleDragMove(e: MouseEvent | TouchEvent) {
+  if (!trackRect) return
+  const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+  const relativeX = clientX - trackRect.left - TRACK_PADDING
+
+  const availableWidth = trackRect.width - (TRACK_PADDING * 2)
+  
+  let targetIdx = 0
+  if (evenlySpaced.value) {
+    const segWidth = availableWidth / props.items.length
+    targetIdx = Math.floor(relativeX / segWidth)
+  } else {
+    // Check scaled proportional spans
+    const { widths } = proportionalLayout.value
+    let accumulatedWidth = 0
+    for (let i = 0; i < widths.length; i++) {
+      accumulatedWidth += widths[i]
+      if (relativeX < accumulatedWidth) {
+        targetIdx = i
+        break
+      }
+      if (i === widths.length - 1) {
+        targetIdx = i
+      }
+    }
+  }
+
+  targetIdx = Math.max(0, Math.min(props.items.length - 1, targetIdx))
+  
+  if (props.modelValue !== targetIdx) {
+    emit('update:modelValue', targetIdx)
+  }
+}
+
+function onDragEndGlobal() {
+  isDragging = false
+  window.removeEventListener('mousemove', onDragMoveGlobal)
+  window.removeEventListener('mouseup', onDragEndGlobal)
+  window.removeEventListener('touchmove', onDragMoveGlobal)
+  window.removeEventListener('touchend', onDragEndGlobal)
 }
 
 const totalTextWidth = computed(() => textWidths.value.reduce((a, b) => a + b, 0))
@@ -160,10 +225,6 @@ watch(containerWidth, async () => {
   await nextTick()
   updateIndicator()
 })
-
-function updateDropdown() {
-  useDropdown.value = !canFit.value && props.items.length > 1
-}
 </script>
 
 <template>
@@ -209,16 +270,20 @@ function updateDropdown() {
       </div>
     </div>
 
-    <!-- Segmented Multi-Button Control Mode -->
-    <div v-else class="segmented-track">
+    <!-- Segmented Multi-Button Control Mode (Equipped with touch swipe listeners) -->
+    <div
+      v-else
+      class="segmented-track"
+      @mousedown="onDragStart"
+      @touchstart="onDragStart"
+    >
       <div class="segmented-indicator" :style="activeIndicatorStyle" />
       <button
         v-for="(item, idx) in items"
         :key="idx"
-        class="segmented-item"
+        class="segmented-item animate-segment"
         :class="{ 'segmented-item--active': modelValue === idx }"
         :style="buttonStyles[idx]"
-        @click="emit('update:modelValue', idx)"
       >
         {{ item }}
       </button>
@@ -241,6 +306,7 @@ function updateDropdown() {
   background: #e5e5ea;
   padding: 2px;
   gap: 0;
+  touch-action: none; /* Prevents default gesture conflicts */
 }
 
 :root.dark .segmented-track,
@@ -256,8 +322,9 @@ function updateDropdown() {
   background: white;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-              width 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Snappy SwiftUI-style kinetic easing curve */
+  transition: transform 0.22s cubic-bezier(0.15, 0.85, 0.35, 1),
+              width 0.18s cubic-bezier(0.15, 0.85, 0.35, 1);
   z-index: 1;
 }
 

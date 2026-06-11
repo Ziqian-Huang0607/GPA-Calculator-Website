@@ -34,11 +34,6 @@ function setScoreFormat(idx: number) {
 }
 
 const presets = computed(() => backend.root.value?.presets ?? [])
-const catalogInfo = computed(() => {
-  const r = backend.root.value
-  if (!r) return ''
-  return `${r.catalogName ?? 'Unspecified catalog'}\nVersion ${r.version ?? '??'}, last updated ${r.lastUpdated ?? 'idk'}\n${r.credit ?? 'Original project by Michel'}`
-})
 </script>
 
 <template>
@@ -134,8 +129,20 @@ const catalogInfo = computed(() => {
           :mod-index="mod.modIndex"
         />
 
-        <div class="text-center text-[12px] font-semibold text-gray-400 dark:text-gray-500 whitespace-pre-line pt-4">
-          {{ catalogInfo }}
+        <!-- Desktop Catalog Credits Footer -->
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6 flex justify-between items-start text-left gap-4">
+          <div class="text-[12px] font-normal text-gray-400 dark:text-gray-500 leading-relaxed flex-1">
+            <div>
+              Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 hover:underline">Ziqian Huang</a>)
+            </div>
+            <div class="mt-1">
+              Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 hover:underline">Michel</a>. For reference only.
+            </div>
+            <div class="mt-1">
+              <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 hover:underline">Download on the App Store</a>
+            </div>
+          </div>
+          <img src="/src/assets/idx-icon.png" class="w-10 h-10 object-contain rounded-lg flex-shrink-0 bg-transparent" />
         </div>
       </div>
     </div>
@@ -148,42 +155,49 @@ const catalogInfo = computed(() => {
         <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
         <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-t-2xl max-h-[85vh] overflow-y-auto pb-8 z-10">
           
-          <!-- Mobile Header with top-left Close pill and centered Customize title -->
-          <div class="relative flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 mb-4">
-            <button
-              class="px-4 py-1.5 text-[13px] font-semibold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border-none cursor-pointer transition-colors"
-              @click="emit('close')"
-            >
-              Close
-            </button>
-            <span class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold text-black dark:text-white">
-              Customize
-            </span>
-            <div class="w-[60px]" aria-hidden="true" />
-          </div>
-
-          <div class="px-4 space-y-4">
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
-              <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">Score Format</span>
+          <!-- Pinned Top Header Container (Menu Header & Score Formats are static) -->
+          <div class="sticky top-0 bg-white dark:bg-gray-900 z-20 pb-3 border-b border-gray-150 dark:border-gray-800 shadow-sm">
+            <!-- Pinned Header -->
+            <div class="relative flex items-center justify-between px-4 py-4">
               <button
-                v-if="backend.currentPreset.value?.track"
-                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
-                :class="backend.trackActive.value
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
-                @click="backend.setTrackActive(!backend.trackActive.value)"
+                class="px-4 py-1.5 text-[13px] font-semibold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border-none cursor-pointer transition-colors"
+                @click="emit('close')"
               >
-                Use {{ backend.currentPreset.value.track.displayName }}
+                Close
               </button>
-              <div class="flex-1 min-w-0">
-                <SegmentedControl
-                  :items="['Percentage', 'Letter']"
-                  :model-value="scoreFormatIndex"
-                  @update:model-value="setScoreFormat"
-                />
-              </div>
+              <span class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold text-black dark:text-white">
+                Customize
+              </span>
+              <div class="w-[60px]" aria-hidden="true" />
             </div>
 
+            <!-- Pinned Score Format Block -->
+            <div class="px-4">
+              <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-3 flex items-center gap-3">
+                <span class="text-[14px] font-semibold text-black dark:text-white flex-shrink">Score Format</span>
+                <button
+                  v-if="backend.currentPreset.value?.track"
+                  class="text-[12px] font-medium px-2.5 py-1 rounded-full transition-colors border-none cursor-pointer"
+                  :class="backend.trackActive.value
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
+                  @click="backend.setTrackActive(!backend.trackActive.value)"
+                >
+                  Use {{ backend.currentPreset.value.track.displayName }}
+                </button>
+                <div class="flex-1 min-w-0">
+                  <SegmentedControl
+                    :items="['Percentage', 'Letter']"
+                    :model-value="scoreFormatIndex"
+                    @update:model-value="setScoreFormat"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable body content -->
+          <div class="px-4 space-y-4 pt-4">
             <div v-if="backend.requirementWarning.value" class="text-red-500 text-[15px] px-2">
               {{ backend.requirementWarning.value }}
             </div>
@@ -226,8 +240,20 @@ const catalogInfo = computed(() => {
               :mod-index="mod.modIndex"
             />
 
-            <div class="text-center text-[12px] font-semibold text-gray-400 dark:text-gray-500 whitespace-pre-line pt-4">
-              {{ catalogInfo }}
+            <!-- Mobile Catalog Credits Footer (Left Aligned + IDX Right Icon) -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6 flex justify-between items-start text-left gap-4">
+              <div class="text-[12px] font-normal text-gray-400 dark:text-gray-500 leading-relaxed flex-1">
+                <div>
+                  Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 hover:underline">Ziqian Huang</a>)
+                </div>
+                <div class="mt-1">
+                  Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 hover:underline">Michel</a>. For reference only.
+                </div>
+                <div class="mt-1">
+                  <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 hover:underline">Download on the App Store</a>
+                </div>
+              </div>
+              <img src="/src/assets/idx-icon.png" class="w-10 h-10 object-contain rounded-lg flex-shrink-0 bg-transparent" />
             </div>
           </div>
         </div>
@@ -257,14 +283,14 @@ const catalogInfo = computed(() => {
   overflow: hidden;
 }
 
-/* Mobile sheet transition */
+/* Kinetic SwiftUI bottom sheet spring-like layout transitions */
 .sheet-enter-active,
 .sheet-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s cubic-bezier(0.15, 0.85, 0.35, 1);
 }
 .sheet-enter-active > div:last-child,
 .sheet-leave-active > div:last-child {
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.32s cubic-bezier(0.15, 0.85, 0.35, 1);
 }
 .sheet-enter-from,
 .sheet-leave-to {

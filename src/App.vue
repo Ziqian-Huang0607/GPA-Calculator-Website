@@ -53,14 +53,21 @@ function onDragEnd() {
 </script>
 
 <template>
-  <!-- Loading State -->
+  <!-- Authentic Apple Spoke Loading State -->
   <div
     v-if="backend.isLoading.value"
-    class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
+    class="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-900"
   >
-    <div class="text-center">
-      <div class="activity-indicator mb-4" role="progressbar" aria-label="Loading" />
-      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Downloading catalog...</p>
+    <div class="text-center flex flex-col items-center">
+      <!-- iOS Segmented Activity Spoke Spinner -->
+      <svg class="apple-spinner mb-6" viewBox="0 0 100 100" width="36" height="36">
+        <g transform="translate(50,50)">
+          <g v-for="i in 12" :key="i" class="spoke" :style="{ transform: `rotate(${i * 30}deg)`, opacity: 1 - (i * 0.08) }">
+            <line x1="0" y1="-35" x2="0" y2="-20" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+      <p class="text-[13px] text-gray-400 dark:text-gray-500 font-medium">Downloading catalog...</p>
     </div>
   </div>
 
@@ -73,11 +80,11 @@ function onDragEnd() {
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <!-- Desktop Layout: GPA Result + Reset pill next to it -->
+        <!-- Desktop Layout: GPA Result + Reset pill next to it (Unbolded Label) -->
         <div v-if="isWide" class="text-center py-3">
           <div class="flex items-center justify-center gap-2">
             <p
-              class="text-[16px] font-medium"
+              class="text-[16px] font-normal"
               :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
             >
               {{ backend.calculationResultText.value }}
@@ -91,23 +98,23 @@ function onDragEnd() {
           </div>
         </div>
 
-        <!-- Mobile Layout: GPA result on top, Customize & Reset side-by-side below -->
+        <!-- Mobile Layout: GPA result (Unbolded) + Compact sizing buttons side-by-side below -->
         <div v-else class="text-center pt-2 pb-5">
           <p
-            class="text-[20px] font-semibold mb-3.5"
-            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
+            class="text-[18px] font-normal mb-3 text-gray-500 dark:text-gray-400"
+            :class="backend.isInvalidated.value ? 'text-red-500' : ''"
           >
             {{ backend.calculationResultText.value }}
           </p>
-          <div class="flex gap-3 max-w-md mx-auto">
+          <div class="flex gap-3 max-w-xs mx-auto">
             <button
-              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+              class="flex-1 px-3 py-2 text-[14px] font-medium rounded-lg border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
               @click="showCustomize = !showCustomize"
             >
               {{ showCustomize ? 'Hide Customize' : 'Customize' }}
             </button>
             <button
-              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+              class="flex-1 px-3 py-2 text-[14px] font-medium rounded-lg border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
               @click="backend.resetAllLevelsAndScores()"
             >
               Reset
@@ -141,3 +148,16 @@ function onDragEnd() {
     />
   </div>
 </template>
+
+<style>
+.apple-spinner {
+  animation: apple-spin 1s steps(12) infinite;
+  color: #8e8e93;
+}
+.dark .apple-spinner {
+  color: #ebebed;
+}
+@keyframes apple-spin {
+  to { transform: rotate(360deg); }
+}
+</style>

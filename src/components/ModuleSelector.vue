@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { Module } from '../types'
 import { useBackend } from '../useBackend'
 import { ChevronRight } from 'lucide-vue-next'
@@ -25,11 +25,16 @@ function toggle() {
 function toggleSubject(sIdx: number) {
   backend.toggleSelection(props.modIndex, sIdx)
 }
+
+// Collapses module panel dynamically if locked
+watch(isLocked, (locked) => {
+  if (locked) expanded.value = false
+})
 </script>
 
 <template>
   <div
-    class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden"
+    class="module-card bg-white dark:bg-gray-800 overflow-hidden"
     :class="isLocked ? 'opacity-50 pointer-events-none' : ''"
   >
     <!-- Header -->
@@ -55,44 +60,71 @@ function toggleSubject(sIdx: number) {
       />
     </button>
 
-    <!-- Expanded list -->
-    <div v-if="expanded" class="border-t border-gray-200 dark:border-gray-700">
-      <div
-        v-for="(subj, sIdx) in module.subjects"
-        :key="sIdx"
-      >
-        <button
-          class="w-full flex items-center justify-between px-4 py-3.5 text-left border-none cursor-pointer transition-colors"
-          :class="[
-            backend.isDisabled(modIndex, sIdx)
-              ? 'bg-transparent text-gray-400 opacity-50 pointer-events-none'
-              : 'bg-transparent text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600',
-          ]"
-          :disabled="backend.isDisabled(modIndex, sIdx)"
-          @click="toggleSubject(sIdx)"
-        >
-          <span class="text-[15px]">{{ subj.name }}</span>
-          <span v-if="backend.isSelected(modIndex, sIdx)" class="text-blue-500">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-          </span>
-          <span v-else-if="backend.isDisabled(modIndex, sIdx)" class="text-gray-400">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-            </svg>
-          </span>
-          <span v-else class="text-gray-400">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-            </svg>
-          </span>
-        </button>
+    <!-- Accordion CSS Grid Layout transition -->
+    <div class="collapse-wrapper" :class="{ expanded: expanded }">
+      <div class="collapse-inner border-t border-gray-200 dark:border-gray-700">
         <div
-          v-if="sIdx < (module.subjects.length - 1)"
-          class="list-separator"
-        />
+          v-for="(subj, sIdx) in module.subjects"
+          :key="sIdx"
+        >
+          <button
+            class="w-full flex items-center justify-between px-4 py-3.5 text-left border-none cursor-pointer transition-colors"
+            :class="[
+              backend.isDisabled(modIndex, sIdx)
+                ? 'bg-transparent text-gray-400 opacity-50 pointer-events-none'
+                : 'bg-transparent text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600',
+            ]"
+            :disabled="backend.isDisabled(modIndex, sIdx)"
+            @click="toggleSubject(sIdx)"
+          >
+            <span class="text-[15px]">{{ subj.name }}</span>
+            <span v-if="backend.isSelected(modIndex, sIdx)" class="text-blue-500">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </span>
+            <span v-else-if="backend.isDisabled(modIndex, sIdx)" class="text-gray-400">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+            </span>
+            <span v-else class="text-gray-400">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+            </span>
+          </button>
+          <div
+            v-if="sIdx < (module.subjects.length - 1)"
+            class="list-separator"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.module-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dark .module-card {
+  border-color: #374151;
+}
+
+/* Smooth structural CSS grid transition wrapper */
+.collapse-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s cubic-bezier(0.15, 0.85, 0.35, 1);
+}
+.collapse-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+.collapse-inner {
+  overflow: hidden;
+}
+</style>
