@@ -1,6 +1,6 @@
 # GPA Calculator website
 
-
+Web version of the updated [iOS GPA Calculator](https://github.com/WillUHD/GPA-Calculator-3) developed by the Indexademics team (Will Chen, Ziqian Huang). 
 
 ### Tech stack & usage
 - **Frontend**: [Vue 3](https://vuejs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [GSAP](https://gsap.com/)
