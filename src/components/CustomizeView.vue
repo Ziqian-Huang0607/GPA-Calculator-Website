@@ -147,17 +147,21 @@ const catalogInfo = computed(() => {
       <div v-if="show" class="fixed inset-0 z-50 flex items-end justify-center">
         <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
         <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-t-2xl max-h-[85vh] overflow-y-auto pb-8 z-10">
-          <div class="flex justify-center pt-3 pb-2">
-            <div class="w-9 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
-          </div>
-          <div class="flex justify-end px-4 pb-2">
+          
+          <!-- Mobile Header with top-left Close pill and centered Customize title -->
+          <div class="relative flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 mb-4">
             <button
-              class="text-[15px] font-medium text-blue-500 dark:text-blue-400 bg-transparent border-none cursor-pointer"
+              class="px-4 py-1.5 text-[13px] font-semibold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border-none cursor-pointer transition-colors"
               @click="emit('close')"
             >
               Close
             </button>
+            <span class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold text-black dark:text-white">
+              Customize
+            </span>
+            <div class="w-[60px]" aria-hidden="true" />
           </div>
+
           <div class="px-4 space-y-4">
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
               <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">Score Format</span>

@@ -17,8 +17,9 @@ const measureRef = ref<HTMLElement | null>(null)
 
 const COMPONENT_HEIGHT = 32
 const TRACK_PADDING = 2
-const ITEM_H_PADDING = 12
-const INTER_ITEM_SPACING = 4
+const ITEM_H_PADDING = 24 // 12px left + 12px right padding
+
+const textWidths = ref<number[]>([])
 
 function measureTextWidth(text: string): number {
   if (!measureRef.value) return text.length * 7
@@ -26,11 +27,13 @@ function measureTextWidth(text: string): number {
   return measureRef.value.offsetWidth
 }
 
-const textWidths = computed(() => props.items.map(measureTextWidth))
+function measureAll() {
+  textWidths.value = props.items.map(measureTextWidth)
+}
+
 const totalTextWidth = computed(() => textWidths.value.reduce((a, b) => a + b, 0))
 const totalPadding = computed(() => props.items.length * ITEM_H_PADDING)
-const totalSpacing = computed(() => Math.max(0, props.items.length - 1) * INTER_ITEM_SPACING)
-const minRequiredWidth = computed(() => totalTextWidth.value + totalPadding.value + totalSpacing.value + 8)
+const minRequiredWidth = computed(() => totalTextWidth.value + totalPadding.value + 8)
 const maxTextWidth = computed(() => Math.max(...textWidths.value, 0))
 const evenWidth = computed(() => (maxTextWidth.value + 24) * props.items.length + 8)
 const evenlySpaced = computed(() => containerWidth.value >= evenWidth.value)
@@ -39,7 +42,7 @@ const canFit = computed(() => containerWidth.value >= minRequiredWidth.value && 
 // Shared calculation for content-proportional mode
 const proportionalLayout = computed(() => {
   const availableWidth = containerWidth.value - (TRACK_PADDING * 2)
-  const totalContentWidth = totalTextWidth.value + totalPadding.value + totalSpacing.value
+  const totalContentWidth = totalTextWidth.value + totalPadding.value
   const scale = availableWidth / totalContentWidth
 
   const widths: number[] = []
@@ -50,7 +53,7 @@ const proportionalLayout = computed(() => {
     positions.push(left)
     const btnWidth = (textWidths.value[i] + ITEM_H_PADDING) * scale
     widths.push(btnWidth)
-    left += btnWidth + INTER_ITEM_SPACING * scale
+    left += btnWidth
   }
 
   return { widths, positions, scale }
@@ -91,11 +94,20 @@ const indicatorStyle = computed(() => {
 let resizeObserver: ResizeObserver | null = null
 
 onMounted(() => {
+  measureAll()
   if (containerRef.value) {
     containerWidth.value = containerRef.value.offsetWidth
     resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        containerWidth.value = entry.contentRect.width
+        const width = entry.contentRect.width
+        // If container transitions from hidden (0px) to visible, trigger full measurements
+        if (width > 0 && containerWidth.value === 0) {
+          containerWidth.value = width
+          measureAll()
+          updateDropdown()
+        } else {
+          containerWidth.value = width
+        }
       }
     })
     resizeObserver.observe(containerRef.value)
@@ -106,6 +118,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
 })
+
+watch(() => props.items, () => {
+  measureAll()
+  updateDropdown()
+}, { deep: true })
 
 watch(() => [props.items.length, props.modelValue], async () => {
   await nextTick()
@@ -122,7 +139,12 @@ function updateDropdown() {
 </script>
 
 <template>
-  <div ref="measureRef" class="pointer-events-none absolute opacity-0 text-[13px] font-medium px-3 whitespace-nowrap" aria-hidden="true" />
+  <div
+    ref="measureRef"
+    class="pointer-events-none absolute opacity-0 text-[13px] font-medium whitespace-nowrap"
+    style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;"
+    aria-hidden="true"
+  />
   <div
     ref="containerRef"
     class="segmented-root"
@@ -237,7 +259,7 @@ function updateDropdown() {
   border: 1px solid #d1d5db;
   background: #f2f2f7;
   color: #1c1c1e;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
   font-size: 13px;
   font-weight: 500;
   appearance: none;
@@ -248,9 +270,23 @@ function updateDropdown() {
   padding-right: 30px;
 }
 
+.segmented-select option {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 13px;
+  font-weight: 500;
+  background: white;
+  color: black;
+}
+
 :root.dark .segmented-select {
   background: #2c2c2e;
   border-color: #48484a;
   color: #e5e5ea;
+}
+
+:root.dark .segmented-select option,
+.dark .segmented-select option {
+  background: #1c1c1e;
+  color: white;
 }
 </style>

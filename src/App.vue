@@ -68,13 +68,13 @@ function onDragEnd() {
   <div v-else class="app-layout">
     <!-- Main Content -->
     <div class="main-content">
-      <div class="px-4 pt-8 pb-2 max-w-2xl mx-auto">
+      <div class="px-4 pt-6 pb-0 max-w-2xl mx-auto">
         <h1 class="text-[32px] font-semibold text-center text-black dark:text-white">GPA Calculator</h1>
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <!-- GPA Result + Reset pill -->
-        <div class="text-center py-6">
+        <!-- Desktop Layout: GPA Result + Reset pill next to it -->
+        <div v-if="isWide" class="text-center py-3">
           <div class="flex items-center justify-center gap-2">
             <p
               class="text-[16px] font-medium"
@@ -91,14 +91,28 @@ function onDragEnd() {
           </div>
         </div>
 
-        <!-- Mobile: Customize button -->
-        <div v-if="!isWide" class="mb-6">
-          <button
-            class="w-full px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
-            @click="showCustomize = !showCustomize"
+        <!-- Mobile Layout: GPA result on top, Customize & Reset side-by-side below -->
+        <div v-else class="text-center pt-2 pb-5">
+          <p
+            class="text-[20px] font-semibold mb-3.5"
+            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
           >
-            {{ showCustomize ? 'Hide Customize' : 'Customize' }}
-          </button>
+            {{ backend.calculationResultText.value }}
+          </p>
+          <div class="flex gap-3 max-w-md mx-auto">
+            <button
+              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+              @click="showCustomize = !showCustomize"
+            >
+              {{ showCustomize ? 'Hide Customize' : 'Customize' }}
+            </button>
+            <button
+              class="flex-1 px-4 py-2.5 text-[15px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 active:bg-gray-400 dark:active:bg-gray-500 cursor-pointer transition-colors"
+              @click="backend.resetAllLevelsAndScores()"
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
         <div class="space-y-4">

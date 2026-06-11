@@ -18,9 +18,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-@media (max-width: 640px) {
-  .preset-grid { grid-template-columns: 1fr; }
-}
 
 .chevron-rotate {
   transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
