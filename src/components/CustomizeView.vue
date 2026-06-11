@@ -131,7 +131,7 @@ const presets = computed(() => backend.root.value?.presets ?? [])
               Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
             </div>
             <div class="pt-1">
-              Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+              Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>, <a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
             </div>
             <div>
               Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
