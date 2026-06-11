@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useBackend } from '../logic/useBackend'
 import SegmentedControl from './SegmentedControl.vue'
 import ModuleSelector from './ModuleSelector.vue'
@@ -13,6 +13,23 @@ const emit = defineEmits<{
 }>()
 
 const backend = useBackend()
+
+const isWide = ref(false)
+let mql: MediaQueryList | null = null
+
+function checkWide() {
+  isWide.value = mql?.matches ?? false
+}
+
+onMounted(() => {
+  mql = window.matchMedia('(min-width: 768px)')
+  checkWide()
+  mql.addEventListener('change', checkWide)
+})
+
+onBeforeUnmount(() => {
+  mql?.removeEventListener('change', checkWide)
+})
 
 const scoreFormatIndex = computed(() =>
   backend.scoreDisplay.value === 'percentage' ? 0 : 1
@@ -31,27 +48,132 @@ const catalogInfo = computed(() => {
 </script>
 
 <template>
-  <!-- Backdrop -->
-  <Teleport to="body">
-    <Transition name="modal">
+  <!-- Desktop: Sidebar -->
+  <aside
+    v-if="isWide"
+    class="sidebar"
+    :class="show ? 'sidebar--open' : ''"
+  >
+    <div class="sidebar-inner">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-[17px] font-semibold text-black dark:text-white">Customize</h2>
+        <button
+          class="text-[15px] font-medium text-blue-500 dark:text-blue-400 bg-transparent border-none cursor-pointer px-2 py-1"
+          @click="emit('close')"
+        >
+          Close
+        </button>
+      </div>
+      <div class="overflow-y-auto flex-1 px-4 py-4 space-y-4">
+        <!-- Score Format -->
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
+          <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">
+            Score Format
+          </span>
+          <button
+            v-if="backend.currentPreset.value?.track"
+            class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
+            :class="backend.trackActive.value
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
+            @click="backend.setTrackActive(!backend.trackActive.value)"
+          >
+            Use {{ backend.currentPreset.value.track.displayName }}
+          </button>
+          <div class="flex-1 min-w-0">
+            <SegmentedControl
+              :items="['Percentage', 'Letter']"
+              :model-value="scoreFormatIndex"
+              @update:model-value="setScoreFormat"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="backend.requirementWarning.value"
+          class="text-red-500 text-[15px] px-2"
+        >
+          {{ backend.requirementWarning.value }}
+        </div>
+
+        <div class="preset-grid">
+          <button
+            v-for="p in presets"
+            :key="p.id"
+            class="p-4 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] flex items-center text-left"
+            :class="backend.currentPreset.value?.id === p.id
+              ? 'bg-blue-500 border-blue-500 text-white'
+              : 'bg-gray-100 dark:bg-gray-800 border-transparent text-black dark:text-white'"
+            @click="backend.selectPreset(p.id)"
+          >
+            <div class="flex items-center gap-3 w-full">
+              <div class="flex-1 min-w-0">
+                <div
+                  class="text-[18px] font-semibold"
+                  :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-blue-500'"
+                >
+                  {{ p.name }}
+                </div>
+                <div
+                  class="text-[13px]"
+                  :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'"
+                >
+                  {{
+                    p.subtitle ||
+                    p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items'
+                  }}
+                </div>
+              </div>
+              <div
+                class="flex-shrink-0"
+                :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'"
+              >
+                <svg
+                  v-if="backend.currentPreset.value?.id === p.id"
+                  width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+                <svg
+                  v-else
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <ModuleSelector
+          v-for="mod in backend.choiceModules.value"
+          :key="mod.modIndex"
+          :module="mod.module"
+          :mod-index="mod.modIndex"
+        />
+
+        <div class="text-center text-[12px] font-semibold text-gray-400 dark:text-gray-500 whitespace-pre-line pt-4">
+          {{ catalogInfo }}
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile: Bottom Sheet -->
+  <Teleport v-if="!isWide" to="body">
+    <Transition name="sheet">
       <div
         v-if="show"
         class="fixed inset-0 z-50 flex items-end justify-center"
       >
-        <!-- Backdrop -->
         <div
           class="absolute inset-0 bg-black/40"
           @click="emit('close')"
         />
-
-        <!-- Sheet -->
         <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-t-2xl max-h-[85vh] overflow-y-auto pb-8 z-10">
-          <!-- Handle -->
           <div class="flex justify-center pt-3 pb-2">
             <div class="w-9 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
           </div>
-
-          <!-- Close button -->
           <div class="flex justify-end px-4 pb-2">
             <button
               class="text-[15px] font-medium text-blue-500 dark:text-blue-400 bg-transparent border-none cursor-pointer"
@@ -60,15 +182,12 @@ const catalogInfo = computed(() => {
               Close
             </button>
           </div>
-
-          <div class="px-4">
+          <div class="px-4 space-y-4">
             <!-- Score Format -->
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3 mb-4">
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
               <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">
                 Score Format
               </span>
-
-              <!-- Track toggle -->
               <button
                 v-if="backend.currentPreset.value?.track"
                 class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
@@ -79,7 +198,6 @@ const catalogInfo = computed(() => {
               >
                 Use {{ backend.currentPreset.value.track.displayName }}
               </button>
-
               <div class="flex-1 min-w-0">
                 <SegmentedControl
                   :items="['Percentage', 'Letter']"
@@ -89,16 +207,14 @@ const catalogInfo = computed(() => {
               </div>
             </div>
 
-            <!-- Requirement warning -->
             <div
               v-if="backend.requirementWarning.value"
-              class="text-red-500 text-[15px] px-2 mb-4"
+              class="text-red-500 text-[15px] px-2"
             >
               {{ backend.requirementWarning.value }}
             </div>
 
-            <!-- Preset Grid -->
-            <div class="preset-grid mb-4">
+            <div class="preset-grid">
               <button
                 v-for="p in presets"
                 :key="p.id"
@@ -122,7 +238,7 @@ const catalogInfo = computed(() => {
                     >
                       {{
                         p.subtitle ||
-                        `${p.modules.reduce((acc, m) => acc + m.subjects.length, 0)} items`
+                        p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items'
                       }}
                     </div>
                   </div>
@@ -147,18 +263,14 @@ const catalogInfo = computed(() => {
               </button>
             </div>
 
-            <!-- Module Selectors -->
-            <div class="space-y-4">
-              <ModuleSelector
-                v-for="mod in backend.choiceModules.value"
-                :key="mod.modIndex"
-                :module="mod.module"
-                :mod-index="mod.modIndex"
-              />
-            </div>
+            <ModuleSelector
+              v-for="mod in backend.choiceModules.value"
+              :key="mod.modIndex"
+              :module="mod.module"
+              :mod-index="mod.modIndex"
+            />
 
-            <!-- Catalog Info -->
-            <div class="text-center text-[12px] font-semibold text-gray-400 dark:text-gray-500 whitespace-pre-line px-4 pt-4 mt-4">
+            <div class="text-center text-[12px] font-semibold text-gray-400 dark:text-gray-500 whitespace-pre-line pt-4">
               {{ catalogInfo }}
             </div>
           </div>
@@ -169,12 +281,54 @@ const catalogInfo = computed(() => {
 </template>
 
 <style scoped>
-.modal-enter-active,
-.modal-leave-active {
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100vh;
+  z-index: 40;
+  background: white;
+  border-left: 1px solid #e5e5ea;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.dark .sidebar {
+  background: #1c1c1e;
+  border-left-color: #38383a;
+}
+
+.sidebar--open {
+  transform: translateX(0);
+}
+
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Mobile sheet transition */
+.sheet-enter-active,
+.sheet-leave-active {
   transition: opacity 0.2s ease;
 }
-.modal-enter-from,
-.modal-leave-to {
+.sheet-enter-active > div:last-child,
+.sheet-leave-active > div:last-child {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.sheet-enter-from,
+.sheet-leave-to {
   opacity: 0;
+}
+.sheet-enter-from > div:last-child {
+  transform: translateY(100%);
+}
+.sheet-leave-to > div:last-child {
+  transform: translateY(100%);
 }
 </style>
