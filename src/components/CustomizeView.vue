@@ -48,7 +48,7 @@ const catalogInfo = computed(() => {
 </script>
 
 <template>
-  <!-- Desktop: Sidebar -->
+  <!-- Desktop: Sidebar (part of flex layout) -->
   <aside
     v-if="isWide"
     class="sidebar"
@@ -282,18 +282,15 @@ const catalogInfo = computed(() => {
 
 <style scoped>
 .sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 380px;
+  width: 0;
   height: 100vh;
-  z-index: 40;
+  overflow: hidden;
   background: white;
   border-left: 1px solid #e5e5ea;
-  transform: translateX(100%);
-  transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-  display: flex;
-  flex-direction: column;
+  transition: width 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
 }
 
 .dark .sidebar {
@@ -302,7 +299,7 @@ const catalogInfo = computed(() => {
 }
 
 .sidebar--open {
-  transform: translateX(0);
+  width: 380px;
 }
 
 .sidebar-inner {
@@ -310,6 +307,7 @@ const catalogInfo = computed(() => {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  width: 380px;
 }
 
 /* Mobile sheet transition */

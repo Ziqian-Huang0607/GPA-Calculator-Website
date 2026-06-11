@@ -38,3 +38,18 @@
 .dark .list-separator {
   background: #38383a;
 }
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.dark .app-layout {
+  background: #111827;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}

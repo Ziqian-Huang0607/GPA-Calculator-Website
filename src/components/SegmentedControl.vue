@@ -15,12 +15,9 @@ const containerWidth = ref(0)
 const useDropdown = ref(false)
 const measureRef = ref<HTMLElement | null>(null)
 
-const FONT_SIZE = 13
+const COMPONENT_HEIGHT = 32
 const ITEM_H_PADDING = 12
 const INTER_ITEM_SPACING = 4
-const CONTAINER_OUTER_MARGIN = 8
-const COMPONENT_HEIGHT = 32
-const EVEN_MODE_PADDING = 24
 
 function measureTextWidth(text: string): number {
   if (!measureRef.value) return text.length * 7
@@ -32,21 +29,45 @@ const textWidths = computed(() => props.items.map(measureTextWidth))
 const totalTextWidth = computed(() => textWidths.value.reduce((a, b) => a + b, 0))
 const totalPadding = computed(() => props.items.length * ITEM_H_PADDING)
 const totalSpacing = computed(() => Math.max(0, props.items.length - 1) * INTER_ITEM_SPACING)
-const minRequiredWidth = computed(() => totalTextWidth.value + totalPadding.value + totalSpacing.value + CONTAINER_OUTER_MARGIN)
+const minRequiredWidth = computed(() => totalTextWidth.value + totalPadding.value + totalSpacing.value + 8)
 const maxTextWidth = computed(() => Math.max(...textWidths.value, 0))
-const evenWidth = computed(() => (maxTextWidth.value + EVEN_MODE_PADDING) * props.items.length + CONTAINER_OUTER_MARGIN)
+const evenWidth = computed(() => (maxTextWidth.value + 24) * props.items.length + 8)
 const evenlySpaced = computed(() => containerWidth.value >= evenWidth.value)
 const canFit = computed(() => containerWidth.value >= minRequiredWidth.value && props.items.length > 1)
 
+// Calculate indicator position based on measured text widths
 const indicatorStyle = computed(() => {
-  if (!canFit.value || evenlySpaced.value) {
-    const segWidth = props.items.length > 0 ? containerWidth.value / props.items.length : 0
-    return {
-      width: `${segWidth}px`,
-      transform: `translateX(${props.modelValue * segWidth}px)`,
-    }
+  if (!canFit.value || props.items.length === 0) {
+    return { width: '0px', opacity: '0' }
   }
-  return { width: '0px', transform: 'translateX(0px)' }
+
+  const trackPadding = 2 // track padding: 2px
+  const availableWidth = containerWidth.value - (trackPadding * 2)
+
+  if (evenlySpaced.value) {
+    // Even mode: all segments equal width
+    const segWidth = availableWidth / props.items.length
+    const left = trackPadding + props.modelValue * segWidth
+    return { width: `${segWidth}px`, transform: `translateX(${left}px)`, opacity: '1' }
+  } else {
+    // Content-proportional mode: calculate based on text widths
+    const totalTextW = textWidths.value.reduce((a, b) => a + b, 0)
+    const totalHpad = props.items.length * ITEM_H_PADDING
+    const totalIpad = Math.max(0, props.items.length - 1) * INTER_ITEM_SPACING
+    const totalContentWidth = totalTextW + totalHpad + totalIpad
+
+    // Scale to fit available width
+    const scale = availableWidth / totalContentWidth
+
+    let left = trackPadding
+    for (let i = 0; i < props.modelValue; i++) {
+      const btnWidth = (textWidths.value[i] + ITEM_H_PADDING) * scale
+      left += btnWidth + INTER_ITEM_SPACING * scale
+    }
+
+    const activeBtnWidth = (textWidths.value[props.modelValue] + ITEM_H_PADDING) * scale
+    return { width: `${activeBtnWidth}px`, transform: `translateX(${left}px)`, opacity: '1' }
+  }
 })
 
 let resizeObserver: ResizeObserver | null = null
@@ -68,7 +89,7 @@ onBeforeUnmount(() => {
   resizeObserver?.disconnect()
 })
 
-watch(() => props.items.length, async () => {
+watch(() => [props.items.length, props.modelValue], async () => {
   await nextTick()
   updateDropdown()
 })
@@ -108,7 +129,6 @@ function updateDropdown() {
     <!-- Segmented control -->
     <div v-else class="segmented-track">
       <div
-        v-if="items.length > 0 && canFit"
         class="segmented-indicator"
         :style="indicatorStyle"
       />
@@ -150,13 +170,13 @@ function updateDropdown() {
 .segmented-indicator {
   position: absolute;
   top: 2px;
-  left: 2px;
+  left: 0;
   height: calc(100% - 4px);
   background: white;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-              width 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+              width 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
   z-index: 1;
 }
 
