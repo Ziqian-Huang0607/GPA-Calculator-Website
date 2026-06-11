@@ -11,13 +11,45 @@ const isWide = ref(false)
 let mql: MediaQueryList | null = null
 function checkWide() { isWide.value = mql?.matches ?? false }
 
+// Install menu
+const showInstallMenu = ref(false)
+const deferredPrompt = ref<any>(null)
+const installMenuRef = ref<HTMLElement | null>(null)
+
+function handleBeforeInstallPrompt(e: Event) {
+  e.preventDefault()
+  deferredPrompt.value = e
+}
+
+function handleInstallClick(option: 'appstore' | 'webpage') {
+  showInstallMenu.value = false
+  if (option === 'appstore') {
+    window.open('https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715', '_blank')
+  } else if (option === 'webpage' && deferredPrompt.value) {
+    deferredPrompt.value.prompt()
+    deferredPrompt.value.userChoice.then(() => { deferredPrompt.value = null })
+  }
+}
+
+function handleOutsideInstallClick(e: MouseEvent) {
+  if (installMenuRef.value && !installMenuRef.value.contains(e.target as Node)) {
+    showInstallMenu.value = false
+  }
+}
+
 onMounted(() => {
   backend.loadInitialData()
   mql = window.matchMedia('(min-width: 768px)')
   checkWide()
   mql.addEventListener('change', checkWide)
+  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+  document.addEventListener('mousedown', handleOutsideInstallClick)
 })
-onBeforeUnmount(() => { mql?.removeEventListener('change', checkWide) })
+onBeforeUnmount(() => {
+  mql?.removeEventListener('change', checkWide)
+  window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+  document.removeEventListener('mousedown', handleOutsideInstallClick)
+})
 
 // Resizable sidebar
 const sidebarWidth = ref(380)
@@ -116,6 +148,32 @@ function onDragEnd() {
             >
               Reset
             </button>
+            <div class="flex-1 relative" ref="installMenuRef">
+              <button
+                class="w-full px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+                @click="showInstallMenu = !showInstallMenu"
+              >
+                Install
+              </button>
+              <div
+                v-if="showInstallMenu"
+                class="absolute top-full left-0 right-0 mt-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden z-50"
+              >
+                <button
+                  class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
+                  @click="handleInstallClick('appstore')"
+                >
+                  App Store
+                </button>
+                <button
+                  class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
+                  :class="{ 'opacity-40 pointer-events-none': !deferredPrompt }"
+                  @click="handleInstallClick('webpage')"
+                >
+                  Webpage
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

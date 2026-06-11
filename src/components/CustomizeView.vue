@@ -131,18 +131,19 @@ const presets = computed(() => backend.root.value?.presets ?? [])
               Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
             </div>
             <div class="pt-1">
-              Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>, <a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
+              Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+            </div>
+            <div>
+              Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
             </div>
             <div>
               Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
             </div>
-            <div>
-              <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
-                Download on the App Store
-              </a>
-            </div>
           </div>
-          <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg shrink-0 ml-3 object-cover" />
+          <div class="flex flex-col shrink-0 ml-3 gap-1">
+            <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
+            <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
+          </div>
         </div>
       </div>
     </div>
@@ -243,18 +244,19 @@ const presets = computed(() => backend.root.value?.presets ?? [])
                   Version {{ backend.root.value?.version ?? '??' }}, last updated {{ backend.root.value?.lastUpdated ?? 'idk' }}
                 </div>
                 <div class="pt-1">
-                  Indexademics team (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>, <a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+                  Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
+                </div>
+                <div>
+                  Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
                 </div>
                 <div>
                   Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>. For reference only.
                 </div>
-                <div>
-                  <a href="https://apps.apple.com/us/app/gpa-calculator-by-michel/id1540111715" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
-                    Download on the App Store
-                  </a>
-                </div>
               </div>
-              <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg shrink-0 ml-3 object-cover" />
+              <div class="flex flex-col shrink-0 ml-3 gap-1">
+                <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
+                <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
+              </div>
             </div>
           </div>
         </div>
