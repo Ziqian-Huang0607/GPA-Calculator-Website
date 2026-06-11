@@ -23,9 +23,7 @@ const ITEM_H_PADDING = 24 // 12px left + 12px right padding
 
 const textWidths = ref<number[]>([])
 const activeIndicatorStyle = ref({ width: '0px', transform: 'translateX(0px)', opacity: '0' })
-
-let isDragging = false
-let trackRect: DOMRect | null = null
+const dragging = ref(false)
 
 function measureTextWidth(text: string): number {
   if (!measureRef.value) return text.length * 7
@@ -63,7 +61,6 @@ async function updateIndicator() {
     return
   }
 
-  // Exact coordinates rendered by the browser
   const width = activeItem.offsetWidth
   const left = activeItem.offsetLeft
 
@@ -74,66 +71,67 @@ async function updateIndicator() {
   }
 }
 
-// SwiftUI Touch Gesture Coordinator: real-time slide/pan select
+// Coordinate Drag-and-Slide Calculation system matching iOS/SwiftUI drag selection
+function getIndexFromCoords(clientX: number): number {
+  if (!containerRef.value) return props.modelValue
+  const track = containerRef.value.querySelector('.segmented-track')
+  if (!track) return props.modelValue
+  const rect = track.getBoundingClientRect()
+  const relativeX = clientX - rect.left - TRACK_PADDING
+  const clampedX = Math.max(0, Math.min(rect.width - TRACK_PADDING * 2, relativeX))
+
+  if (evenlySpaced.value) {
+    const availableWidth = rect.width - (TRACK_PADDING * 2)
+    const chunkWidth = availableWidth / props.items.length
+    const idx = Math.floor(clampedX / chunkWidth)
+    return Math.max(0, Math.min(props.items.length - 1, idx))
+  } else {
+    const { widths } = proportionalLayout.value
+    // Proportional layout boundaries check
+    let accumulated = 0
+    for (let i = 0; i < props.items.length; i++) {
+      const nextBound = accumulated + widths[i]
+      if (clampedX >= accumulated && clampedX <= nextBound) {
+        return i
+      }
+      accumulated = nextBound
+    }
+    return props.items.length - 1
+  }
+}
+
 function onDragStart(e: MouseEvent | TouchEvent) {
   if (useDropdown.value) return
-  isDragging = true
-  trackRect = containerRef.value?.getBoundingClientRect() ?? null
-  
-  handleDragMove(e)
-
-  window.addEventListener('mousemove', onDragMoveGlobal)
-  window.addEventListener('mouseup', onDragEndGlobal)
-  window.addEventListener('touchmove', onDragMoveGlobal, { passive: false })
-  window.addEventListener('touchend', onDragEndGlobal)
-}
-
-function onDragMoveGlobal(e: MouseEvent | TouchEvent) {
-  if (!isDragging) return
-  if (e.cancelable) e.preventDefault() // Prevents document scrolling during slide
-  handleDragMove(e)
-}
-
-function handleDragMove(e: MouseEvent | TouchEvent) {
-  if (!trackRect) return
+  dragging.value = true
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-  const relativeX = clientX - trackRect.left - TRACK_PADDING
+  const targetIdx = getIndexFromCoords(clientX)
+  emit('update:modelValue', targetIdx)
 
-  const availableWidth = trackRect.width - (TRACK_PADDING * 2)
-  
-  let targetIdx = 0
-  if (evenlySpaced.value) {
-    const segWidth = availableWidth / props.items.length
-    targetIdx = Math.floor(relativeX / segWidth)
+  if ('touches' in e) {
+    window.addEventListener('touchmove', onDragMove, { passive: false })
+    window.addEventListener('touchend', onDragEnd)
   } else {
-    // Check scaled proportional spans
-    const { widths } = proportionalLayout.value
-    let accumulatedWidth = 0
-    for (let i = 0; i < widths.length; i++) {
-      accumulatedWidth += widths[i]
-      if (relativeX < accumulatedWidth) {
-        targetIdx = i
-        break
-      }
-      if (i === widths.length - 1) {
-        targetIdx = i
-      }
-    }
+    window.addEventListener('mousemove', onDragMove)
+    window.addEventListener('mouseup', onDragEnd)
   }
+}
 
-  targetIdx = Math.max(0, Math.min(props.items.length - 1, targetIdx))
-  
-  if (props.modelValue !== targetIdx) {
+function onDragMove(e: MouseEvent | TouchEvent) {
+  if (!dragging.value) return
+  if (e.cancelable) e.preventDefault() // Prevents page bounce during scroll-dragging
+  const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+  const targetIdx = getIndexFromCoords(clientX)
+  if (targetIdx !== props.modelValue) {
     emit('update:modelValue', targetIdx)
   }
 }
 
-function onDragEndGlobal() {
-  isDragging = false
-  window.removeEventListener('mousemove', onDragMoveGlobal)
-  window.removeEventListener('mouseup', onDragEndGlobal)
-  window.removeEventListener('touchmove', onDragMoveGlobal)
-  window.removeEventListener('touchend', onDragEndGlobal)
+function onDragEnd() {
+  dragging.value = false
+  window.removeEventListener('mousemove', onDragMove)
+  window.removeEventListener('mouseup', onDragEnd)
+  window.removeEventListener('touchmove', onDragMove)
+  window.removeEventListener('touchend', onDragEnd)
 }
 
 const totalTextWidth = computed(() => textWidths.value.reduce((a, b) => a + b, 0))
@@ -144,7 +142,6 @@ const evenWidth = computed(() => (maxTextWidth.value + 24) * props.items.length 
 const evenlySpaced = computed(() => containerWidth.value >= evenWidth.value)
 const canFit = computed(() => containerWidth.value >= minRequiredWidth.value && props.items.length > 1)
 
-// Shared calculation for content-proportional mode
 const proportionalLayout = computed(() => {
   const availableWidth = containerWidth.value - (TRACK_PADDING * 2)
   const totalContentWidth = totalTextWidth.value + totalPadding.value
@@ -158,12 +155,10 @@ const proportionalLayout = computed(() => {
   return { widths }
 })
 
-// Each button's width for content-proportional mode
 const buttonStyles = computed(() => {
   if (!canFit.value || evenlySpaced.value) {
     return props.items.map(() => ({}))
   }
-
   const { widths } = proportionalLayout.value
   return widths.map((w) => ({
     width: `${w}px`,
@@ -225,6 +220,10 @@ watch(containerWidth, async () => {
   await nextTick()
   updateIndicator()
 })
+
+function updateDropdown() {
+  useDropdown.value = !canFit.value && props.items.length > 1
+}
 </script>
 
 <template>
@@ -239,7 +238,7 @@ watch(containerWidth, async () => {
     class="segmented-root"
     :style="{ height: COMPONENT_HEIGHT + 'px' }"
   >
-    <!-- Premium Custom Dropdown Panel Mode -->
+    <!-- Custom Dropdown Panel Mode -->
     <div v-if="useDropdown" class="custom-select-wrapper" ref="dropdownRef">
       <div
         class="custom-select-display"
@@ -270,10 +269,10 @@ watch(containerWidth, async () => {
       </div>
     </div>
 
-    <!-- Segmented Multi-Button Control Mode (Equipped with touch swipe listeners) -->
+    <!-- Segmented Control Mode with Drag/Slide Touch Interactions -->
     <div
       v-else
-      class="segmented-track"
+      class="segmented-track select-none cursor-grab active:cursor-grabbing"
       @mousedown="onDragStart"
       @touchstart="onDragStart"
     >
@@ -281,7 +280,7 @@ watch(containerWidth, async () => {
       <button
         v-for="(item, idx) in items"
         :key="idx"
-        class="segmented-item animate-segment"
+        class="segmented-item pointer-events-none"
         :class="{ 'segmented-item--active': modelValue === idx }"
         :style="buttonStyles[idx]"
       >
@@ -306,7 +305,8 @@ watch(containerWidth, async () => {
   background: #e5e5ea;
   padding: 2px;
   gap: 0;
-  touch-action: none; /* Prevents default gesture conflicts */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 :root.dark .segmented-track,
@@ -322,9 +322,9 @@ watch(containerWidth, async () => {
   background: white;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  /* Snappy SwiftUI-style kinetic easing curve */
-  transition: transform 0.22s cubic-bezier(0.15, 0.85, 0.35, 1),
-              width 0.18s cubic-bezier(0.15, 0.85, 0.35, 1);
+  /* SwiftUI kinetic spring-like curves */
+  transition: transform 0.28s cubic-bezier(0.15, 0.85, 0.35, 1),
+              width 0.22s cubic-bezier(0.15, 0.85, 0.35, 1);
   z-index: 1;
 }
 
@@ -343,7 +343,6 @@ watch(containerWidth, async () => {
   padding: 0 12px;
   border: none;
   background: transparent;
-  cursor: pointer;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: 500;
@@ -369,7 +368,7 @@ watch(containerWidth, async () => {
   color: white;
 }
 
-/* Custom Dropdown CSS exactly based on index.html styling specifications */
+/* Custom Dropdown specs matching index.html aesthetics */
 .custom-select-wrapper {
   position: relative;
   font-size: 13px;

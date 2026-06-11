@@ -1,16 +1,39 @@
 @import "tailwindcss";
 
-.activity-indicator {
-  width: 20px;
-  height: 20px;
-  border: 2.5px solid #d1d5db;
-  border-top-color: #007aff;
-  border-radius: 50%;
-  animation: activity-spin 0.75s linear infinite;
-  margin: 0 auto;
+/* Apple Idiomatic System Spinner Ticks */
+.apple-spinner {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
 }
-@keyframes activity-spin {
-  to { transform: rotate(360deg); }
+.apple-spinner div {
+  position: absolute;
+  left: 11px;
+  top: 0;
+  width: 2px;
+  height: 6px;
+  background: #8e8e93;
+  border-radius: 1px;
+  transform-origin: 1px 12px;
+  animation: apple-spinner-fade 1s linear infinite;
+}
+.apple-spinner div:nth-child(1) { transform: rotate(0deg); animation-delay: -1s; }
+.apple-spinner div:nth-child(2) { transform: rotate(30deg); animation-delay: -0.916s; }
+.apple-spinner div:nth-child(3) { transform: rotate(60deg); animation-delay: -0.833s; }
+.apple-spinner div:nth-child(4) { transform: rotate(90deg); animation-delay: -0.75s; }
+.apple-spinner div:nth-child(5) { transform: rotate(120deg); animation-delay: -0.666s; }
+.apple-spinner div:nth-child(6) { transform: rotate(150deg); animation-delay: -0.583s; }
+.apple-spinner div:nth-child(7) { transform: rotate(180deg); animation-delay: -0.5s; }
+.apple-spinner div:nth-child(8) { transform: rotate(210deg); animation-delay: -0.416s; }
+.apple-spinner div:nth-child(9) { transform: rotate(240deg); animation-delay: -0.333s; }
+.apple-spinner div:nth-child(10) { transform: rotate(270deg); animation-delay: -0.25s; }
+.apple-spinner div:nth-child(11) { transform: rotate(300deg); animation-delay: -0.166s; }
+.apple-spinner div:nth-child(12) { transform: rotate(330deg); animation-delay: -0.083s; }
+
+@keyframes apple-spinner-fade {
+  from { opacity: 1; }
+  to { opacity: 0.25; }
 }
 
 .preset-grid {

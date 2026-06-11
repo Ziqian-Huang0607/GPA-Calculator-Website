@@ -26,16 +26,21 @@ function toggleSubject(sIdx: number) {
   backend.toggleSelection(props.modIndex, sIdx)
 }
 
-// Collapses module panel dynamically if locked
-watch(isLocked, (locked) => {
-  if (locked) expanded.value = false
+// Watch locked state to animate-collapse the panel instantly when disabled
+watch(isLocked, (lockedVal) => {
+  if (lockedVal) {
+    expanded.value = false
+  }
 })
 </script>
 
 <template>
   <div
-    class="module-card bg-white dark:bg-gray-800 overflow-hidden"
-    :class="isLocked ? 'opacity-50 pointer-events-none' : ''"
+    class="module-selector bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300"
+    :class="[
+      isLocked ? 'opacity-40 pointer-events-none' : '',
+      expanded ? 'border-blue-500/50 shadow-md shadow-blue-500/5 dark:border-blue-500/40' : ''
+    ]"
   >
     <!-- Header -->
     <button
@@ -44,7 +49,7 @@ watch(isLocked, (locked) => {
     >
       <div class="flex-1 min-w-0">
         <div
-          class="text-[17px] font-bold"
+          class="text-[17px] font-bold transition-colors duration-200"
           :class="isRequiredModule ? 'text-red-500' : isLocked ? 'text-gray-400' : 'text-black dark:text-white'"
         >
           {{ module.name || 'Module' }}
@@ -60,8 +65,11 @@ watch(isLocked, (locked) => {
       />
     </button>
 
-    <!-- Accordion CSS Grid Layout transition -->
-    <div class="collapse-wrapper" :class="{ expanded: expanded }">
+    <!-- Accordion Grid height animation wrapper -->
+    <div
+      class="collapse-wrapper"
+      :class="{ collapsed: !expanded }"
+    >
       <div class="collapse-inner border-t border-gray-200 dark:border-gray-700">
         <div
           v-for="(subj, sIdx) in module.subjects"
@@ -105,25 +113,21 @@ watch(isLocked, (locked) => {
 </template>
 
 <style scoped>
-.module-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.dark .module-card {
-  border-color: #374151;
+.module-selector {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
-/* Smooth structural CSS grid transition wrapper */
+/* Accordion collapse transition */
 .collapse-wrapper {
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.28s cubic-bezier(0.15, 0.85, 0.35, 1);
-}
-.collapse-wrapper.expanded {
   grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.collapse-wrapper.collapsed {
+  grid-template-rows: 0fr;
+}
+
 .collapse-inner {
   overflow: hidden;
 }
