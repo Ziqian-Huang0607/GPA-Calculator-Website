@@ -68,30 +68,27 @@ function onDragEnd() {
   <div v-else class="app-layout">
     <!-- Main Content -->
     <div class="main-content">
-      <header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
-        <div class="px-4 py-3 max-w-2xl mx-auto">
-          <h1 class="text-[17px] font-semibold text-center text-black dark:text-white">GPA Calculator</h1>
-        </div>
-      </header>
+      <div class="px-4 pt-8 pb-2 max-w-2xl mx-auto">
+        <h1 class="text-[32px] font-semibold text-black dark:text-white">GPA Calculator</h1>
+      </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
         <!-- GPA Result + Reset pill -->
-        <div class="flex items-center justify-center gap-2 py-6">
-          <p
-            class="text-[16px] mt-0.5 font-medium"
-            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
-          >
-            {{ backend.calculationResultText.value }}
-          </p>
-          <button
-            class="text-[12px] font-medium px-2.5 py-1 rounded-full transition-colors border-none cursor-pointer shrink-0"
-            :class="backend.isInvalidated.value
-              ? 'bg-red-100 dark:bg-red-900/30 text-red-500'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'"
-            @click="backend.resetAllLevelsAndScores()"
-          >
-            Reset
-          </button>
+        <div class="text-center py-6">
+          <div class="flex items-center justify-center gap-2">
+            <p
+              class="text-[16px] font-medium"
+              :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
+            >
+              {{ backend.calculationResultText.value }}
+            </p>
+            <button
+              class="text-[12px] font-medium px-2.5 py-1 rounded-full transition-colors border-none cursor-pointer shrink-0 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
+              @click="backend.resetAllLevelsAndScores()"
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
         <!-- Mobile: Customize button -->

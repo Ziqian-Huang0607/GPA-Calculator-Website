@@ -56,7 +56,7 @@ const proportionalLayout = computed(() => {
   return { widths, positions, scale }
 })
 
-// Each button's width + text-align for content-proportional mode
+// Each button's width for content-proportional mode
 const buttonStyles = computed(() => {
   if (!canFit.value || evenlySpaced.value) {
     return props.items.map(() => ({}))
@@ -66,6 +66,7 @@ const buttonStyles = computed(() => {
   return widths.map((w) => ({
     width: `${w}px`,
     flex: 'none',
+    padding: '0',
   }))
 })
 

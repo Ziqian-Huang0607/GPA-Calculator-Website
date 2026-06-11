@@ -237,7 +237,6 @@ const catalogInfo = computed(() => {
   height: 100vh;
   overflow: hidden;
   background: white;
-  border-left: 1px solid #e5e5ea;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -245,7 +244,6 @@ const catalogInfo = computed(() => {
 
 .dark .sidebar {
   background: #1c1c1e;
-  border-left-color: #38383a;
 }
 
 .sidebar-inner {
