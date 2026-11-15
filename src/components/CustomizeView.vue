@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useBackend } from '../useBackend'
 import SegmentedControl from './SegmentedControl.vue'
 import ModuleSelector from './ModuleSelector.vue'
@@ -15,6 +15,12 @@ const emit = defineEmits<{
 }>()
 
 const backend = useBackend()
+const isDark = ref(document.documentElement.classList.contains('dark'))
+
+function toggleTheme() {
+  isDark.value = !isDark.value
+  window.dispatchEvent(new CustomEvent('idx-theme-changed', { detail: isDark.value ? 'dark' : 'light' }))
+}
 
 const scoreFormatIndex = computed(() =>
   backend.scoreDisplay.value === 'percentage' ? 0 : 1
@@ -24,6 +30,20 @@ function setScoreFormat(idx: number) {
 }
 
 const presets = computed(() => backend.root.value?.presets ?? [])
+const groupedPresets = computed(() => {
+  const groups: Record<string, typeof presets.value> = {}
+  for (const p of presets.value) {
+    const grade = p.name.replace(/Grade\s*/i, '') || p.name
+    if (!groups[grade]) groups[grade] = []
+    groups[grade].push(p)
+  }
+  return Object.entries(groups).sort(([a], [b]) => Number(a) - Number(b))
+})
+
+function onPresetChange(event: Event) {
+  const target = event.target as HTMLSelectElement
+  backend.selectPreset(target.value)
+}
 </script>
 
 <template>
@@ -44,16 +64,6 @@ const presets = computed(() => backend.root.value?.presets ?? [])
             <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">
               Score Format
             </span>
-            <button
-              v-if="backend.currentPreset.value?.track"
-              class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
-              :class="backend.trackActive.value
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
-              @click="backend.setTrackActive(!backend.trackActive.value)"
-            >
-              Use {{ backend.currentPreset.value.track.displayName }}
-            </button>
             <div class="flex-1 min-w-0">
               <SegmentedControl
                 :items="['Percentage', 'Letter']"
@@ -63,6 +73,17 @@ const presets = computed(() => backend.root.value?.presets ?? [])
             </div>
           </div>
 
+          <!-- Appearance -->
+          <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between gap-3">
+            <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
+            <button
+              class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
+              @click="toggleTheme"
+            >
+              {{ isDark ? 'Light' : 'Dark' }}
+            </button>
+          </div>
+
           <div
             v-if="backend.requirementWarning.value"
             class="text-red-500 text-[15px] px-2"
@@ -70,47 +91,27 @@ const presets = computed(() => backend.root.value?.presets ?? [])
             {{ backend.requirementWarning.value }}
           </div>
 
-          <div class="preset-grid">
-            <button
-              v-for="p in presets"
-              :key="p.id"
-              class="p-4 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] flex items-center text-left"
-              :class="backend.currentPreset.value?.id === p.id
-                ? 'bg-blue-500 border-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 border-transparent text-black dark:text-white'"
-              @click="backend.selectPreset(p.id)"
+          <div>
+            <label class="block text-[13px] font-medium text-gray-500 dark:text-gray-400 mb-2">Schedule</label>
+            <select
+              :value="backend.currentPreset.value?.id"
+              class="w-full text-[15px] font-medium rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-3 cursor-pointer appearance-none"
+              @change="onPresetChange"
             >
-              <div class="flex items-center gap-3 w-full">
-                <div class="flex-1 min-w-0">
-                  <div
-                    class="text-[18px] font-semibold"
-                    :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-blue-500'"
-                  >
-                    {{ p.name }}
-                  </div>
-                  <div
-                    class="text-[13px]"
-                    :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'"
-                  >
-                    {{
-                      p.subtitle ||
-                      p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items'
-                    }}
-                  </div>
-                </div>
-                <div
-                  class="flex-shrink-0"
-                  :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'"
+              <optgroup
+                v-for="[grade, group] in groupedPresets"
+                :key="grade"
+                :label="`Grade ${grade}`"
+              >
+                <option
+                  v-for="p in group"
+                  :key="p.id"
+                  :value="p.id"
                 >
-                  <svg v-if="backend.currentPreset.value?.id === p.id" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                  </svg>
-                  <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                </div>
-              </div>
-            </button>
+                  {{ p.name }} · {{ p.subtitle }}
+                </option>
+              </optgroup>
+            </select>
           </div>
 
           <ModuleSelector
@@ -135,15 +136,14 @@ const presets = computed(() => backend.root.value?.presets ?? [])
                 Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
               </div>
               <div>
-                Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
+                Calculation rules adapted from <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>.
               </div>
               <div>
-                Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+                Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
               </div>
             </div>
             <div class="flex flex-col shrink-0 ml-3 gap-1">
               <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
-              <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
             </div>
           </div>
           <div class="text-center pt-2">
@@ -178,16 +178,6 @@ const presets = computed(() => backend.root.value?.presets ?? [])
           <div class="px-4 space-y-4">
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
               <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">Score Format</span>
-              <button
-                v-if="backend.currentPreset.value?.track"
-                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
-                :class="backend.trackActive.value
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
-                @click="backend.setTrackActive(!backend.trackActive.value)"
-              >
-                Use {{ backend.currentPreset.value.track.displayName }}
-              </button>
               <div class="flex-1 min-w-0">
                 <SegmentedControl
                   :items="['Percentage', 'Letter']"
@@ -197,39 +187,41 @@ const presets = computed(() => backend.root.value?.presets ?? [])
               </div>
             </div>
 
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between gap-3">
+              <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
+              <button
+                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
+                @click="toggleTheme"
+              >
+                {{ isDark ? 'Light' : 'Dark' }}
+              </button>
+            </div>
+
             <div v-if="backend.requirementWarning.value" class="text-red-500 text-[15px] px-2">
               {{ backend.requirementWarning.value }}
             </div>
 
-            <div class="preset-grid">
-              <button
-                v-for="p in presets"
-                :key="p.id"
-                class="p-4 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] flex items-center text-left"
-                :class="backend.currentPreset.value?.id === p.id
-                  ? 'bg-blue-500 border-blue-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 border-transparent text-black dark:text-white'"
-                @click="backend.selectPreset(p.id)"
+            <div>
+              <label class="block text-[13px] font-medium text-gray-500 dark:text-gray-400 mb-2">Schedule</label>
+              <select
+                :value="backend.currentPreset.value?.id"
+                class="w-full text-[15px] font-medium rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-3 cursor-pointer appearance-none"
+                @change="onPresetChange"
               >
-                <div class="flex items-center gap-3 w-full">
-                  <div class="flex-1 min-w-0">
-                    <div class="text-[18px] font-semibold" :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-blue-500'">
-                      {{ p.name }}
-                    </div>
-                    <div class="text-[13px]" :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'">
-                      {{ p.subtitle || p.modules.reduce((acc: number, m: any) => acc + m.subjects.length, 0) + ' items' }}
-                    </div>
-                  </div>
-                  <div class="flex-shrink-0" :class="backend.currentPreset.value?.id === p.id ? 'text-white' : 'text-gray-400'">
-                    <svg v-if="backend.currentPreset.value?.id === p.id" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                    </svg>
-                    <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <circle cx="12" cy="12" r="10" />
-                    </svg>
-                  </div>
-                </div>
-              </button>
+                <optgroup
+                  v-for="[grade, group] in groupedPresets"
+                  :key="grade"
+                  :label="`Grade ${grade}`"
+                >
+                  <option
+                    v-for="p in group"
+                    :key="p.id"
+                    :value="p.id"
+                  >
+                    {{ p.name }} · {{ p.subtitle }}
+                  </option>
+                </optgroup>
+              </select>
             </div>
 
             <ModuleSelector
@@ -253,15 +245,14 @@ const presets = computed(() => backend.root.value?.presets ?? [])
                     Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
                   </div>
                   <div>
-                    Data Science club (<a href="https://github.com/willuhd" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Will Chen</a>)
+                    Calculation rules adapted from <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>.
                   </div>
                   <div>
-                    Original project by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+                    Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
                   </div>
                 </div>
                 <div class="flex flex-col shrink-0 ml-3 gap-1">
                   <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
-                  <img src="../assets/ds-icon.png" alt="DS" class="w-11 h-11 rounded-lg object-cover" />
                 </div>
               </div>
               <div class="text-center pt-2">

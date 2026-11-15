@@ -27,6 +27,8 @@ const root = ref<CourseModel | null>(null)
 const currentPreset = ref<Preset | null>(null)
 const activeSubjects = ref<Subject[]>([])
 const calculationResultText = ref('Loading...')
+const weightedGPA = ref<number | null>(null)
+const unweightedGPA = ref<number | null>(null)
 const isInvalidated = ref(false)
 const isLoading = ref(true)
 const scoreMapsById = ref<Record<string, ScoreEntry[]>>({})
@@ -37,6 +39,7 @@ const trackToggleByPreset = ref<Record<string, boolean>>({})
 const selectedLevelIndicesBySubject = ref<Record<string, number>>({})
 const selectedScoreIndicesBySubject = ref<Record<string, number>>({})
 const selectedScoreMapIdBySubject = ref<Record<string, string>>({})
+const nameChoicesBySubject = ref<Record<string, number>>({})
 const selectionsByModule = ref<
   Record<number, { itemIndex: number; subjectId: string }[]>
 >({})
@@ -62,9 +65,11 @@ function persistSelections() {
     selectedLevelIndicesBySubject.value = filterValid(selectedLevelIndicesBySubject.value)
     selectedScoreIndicesBySubject.value = filterValid(selectedScoreIndicesBySubject.value)
     selectedScoreMapIdBySubject.value = filterValid(selectedScoreMapIdBySubject.value)
+    nameChoicesBySubject.value = filterValid(nameChoicesBySubject.value)
     localStorage.setItem(`config_${p.id}_levels`, JSON.stringify(selectedLevelIndicesBySubject.value))
     localStorage.setItem(`config_${p.id}_scores`, JSON.stringify(selectedScoreIndicesBySubject.value))
     localStorage.setItem(`config_${p.id}_scoreMapChoice`, JSON.stringify(selectedScoreMapIdBySubject.value))
+    localStorage.setItem(`config_${p.id}_nameChoices`, JSON.stringify(nameChoicesBySubject.value))
     localStorage.setItem(`config_${p.id}_trackToggle`, JSON.stringify(trackToggleByPreset.value[p.id] ?? true))
     for (let i = 0; i < p.modules.length; i++) {
       const entries = selectionsByModule.value[i] || []
@@ -87,6 +92,7 @@ function loadPersistedSelections(presetId: string, modules: Module[]) {
   selectedLevelIndicesBySubject.value = loadDict(`config_${presetId}_levels`)
   selectedScoreIndicesBySubject.value = loadDict(`config_${presetId}_scores`)
   selectedScoreMapIdBySubject.value = loadDict(`config_${presetId}_scoreMapChoice`)
+  nameChoicesBySubject.value = loadDict(`config_${presetId}_nameChoices`)
   selectionsByModule.value = {}
   for (let i = 0; i < modules.length; i++) {
     const idsRaw = localStorage.getItem(`config_${presetId}_mod_ids_${i}`)
@@ -118,6 +124,8 @@ function ensureDefaultIndices(subjects: Subject[]) {
       selectedLevelIndicesBySubject.value[key] = 0
     if (selectedScoreIndicesBySubject.value[key] === undefined)
       selectedScoreIndicesBySubject.value[key] = 0
+    if (nameChoicesBySubject.value[key] === undefined)
+      nameChoicesBySubject.value[key] = -1
   }
 }
 
@@ -143,19 +151,27 @@ function rebuildActiveSubjects() {
   ensureDefaultIndices(list)
 }
 
+const BLANK_SCORE: ScoreEntry = { percent: '—', letter: '—', gpa: 0 }
+
 function scoreMapForSubject(subj: Subject): ScoreEntry[] {
-  if (subj.customMap && subj.customMap.length > 0) return subj.customMap
-  const p = currentPreset.value
-  if (p?.track && trackActive.value) {
-    const key = subjectKey(subj)
-    const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
-    const lvl = safeGet(subj.levels, lvlIdx)
-    if (lvl?.tags?.includes(p.track.id)) {
-      const trackMap = scoreMapsById.value[p.track.scoreMapId]
-      if (trackMap) return trackMap
+  let map: ScoreEntry[] = []
+  if (subj.customMap && subj.customMap.length > 0) map = subj.customMap
+  else {
+    const p = currentPreset.value
+    if (p?.track && trackActive.value) {
+      const key = subjectKey(subj)
+      const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
+      const lvl = safeGet(subj.levels, lvlIdx)
+      if (lvl?.tags?.includes(p.track.id)) {
+        const trackMap = scoreMapsById.value[p.track.scoreMapId]
+        if (trackMap) map = trackMap
+      }
+    }
+    if (map.length === 0) {
+      map = scoreMapsById.value[subj.scoreMapId ?? ''] ?? scoreMapsById.value[defaultScoreMapId.value] ?? []
     }
   }
-  return scoreMapsById.value[subj.scoreMapId ?? ''] ?? scoreMapsById.value[defaultScoreMapId.value] ?? []
+  return [BLANK_SCORE, ...map]
 }
 
 function evaluateRulesInternal() {
@@ -288,25 +304,109 @@ function evaluateRulesInternal() {
   effectiveLimitsByModule.value = effLimits
 }
 
+function computeSubjectResult(subj: Subject) {
+  const key = subjectKey(subj)
+  const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
+  const lvl: Level = safeGet(subj.levels, lvlIdx) ?? { name: '', offset: 0 }
+  const map = scoreMapForSubject(subj)
+  const scoreIdx = selectedScoreIndicesBySubject.value[key] ?? 0
+  const score = safeGet(map, scoreIdx)
+  const w = lvl.weightOverride ?? subj.weight ?? 0
+  if (scoreIdx === 0 || !score) return { value: null, weight: w, weightedValue: 0, selected: false, subj }
+  const value = Math.max(score.gpa + lvl.offset, 0)
+  return { value, weight: w, weightedValue: value * w, selected: true, subj }
+}
+
 function recomputeGPA() {
   if (!currentPreset.value) {
     calculationResultText.value = 'No preset selected'
     return
   }
-  let pts = 0
-  let wgt = 0
+
+  const results = new Map<string, ReturnType<typeof computeSubjectResult>>()
+  for (const subj of activeSubjects.value) {
+    results.set(subjectKey(subj), computeSubjectResult(subj))
+  }
+
+  const counted = new Set<string>()
+  let weightedPoints = 0
+  let totalWeight = 0
+  let unweightedPoints = 0
+  let unweightedCount = 0
+
+  // Compute US-style unweighted GPA per subject, independent of weighted grouping.
   for (const subj of activeSubjects.value) {
     const key = subjectKey(subj)
-    const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
-    const lvl: Level = safeGet(subj.levels, lvlIdx) ?? { name: '', offset: 0 }
-    const map = scoreMapForSubject(subj)
     const scoreIdx = selectedScoreIndicesBySubject.value[key] ?? 0
-    const baseGPA = safeGet(map, scoreIdx)?.gpa ?? 0
-    const w = lvl.weightOverride ?? subj.weight ?? 0
-    pts += Math.max(0, baseGPA - Math.max(0, lvl.offset)) * w
-    wgt += w
+    if (scoreIdx === 0) continue
+    const score = safeGet(scoreMapForSubject(subj), scoreIdx)
+    if (!score) continue
+    const letterBucket = score.letter?.trim().charAt(0).toUpperCase()
+    const uwMap: Record<string, number> = { A: 4, B: 3, C: 2, D: 1, F: 0 }
+    const uw = uwMap[letterBucket] ?? 0
+    unweightedPoints += uw
+    unweightedCount += 1
   }
-  calculationResultText.value = wgt > 0 ? `Your GPA: ${(pts / wgt).toFixed(3)}` : 'No GPA data'
+
+  const rules = currentPreset.value.rules
+
+  // Handle double groups (e.g. ToK/EE matrix) first.
+  if (rules?.doubleGroups) {
+    for (const dg of rules.doubleGroups) {
+      const entries = dg.subjectIds
+        .map((id) => results.get(id))
+        .filter((r): r is ReturnType<typeof computeSubjectResult> => Boolean(r))
+      if (entries.length !== 2) continue
+      const [first, second] = entries
+      const firstScoreIdx = selectedScoreIndicesBySubject.value[first.subj.id] ?? 0
+      const secondScoreIdx = selectedScoreIndicesBySubject.value[second.subj.id] ?? 0
+      if (!first.selected || !second.selected) continue
+      const matrixValue = dg.matrix[firstScoreIdx]?.[secondScoreIdx]
+      if (matrixValue === undefined) continue
+      const weight = first.weight
+      weightedPoints += matrixValue * weight
+      totalWeight += weight
+      counted.add(subjectKey(first.subj))
+      counted.add(subjectKey(second.subj))
+    }
+  }
+
+  // Handle max groups: count only the best weighted result in each group.
+  if (rules?.maxGroups) {
+    for (const mg of rules.maxGroups) {
+      const candidates = mg.subjectIds
+        .map((id) => results.get(id))
+        .filter((r): r is ReturnType<typeof computeSubjectResult> => Boolean(r) && r.selected)
+      if (candidates.length === 0) continue
+      const best = candidates.reduce((a, b) => (a.weightedValue > b.weightedValue ? a : b))
+      weightedPoints += best.weightedValue
+      totalWeight += best.weight
+      counted.add(subjectKey(best.subj))
+    }
+  }
+
+  // Normal subjects not already counted by a special group.
+  for (const subj of activeSubjects.value) {
+    const key = subjectKey(subj)
+    if (counted.has(key)) continue
+    const r = results.get(key)
+    if (!r || !r.selected) continue
+    weightedPoints += r.weightedValue
+    totalWeight += r.weight
+  }
+
+  const weighted = totalWeight > 0 ? weightedPoints / totalWeight : null
+  const unweighted = unweightedCount > 0 ? unweightedPoints / unweightedCount : null
+  weightedGPA.value = weighted
+  unweightedGPA.value = unweighted
+
+  if (weighted !== null && unweighted !== null) {
+    calculationResultText.value = `SHSID GPA: ${weighted.toFixed(3)} · Unweighted: ${unweighted.toFixed(3)}`
+  } else if (weighted !== null) {
+    calculationResultText.value = `SHSID GPA: ${weighted.toFixed(3)}`
+  } else {
+    calculationResultText.value = 'No GPA data'
+  }
 }
 
 function evaluateRulesAndRecompute() {
@@ -429,6 +529,8 @@ export function useBackend() {
     currentPreset,
     activeSubjects,
     calculationResultText,
+    weightedGPA,
+    unweightedGPA,
     isInvalidated,
     isLoading,
     scoreDisplay,
@@ -436,6 +538,8 @@ export function useBackend() {
     requirementWarning,
     requiredSubjectIDs,
     modulesRequiringSelection,
+    gradesEntered: computed(() => activeSubjects.value.filter((s) => (selectedScoreIndicesBySubject.value[subjectKey(s)] ?? 0) > 0).length),
+    totalSubjects: computed(() => activeSubjects.value.length),
     choiceModules: computed(() => {
       const p = currentPreset.value
       if (!p) return []
@@ -447,6 +551,8 @@ export function useBackend() {
     setScoreIndex,
     getLevelIndex,
     getScoreIndex,
+    getNameChoice,
+    setNameChoice,
     toggleSelection,
     isSelected,
     isDisabled,
@@ -488,6 +594,18 @@ function getLevelIndex(subj: Subject): number {
 
 function getScoreIndex(subj: Subject): number {
   return selectedScoreIndicesBySubject.value[subjectKey(subj)] ?? 0
+}
+
+function getNameChoice(subj: Subject): number {
+  return nameChoicesBySubject.value[subjectKey(subj)] ?? -1
+}
+
+function setNameChoice(idx: number, forSubjectIndex: number) {
+  const subj = activeSubjects.value[forSubjectIndex]
+  if (!subj) return
+  nameChoicesBySubject.value[subjectKey(subj)] = idx
+  persistSelections()
+  recomputeGPA()
 }
 
 function toggleSelection(modIndex: number, itemIndex: number) {
@@ -557,6 +675,7 @@ function resetAllLevelsAndScores() {
   selectedLevelIndicesBySubject.value = {}
   selectedScoreIndicesBySubject.value = {}
   selectedScoreMapIdBySubject.value = {}
+  nameChoicesBySubject.value = {}
   ensureDefaultIndices(activeSubjects.value)
   persistSelections()
   rebuildActiveSubjects()

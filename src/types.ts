@@ -19,15 +19,23 @@ export interface Template {
   scoreMapId?: string
 }
 
+export interface AlternateName {
+  compact: string
+  regular: string
+  ucEligible?: boolean
+}
+
 export interface Subject {
   id: string
   name: string
+  fullName?: string
   weight?: number
   levels: Level[]
   customMap?: ScoreEntry[]
   tags?: string[]
   scoreMapId?: string
   template?: string
+  alternateNames?: AlternateName[]
 }
 
 export interface Module {
@@ -81,6 +89,15 @@ export interface PresetConditional {
   errorMessage?: string
 }
 
+export interface MaxGroup {
+  subjectIds: string[]
+}
+
+export interface DoubleGroup {
+  subjectIds: string[]
+  matrix: number[][]
+}
+
 export interface PresetRules {
   exclusionTags?: string[][]
   exclusionIds?: string[][]
@@ -88,6 +105,8 @@ export interface PresetRules {
   dynamicLimits?: DynamicLimit[]
   requirements?: PresetRequirement[]
   conditionalRequirements?: PresetConditional[]
+  maxGroups?: MaxGroup[]
+  doubleGroups?: DoubleGroup[]
 }
 
 export interface PresetTrack {

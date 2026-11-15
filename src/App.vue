@@ -94,7 +94,7 @@ function onDragEnd() {
         <div></div><div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div><div></div>
       </div>
-      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Downloading catalog...</p>
+      <p class="text-[13px] text-gray-500 dark:text-gray-400 font-medium">Loading catalog...</p>
     </div>
   </div>
 
@@ -102,37 +102,87 @@ function onDragEnd() {
   <div v-else class="app-layout">
     <!-- Main Content -->
     <div class="main-content">
-      <div class="px-4 pt-6 pb-0 max-w-2xl mx-auto">
-        <h1 class="text-[32px] font-semibold text-center text-black dark:text-white">Indexademics GPA Calculator</h1>
+      <div class="px-4 pt-8 pb-0 max-w-2xl mx-auto">
+        <div class="flex items-center justify-center gap-3">
+          <img
+            src="/indexademics-logo.png"
+            alt="Indexademics"
+            class="w-10 h-10 object-contain"
+          />
+          <div class="text-left">
+            <h1 class="text-[28px] font-semibold leading-tight text-black dark:text-white">Indexademics GPA Calculator</h1>
+            <p class="text-[13px] text-gray-500 dark:text-gray-400">SHSID course planner</p>
+          </div>
+        </div>
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
-        <!-- Desktop Layout: GPA Result + Reset pill next to it -->
-        <div v-if="isWide" class="text-center py-3">
-          <div class="flex items-center justify-center gap-2">
-            <p
-              class="text-[16px] font-normal"
-              :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
-            >
-              {{ backend.calculationResultText.value }}
-            </p>
+        <!-- Desktop result card -->
+        <div v-if="isWide" class="result-card mt-6 mb-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-6">
+            <div class="flex-1 grid grid-cols-2 gap-6 text-center">
+              <div>
+                <div class="text-[12px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">SHSID Weighted</div>
+                <div
+                  class="gpa-value text-[34px] font-semibold leading-tight"
+                  :class="backend.isInvalidated.value ? 'text-red-500' : 'text-black dark:text-white'"
+                >
+                  {{ backend.weightedGPA.value !== null ? backend.weightedGPA.value.toFixed(3) : '—' }}
+                </div>
+              </div>
+              <div>
+                <div class="text-[12px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Unweighted</div>
+                <div
+                  class="gpa-value text-[34px] font-semibold leading-tight"
+                  :class="backend.isInvalidated.value ? 'text-red-500' : 'text-black dark:text-white'"
+                >
+                  {{ backend.unweightedGPA.value !== null ? backend.unweightedGPA.value.toFixed(3) : '—' }}
+                </div>
+              </div>
+            </div>
             <button
-              class="text-[12px] font-medium px-2.5 py-1 rounded-full transition-colors border-none cursor-pointer shrink-0 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
+              class="text-[12px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer shrink-0 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
               @click="backend.resetAllLevelsAndScores()"
             >
               Reset
             </button>
           </div>
+          <div class="text-center mt-2 text-[12px] text-gray-500 dark:text-gray-400">
+            {{ backend.gradesEntered.value }}/{{ backend.totalSubjects.value }} grades entered
+            <span v-if="backend.gradesEntered.value === 0" class="block mt-1 text-gray-400 dark:text-gray-500">
+              Select a grade for each course to calculate your GPA
+            </span>
+          </div>
         </div>
 
-        <!-- Mobile Layout: GPA result on top, Customize & Reset side-by-side below -->
-        <div v-else class="text-center pt-2 pb-5">
-          <p
-            class="text-[19px] font-medium mb-3.5"
-            :class="backend.isInvalidated.value ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'"
-          >
-            {{ backend.calculationResultText.value }}
-          </p>
+        <!-- Mobile result card -->
+        <div v-else class="result-card mt-5 mb-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm">
+          <div class="text-center mb-3 text-[12px] text-gray-500 dark:text-gray-400">
+            {{ backend.gradesEntered.value }}/{{ backend.totalSubjects.value }} grades entered
+            <span v-if="backend.gradesEntered.value === 0" class="block mt-1 text-gray-400 dark:text-gray-500">
+              Select grades to calculate your GPA
+            </span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-center mb-4">
+            <div>
+              <div class="text-[11px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">SHSID Weighted</div>
+              <div
+                class="gpa-value text-[28px] font-semibold leading-tight"
+                :class="backend.isInvalidated.value ? 'text-red-500' : 'text-black dark:text-white'"
+              >
+                {{ backend.weightedGPA.value !== null ? backend.weightedGPA.value.toFixed(3) : '—' }}
+              </div>
+            </div>
+            <div>
+              <div class="text-[11px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Unweighted</div>
+              <div
+                class="gpa-value text-[28px] font-semibold leading-tight"
+                :class="backend.isInvalidated.value ? 'text-red-500' : 'text-black dark:text-white'"
+              >
+                {{ backend.unweightedGPA.value !== null ? backend.unweightedGPA.value.toFixed(3) : '—' }}
+              </div>
+            </div>
+          </div>
           <div class="flex gap-3 max-w-xs mx-auto">
             <button
               class="flex-1 px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
@@ -175,7 +225,7 @@ function onDragEnd() {
           </div>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-3">
           <SubjectRow
             v-for="(subj, idx) in backend.activeSubjects.value"
             :key="subj.id || subj.name"

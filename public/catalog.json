@@ -1,0 +1,4612 @@
+{
+  "catalogName": "SHSID GPA rules",
+  "version": "shsid-original-rules-2024",
+  "lastUpdated": "2026-11-15",
+  "credit": "Credits and level offsets are kept from the original SHSID calculator in this project. The unverified values from GPA Calculator 3 are intentionally not used.",
+  "scoreMaps": {
+    "default": [
+      {
+        "percent": "<60",
+        "letter": "F",
+        "gpa": 0
+      },
+      {
+        "percent": "60–67",
+        "letter": "C/C-",
+        "gpa": 2.6
+      },
+      {
+        "percent": "68–72",
+        "letter": "C+",
+        "gpa": 3
+      },
+      {
+        "percent": "73–77",
+        "letter": "B-",
+        "gpa": 3.3
+      },
+      {
+        "percent": "78–82",
+        "letter": "B",
+        "gpa": 3.6
+      },
+      {
+        "percent": "83–87",
+        "letter": "B+",
+        "gpa": 3.9
+      },
+      {
+        "percent": "88–92",
+        "letter": "A-",
+        "gpa": 4.2
+      },
+      {
+        "percent": "93+",
+        "letter": "A/A+",
+        "gpa": 4.5
+      }
+    ],
+    "ib": [
+      {
+        "percent": "1",
+        "letter": "F",
+        "gpa": 0
+      },
+      {
+        "percent": "2",
+        "letter": "F",
+        "gpa": 0
+      },
+      {
+        "percent": "3",
+        "letter": "F",
+        "gpa": 0
+      },
+      {
+        "percent": "4",
+        "letter": "C/C-",
+        "gpa": 2.6
+      },
+      {
+        "percent": "5",
+        "letter": "B-",
+        "gpa": 3.3
+      },
+      {
+        "percent": "6",
+        "letter": "B+",
+        "gpa": 3.9
+      },
+      {
+        "percent": "7",
+        "letter": "A/A+",
+        "gpa": 4.5
+      }
+    ],
+    "ib-other": [
+      {
+        "percent": "F",
+        "letter": "F",
+        "gpa": 0
+      },
+      {
+        "percent": "D",
+        "letter": "D",
+        "gpa": 0
+      },
+      {
+        "percent": "C",
+        "letter": "C",
+        "gpa": 2.5
+      },
+      {
+        "percent": "B",
+        "letter": "B",
+        "gpa": 4
+      },
+      {
+        "percent": "A",
+        "letter": "A",
+        "gpa": 4.5
+      }
+    ]
+  },
+  "presets": [
+    {
+      "id": "stockshsidgrade6",
+      "name": "Grade 6",
+      "subtitle": "5 courses",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.4,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.30000000000000004,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "S",
+                  "offset": -0.19999999999999998,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.1,
+                  "weightOverride": 5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science",
+              "name": "Science",
+              "fullName": "Science",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 2.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 2.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "history",
+              "name": "History",
+              "fullName": "History",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 2.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 2.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade7",
+      "name": "Grade 7",
+      "subtitle": "5 courses",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "history",
+              "name": "History",
+              "fullName": "History",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.4,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.30000000000000004,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "S",
+                  "offset": -0.19999999999999998,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.1,
+                  "weightOverride": 5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science",
+              "name": "Science",
+              "fullName": "Science",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade8",
+      "name": "Grade 8",
+      "subtitle": "6 courses",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "geography",
+              "name": "Geography",
+              "fullName": "Geography",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.4,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.30000000000000004,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "S/5–7",
+                  "offset": -0.19999999999999998,
+                  "weightOverride": 5,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.1,
+                  "weightOverride": 5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "biology",
+              "name": "Biology",
+              "fullName": "Biology",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "physics",
+              "name": "Physics",
+              "fullName": "Physics",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 2.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 2.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade9",
+      "name": "Grade 9",
+      "subtitle": "7 courses",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6.5,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6.5,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "history",
+              "name": "History",
+              "fullName": "History",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chemistry",
+              "name": "Chemistry",
+              "fullName": "Chemistry",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "elective",
+              "name": "Elective",
+              "fullName": "Elective",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Geography",
+                  "regular": "Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "physics",
+              "name": "Physics",
+              "fullName": "Physics",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade10",
+      "name": "Grade 10",
+      "subtitle": "7 courses",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 5.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 5.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 5.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 5.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "history",
+              "name": "History",
+              "fullName": "History",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-1",
+              "name": "Science 1",
+              "fullName": "Science 1",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "science-2",
+              "name": "Science 2",
+              "fullName": "Science 2",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective",
+              "name": "Elective",
+              "fullName": "Elective",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Geography",
+                  "regular": "Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Drama",
+                  "regular": "Drama",
+                  "ucEligible": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade11-2m2-1m3",
+      "name": "Grade 11",
+      "subtitle": "AP/A-Level · 2× M1 + 1× M2",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade11-1m2-1m3-1m45",
+      "name": "Grade 11",
+      "subtitle": "AP/A-Level · 1× M1 + M2 + M3/4",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module",
+              "name": "Elective module",
+              "fullName": "Elective module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Env. Eng.",
+                  "regular": "Environmental Engineering",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Philosophy",
+                  "regular": "Philosophy",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Writing",
+                  "regular": "Creative Writing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Business",
+                  "regular": "Business Management",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Computer",
+                  "regular": "Computer Skills",
+                  "ucEligible": false
+                },
+                {
+                  "compact": "Law",
+                  "regular": "Introduction to Law",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music Theory",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Opera",
+                  "regular": "Opera Singing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Singing",
+                  "regular": "Acappella",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Acting",
+                  "regular": "Applied Acting",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Arts 1",
+                  "regular": "Arts 1",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Env. Sci",
+                  "regular": "Environmental Science",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade11-1m2-1m3-1m4-1m5",
+      "name": "Grade 11",
+      "subtitle": "AP/A-Level · 1× M1 + M2 + M3 + M4",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module-1-max0-stockshsidgrade11-1m2-1m3-1m4-1m5",
+              "name": "Elective module 1",
+              "fullName": "Elective module 1",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Env. Eng.",
+                  "regular": "Environmental Engineering",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Philosophy",
+                  "regular": "Philosophy",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Writing",
+                  "regular": "Creative Writing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Business",
+                  "regular": "Business Management",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Computer",
+                  "regular": "Computer Skills",
+                  "ucEligible": false
+                },
+                {
+                  "compact": "Law",
+                  "regular": "Introduction to Law",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music Theory",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module-2-max1-stockshsidgrade11-1m2-1m3-1m4-1m5",
+              "name": "Elective module 2",
+              "fullName": "Elective module 2",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Opera",
+                  "regular": "Opera Singing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Singing",
+                  "regular": "Acappella",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Acting",
+                  "regular": "Applied Acting",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Arts 1",
+                  "regular": "Arts 1",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Env. Sci",
+                  "regular": "Environmental Science",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "maxGroups": [
+          {
+            "subjectIds": [
+              "elective-module-1-max0-stockshsidgrade11-1m2-1m3-1m4-1m5",
+              "elective-module-2-max1-stockshsidgrade11-1m2-1m3-1m4-1m5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stockshsidgrade11-ib",
+      "name": "Grade 11",
+      "subtitle": "IB · without EE",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "elective-1",
+              "name": "Elective 1",
+              "fullName": "Elective 1",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-2",
+              "name": "Elective 2",
+              "fullName": "Elective 2",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-3",
+              "name": "Elective 3",
+              "fullName": "Elective 3",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "tok",
+              "name": "ToK",
+              "fullName": "ToK",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 0.5,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib-other",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade11-ibee",
+      "name": "Grade 11",
+      "subtitle": "IB · with EE",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "elective-1",
+              "name": "Elective 1",
+              "fullName": "Elective 1",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-2",
+              "name": "Elective 2",
+              "fullName": "Elective 2",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-3",
+              "name": "Elective 3",
+              "fullName": "Elective 3",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "tok-double0-stockshsidgrade11-ibee",
+              "name": "ToK",
+              "fullName": "ToK",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 0.5,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib-other",
+              "tags": [
+                "tok-ee-double"
+              ]
+            },
+            {
+              "id": "ee-double1-stockshsidgrade11-ibee",
+              "name": "EE",
+              "fullName": "EE",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 0.5,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib-other",
+              "tags": [
+                "tok-ee-double"
+              ]
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "doubleGroups": [
+          {
+            "matrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2.5,
+                4
+              ],
+              [
+                0,
+                0,
+                2.5,
+                2.5,
+                4
+              ],
+              [
+                0,
+                2.5,
+                2.5,
+                4,
+                4.5
+              ],
+              [
+                0,
+                4,
+                4,
+                4.5,
+                4.5
+              ]
+            ],
+            "subjectIds": [
+              "tok-double0-stockshsidgrade11-ibee",
+              "ee-double1-stockshsidgrade11-ibee"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stockshsidgrade12-2m2-1m3",
+      "name": "Grade 12",
+      "subtitle": "AP/A-Level · 2× M1 + 1× M2",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade12-1m2-1m3-1m45",
+      "name": "Grade 12",
+      "subtitle": "AP/A-Level · 1× M1 + M2 + M3/4",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module",
+              "name": "Elective module",
+              "fullName": "Elective module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Env. Eng.",
+                  "regular": "Environmental Engineering",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Philosophy",
+                  "regular": "Philosophy",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Writing",
+                  "regular": "Creative Writing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Business",
+                  "regular": "Business Management",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Computer",
+                  "regular": "Computer Skills",
+                  "ucEligible": false
+                },
+                {
+                  "compact": "Law",
+                  "regular": "Introduction to Law",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music Theory",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Opera",
+                  "regular": "Opera Singing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Singing",
+                  "regular": "Acappella",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Acting",
+                  "regular": "Applied Acting",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Arts 1",
+                  "regular": "Arts 1",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Env. Sci",
+                  "regular": "Environmental Science",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stockshsidgrade12-1m2-1m3-1m4-1m5",
+      "name": "Grade 12",
+      "subtitle": "AP/A-Level · 1× M1 + M2 + M3 + M4",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.4,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H+",
+                  "offset": -0.1,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            },
+            {
+              "id": "science-module",
+              "name": "Science module",
+              "fullName": "Science module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 6,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "humanities-module",
+              "name": "Humanities module",
+              "fullName": "Humanities module",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 4.5,
+                  "tags": []
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "US Overview",
+                  "regular": "US Overview",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Human Geo",
+                  "regular": "Human Geography",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chi History",
+                  "regular": "Chinese History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "West Civ",
+                  "regular": "Western Civilization",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art",
+                  "regular": "Art",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "US History",
+                  "regular": "US History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "World H",
+                  "regular": "World History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Art History",
+                  "regular": "Art History",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module-1-max0-stockshsidgrade12-1m2-1m3-1m4-1m5",
+              "name": "Elective module 1",
+              "fullName": "Elective module 1",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Env. Eng.",
+                  "regular": "Environmental Engineering",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Philosophy",
+                  "regular": "Philosophy",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Writing",
+                  "regular": "Creative Writing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Business",
+                  "regular": "Business Management",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Computer",
+                  "regular": "Computer Skills",
+                  "ucEligible": false
+                },
+                {
+                  "compact": "Law",
+                  "regular": "Introduction to Law",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psychology",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music Theory",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-module-2-max1-stockshsidgrade12-1m2-1m3-1m4-1m5",
+              "name": "Elective module 2",
+              "fullName": "Elective module 2",
+              "levels": [
+                {
+                  "name": "S",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "S+",
+                  "offset": -0.35,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "H",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "A-L",
+                  "offset": 0,
+                  "weightOverride": 6,
+                  "tags": [
+                    "a-level"
+                  ]
+                },
+                {
+                  "name": "AP",
+                  "offset": 0,
+                  "weightOverride": 4.5,
+                  "tags": [
+                    "ucHonors",
+                    "ap"
+                  ]
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Opera",
+                  "regular": "Opera Singing",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Singing",
+                  "regular": "Acappella",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Acting",
+                  "regular": "Applied Acting",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Arts 1",
+                  "regular": "Arts 1",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "French",
+                  "regular": "French",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Spanish",
+                  "regular": "Spanish",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Japanese",
+                  "regular": "Japanese",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Env. Sci",
+                  "regular": "Environmental Science",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "I–II",
+                  "offset": -0.5,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "III–IV",
+                  "offset": -0.4,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "V–VII/VIII",
+                  "offset": -0.3,
+                  "weightOverride": 3,
+                  "tags": []
+                },
+                {
+                  "name": "IX",
+                  "offset": -0.2,
+                  "weightOverride": 3,
+                  "tags": []
+                }
+              ],
+              "scoreMapId": "default",
+              "tags": []
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "maxGroups": [
+          {
+            "subjectIds": [
+              "elective-module-1-max0-stockshsidgrade12-1m2-1m3-1m4-1m5",
+              "elective-module-2-max1-stockshsidgrade12-1m2-1m3-1m4-1m5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stockshsidgrade12-ibee",
+      "name": "Grade 12",
+      "subtitle": "IB",
+      "modules": [
+        {
+          "type": "core",
+          "name": "Core Courses",
+          "subjects": [
+            {
+              "id": "math",
+              "name": "Math",
+              "fullName": "Math",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "fullName": "English",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "chinese",
+              "name": "Chinese",
+              "fullName": "Chinese",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": []
+            },
+            {
+              "id": "elective-1",
+              "name": "Elective 1",
+              "fullName": "Elective 1",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-2",
+              "name": "Elective 2",
+              "fullName": "Elective 2",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "elective-3",
+              "name": "Elective 3",
+              "fullName": "Elective 3",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 1,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib",
+              "tags": [],
+              "alternateNames": [
+                {
+                  "compact": "Biology",
+                  "regular": "Biology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Chemistry",
+                  "regular": "Chemistry",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Economics",
+                  "regular": "Economics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ESS",
+                  "regular": "ESS",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "History",
+                  "regular": "History",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "ITCS",
+                  "regular": "Computer Science",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Music",
+                  "regular": "Music",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Physics",
+                  "regular": "Physics",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "Psych",
+                  "regular": "Psychology",
+                  "ucEligible": true
+                },
+                {
+                  "compact": "VA",
+                  "regular": "Visual Arts",
+                  "ucEligible": true
+                }
+              ]
+            },
+            {
+              "id": "tok-double0-stockshsidgrade12-ibee",
+              "name": "ToK",
+              "fullName": "ToK",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 0.5,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib-other",
+              "tags": [
+                "tok-ee-double"
+              ]
+            },
+            {
+              "id": "ee-double1-stockshsidgrade12-ibee",
+              "name": "EE",
+              "fullName": "EE",
+              "levels": [
+                {
+                  "name": "IB",
+                  "offset": 0,
+                  "weightOverride": 0.5,
+                  "tags": [
+                    "ucHonors",
+                    "ib"
+                  ]
+                }
+              ],
+              "scoreMapId": "ib-other",
+              "tags": [
+                "tok-ee-double"
+              ]
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "doubleGroups": [
+          {
+            "matrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2.5,
+                4
+              ],
+              [
+                0,
+                0,
+                2.5,
+                2.5,
+                4
+              ],
+              [
+                0,
+                2.5,
+                2.5,
+                4,
+                4.5
+              ],
+              [
+                0,
+                4,
+                4,
+                4.5,
+                4.5
+              ]
+            ],
+            "subjectIds": [
+              "tok-double0-stockshsidgrade12-ibee",
+              "ee-double1-stockshsidgrade12-ibee"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
