@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useBackend } from '../useBackend'
+import { useAppearance } from '../useAppearance'
 import SegmentedControl from './SegmentedControl.vue'
 import ModuleSelector from './ModuleSelector.vue'
 
@@ -15,12 +16,17 @@ const emit = defineEmits<{
 }>()
 
 const backend = useBackend()
+const appearance = useAppearance()
 const isDark = ref(document.documentElement.classList.contains('dark'))
 const scheduleMenuOpen = ref(false)
 
 function toggleTheme() {
   isDark.value = !isDark.value
   window.dispatchEvent(new CustomEvent('idx-theme-changed', { detail: isDark.value ? 'dark' : 'light' }))
+}
+
+function toggleGradients() {
+  appearance.dynamicGradients.value = !appearance.dynamicGradients.value
 }
 
 const scoreFormatIndex = computed(() =>
@@ -101,14 +107,28 @@ function selectMobilePreset(id: string) {
           </div>
 
           <!-- Appearance -->
-          <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between gap-3">
-            <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
-            <button
-              class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
-              @click="toggleTheme"
-            >
-              {{ isDark ? 'Light' : 'Dark' }}
-            </button>
+          <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
+              <button
+                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
+                @click="toggleTheme"
+              >
+                {{ isDark ? 'Light' : 'Dark' }}
+              </button>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-[13px] text-gray-600 dark:text-gray-400">Dynamic gradients</span>
+              <button
+                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
+                :class="appearance.dynamicGradients.value
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
+                @click="toggleGradients"
+              >
+                {{ appearance.dynamicGradients.value ? 'On' : 'Off' }}
+              </button>
+            </div>
           </div>
 
           <div
@@ -228,14 +248,28 @@ function selectMobilePreset(id: string) {
               </div>
             </div>
 
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between gap-3">
-              <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
-              <button
-                class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
-                @click="toggleTheme"
-              >
-                {{ isDark ? 'Light' : 'Dark' }}
-              </button>
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 space-y-3">
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
+                <button
+                  class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600"
+                  @click="toggleTheme"
+                >
+                  {{ isDark ? 'Light' : 'Dark' }}
+                </button>
+              </div>
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-[13px] text-gray-600 dark:text-gray-400">Dynamic gradients</span>
+                <button
+                  class="text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors border-none cursor-pointer"
+                  :class="appearance.dynamicGradients.value
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'"
+                  @click="toggleGradients"
+                >
+                  {{ appearance.dynamicGradients.value ? 'On' : 'Off' }}
+                </button>
+              </div>
             </div>
 
             <div v-if="backend.requirementWarning.value" class="text-red-500 text-[15px] px-2">
