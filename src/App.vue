@@ -6,6 +6,7 @@ import CustomizeView from './components/CustomizeView.vue'
 
 const backend = useBackend()
 const showCustomize = ref(false)
+const showHelp = ref(false)
 
 const isWide = ref(false)
 let mql: MediaQueryList | null = null
@@ -112,12 +113,24 @@ function onDragEnd() {
             <h1 class="text-[28px] font-semibold leading-tight text-black dark:text-white">Indexademics GPA Calculator</h1>
             <p class="text-[13px] text-gray-500 dark:text-gray-400">SHSID course planner</p>
           </div>
+          <button
+            class="ml-2 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[15px] font-semibold border-none cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            aria-label="Help"
+            @click="showHelp = true"
+          >
+            ?
+          </button>
         </div>
       </div>
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
         <!-- Desktop result card -->
         <div v-if="isWide" class="result-card mt-6 mb-4 rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-lg shadow-gray-200/50 dark:shadow-black/30">
+          <div class="text-center mb-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-[13px] font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+              {{ backend.currentPreset.value?.name }}{{ backend.currentPreset.value?.subtitle ? ` · ${backend.currentPreset.value.subtitle}` : '' }}
+            </span>
+          </div>
           <div class="flex items-center justify-between gap-6">
             <div class="flex-1 grid grid-cols-2 gap-6 text-center">
               <div>
@@ -158,6 +171,11 @@ function onDragEnd() {
 
         <!-- Mobile result card -->
         <div v-else class="result-card mt-5 mb-5 rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-lg shadow-gray-200/50 dark:shadow-black/30">
+          <div class="text-center mb-3">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+              {{ backend.currentPreset.value?.name }}{{ backend.currentPreset.value?.subtitle ? ` · ${backend.currentPreset.value.subtitle}` : '' }}
+            </span>
+          </div>
           <div class="text-center mb-3 text-[12px] text-gray-500 dark:text-gray-400">
             {{ backend.gradesEntered.value }}/{{ backend.totalSubjects.value }} grades entered
             <span v-if="backend.gradesEntered.value === 0" class="block mt-1 text-gray-400 dark:text-gray-500">
@@ -233,5 +251,34 @@ function onDragEnd() {
       :sidebar-width="isWide ? sidebarWidth : undefined"
       @close="showCustomize = false"
     />
+
+    <!-- Help modal -->
+    <Teleport to="body">
+      <div v-if="showHelp" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40" @click="showHelp = false" />
+        <div class="relative w-full max-w-md rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-[20px] font-semibold text-black dark:text-white">How to use</h2>
+            <button
+              class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-none cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+              @click="showHelp = false"
+            >
+              ✕
+            </button>
+          </div>
+          <ol class="space-y-3 text-[14px] text-gray-700 dark:text-gray-300 list-decimal list-inside">
+            <li>Click <strong>Customize</strong> and choose your grade and track in <strong>Schedule</strong>.</li>
+            <li>Select your courses in the module selectors (if your schedule has choices).</li>
+            <li>For each course, choose the <strong>level</strong> (S, H, AP, etc.).</li>
+            <li>Select the <strong>grade</strong> you received or expect.</li>
+            <li>Your <strong>SHSID Weighted</strong> and <strong>Unweighted</strong> GPA update automatically.</li>
+            <li>Use <strong>Reset</strong> to clear all grades for the current schedule.</li>
+          </ol>
+          <p class="mt-4 text-[12px] text-gray-500 dark:text-gray-400">
+            Blank grades are not counted. Switch the unweighted scale in Customize for UC, US, Canada, England, or Australia.
+          </p>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
