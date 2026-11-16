@@ -313,8 +313,26 @@ function isSubjectUCEligible(subj: Subject): boolean {
   return subj.ucEligible ?? false
 }
 
-function unweightedPointsForLetter(letter: string, region: 'UC' | 'US' | 'Canada' | 'England' | 'Australia'): number {
+function letterToStandardLetter(letter: string): string {
   const normalized = letter.trim().toUpperCase()
+
+  // AP 1–5
+  const apMap: Record<string, string> = { '5': 'A', '4': 'B', '3': 'C', '2': 'D', '1': 'F' }
+  if (apMap[normalized]) return apMap[normalized]
+
+  // IB 1–7
+  const ibMap: Record<string, string> = { '7': 'A', '6': 'A-', '5': 'B', '4': 'C', '3': 'D', '2': 'F', '1': 'F' }
+  if (ibMap[normalized]) return ibMap[normalized]
+
+  // A-level / AS / A2
+  const alMap: Record<string, string> = { 'A*': 'A', 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'F', 'U': 'F' }
+  if (alMap[normalized]) return alMap[normalized]
+
+  return normalized
+}
+
+function unweightedPointsForLetter(letter: string, region: 'UC' | 'US' | 'Canada' | 'England' | 'Australia'): number {
+  const normalized = letterToStandardLetter(letter)
 
   if (region === 'Australia') {
     // Australian 7-point scale: HD=7, D=6, C=5, P=4, F=0.
@@ -357,7 +375,7 @@ function computeSubjectResult(subj: Subject) {
   const score = safeGet(map, scoreIdx)
   const w = lvl.weightOverride ?? subj.weight ?? 0
   if (scoreIdx === 0 || !score) return { value: null, weight: w, weightedValue: 0, selected: false, subj }
-  const value = Math.max(score.gpa + lvl.offset, 0)
+  const value = Math.max(score.gpa - Math.max(0, lvl.offset), 0)
   return { value, weight: w, weightedValue: value * w, selected: true, subj }
 }
 

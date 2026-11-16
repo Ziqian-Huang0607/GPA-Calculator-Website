@@ -2,7 +2,7 @@
 
 Web-based GPA calculator for SHSID, maintained by the Indexademics team (Ziqian Huang).
 
-The original iOS app concept came from [Michel's GPA Calculator](https://github.com/michelg10/GPA-Calculator-3). The current calculation rules, credit table, and catalog structure are adapted from [okArelene's shsid-gpa-calculator](https://github.com/okArelene/shsid-gpa-calculator), which provides a maintained, auditable, and locally-hostable rule set.
+The original iOS app concept came from [Michel's GPA Calculator](https://github.com/michelg10/GPA-Calculator-3). The calculation rules are adapted from [okArelene's shsid-gpa-calculator](https://github.com/okArelene/shsid-gpa-calculator), and the Spring 2026 course catalog is sourced from [Panther114/panthergpa](https://github.com/Panther114/panthergpa).
 
 ### Why we moved away from the previous backend
 

@@ -50,7 +50,7 @@ function setNameChoice(idx: number) {
 </script>
 
 <template>
-  <div class="subject-card bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+  <div class="subject-card bg-white dark:bg-gray-800 rounded-3xl p-5 shadow-md shadow-gray-200/40 dark:shadow-black/20 border border-gray-100 dark:border-gray-800">
     <div class="flex items-center justify-between gap-2 mb-3">
       <span
         class="text-[17px] font-medium leading-tight"

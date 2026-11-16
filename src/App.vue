@@ -117,7 +117,7 @@ function onDragEnd() {
 
       <div class="px-4 pb-8 max-w-2xl mx-auto">
         <!-- Desktop result card -->
-        <div v-if="isWide" class="result-card mt-6 mb-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm">
+        <div v-if="isWide" class="result-card mt-6 mb-4 rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-lg shadow-gray-200/50 dark:shadow-black/30">
           <div class="flex items-center justify-between gap-6">
             <div class="flex-1 grid grid-cols-2 gap-6 text-center">
               <div>
@@ -157,7 +157,7 @@ function onDragEnd() {
         </div>
 
         <!-- Mobile result card -->
-        <div v-else class="result-card mt-5 mb-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm">
+        <div v-else class="result-card mt-5 mb-5 rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-lg shadow-gray-200/50 dark:shadow-black/30">
           <div class="text-center mb-3 text-[12px] text-gray-500 dark:text-gray-400">
             {{ backend.gradesEntered.value }}/{{ backend.totalSubjects.value }} grades entered
             <span v-if="backend.gradesEntered.value === 0" class="block mt-1 text-gray-400 dark:text-gray-500">

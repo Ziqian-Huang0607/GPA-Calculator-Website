@@ -51,7 +51,8 @@ const groupedPresets = computed(() => {
 
 const currentPresetLabel = computed(() => {
   const p = backend.currentPreset.value
-  return p ? `${p.name} · ${p.subtitle}` : 'Select schedule'
+  if (!p) return 'Select schedule'
+  return p.subtitle ? `${p.name} · ${p.subtitle}` : p.name
 })
 
 function onPresetChange(event: Event) {
@@ -155,7 +156,7 @@ function selectMobilePreset(id: string) {
                   :key="p.id"
                   :value="p.id"
                 >
-                  {{ p.name }} · {{ p.subtitle }}
+                  {{ p.subtitle ? `${p.name} · ${p.subtitle}` : p.name }}
                 </option>
               </optgroup>
             </select>
@@ -183,7 +184,7 @@ function selectMobilePreset(id: string) {
                 Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
               </div>
               <div>
-                Calculation rules adapted from <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>.
+                Algorithms by <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>, catalog by <a href="https://github.com/Panther114/panthergpa" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Panther114</a>.
               </div>
               <div>
                 Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
@@ -304,6 +305,7 @@ function selectMobilePreset(id: string) {
                     >
                       <span class="block font-medium">{{ p.name }}</span>
                       <span
+                        v-if="p.subtitle"
                         class="block text-[12px] mt-0.5"
                         :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'"
                       >
@@ -336,7 +338,7 @@ function selectMobilePreset(id: string) {
                     Indexademics team (<a href="https://github.com/ziqian-huang0607" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Ziqian Huang</a>)
                   </div>
                   <div>
-                    Calculation rules adapted from <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>.
+                    Algorithms by <a href="https://github.com/okArelene/shsid-gpa-calculator" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">okArelene</a>, catalog by <a href="https://github.com/Panther114/panthergpa" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Panther114</a>.
                   </div>
                   <div>
                     Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
