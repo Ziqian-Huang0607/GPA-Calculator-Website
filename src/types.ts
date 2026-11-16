@@ -36,6 +36,7 @@ export interface Subject {
   scoreMapId?: string
   template?: string
   alternateNames?: AlternateName[]
+  ucEligible?: boolean
 }
 
 export interface Module {

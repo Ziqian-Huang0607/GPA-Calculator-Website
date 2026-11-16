@@ -305,10 +305,30 @@ function evaluateRulesInternal() {
   effectiveLimitsByModule.value = effLimits
 }
 
+function isSubjectUCEligible(subj: Subject): boolean {
+  const choiceIdx = nameChoicesBySubject.value[subjectKey(subj)] ?? -1
+  if (choiceIdx >= 0 && subj.alternateNames?.[choiceIdx]) {
+    return subj.alternateNames[choiceIdx].ucEligible ?? subj.ucEligible ?? false
+  }
+  return subj.ucEligible ?? false
+}
+
 function unweightedPointsForLetter(letter: string, region: 'UC' | 'US' | 'Canada' | 'England' | 'Australia'): number {
   const normalized = letter.trim().toUpperCase()
 
+  if (region === 'Australia') {
+    // Australian 7-point scale: HD=7, D=6, C=5, P=4, F=0.
+    const map: Record<string, number> = {
+      'A/A+': 7, 'A+': 7, 'A': 7, 'A-': 7,
+      'B+': 6, 'B': 6, 'B-': 5,
+      'C+': 5, 'C': 4, 'C-': 4, 'C/C-': 4,
+      'D': 4, 'F': 0
+    }
+    return map[normalized] ?? 0
+  }
+
   if (region === 'Canada') {
+    // Canadian 4.3 scale (used by Alberta, McGill, and others).
     const map: Record<string, number> = {
       'A/A+': 4.3, 'A+': 4.3, 'A': 4.0, 'A-': 3.7,
       'B+': 3.3, 'B': 3.0, 'B-': 2.7,
@@ -318,20 +338,14 @@ function unweightedPointsForLetter(letter: string, region: 'UC' | 'US' | 'Canada
     return map[normalized] ?? 0
   }
 
-  if (region === 'Australia') {
-    const map: Record<string, number> = {
-      'A/A+': 4, 'A+': 4, 'A': 4, 'A-': 4,
-      'B+': 3, 'B': 3, 'B-': 2,
-      'C+': 2, 'C': 1, 'C-': 1, 'C/C-': 1,
-      'D': 1, 'F': 0
-    }
-    return map[normalized] ?? 0
+  // US, UC, and England use the standard 4.0 scale with plus/minus.
+  const map: Record<string, number> = {
+    'A/A+': 4.0, 'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+    'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+    'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'C/C-': 2.0,
+    'D': 1.0, 'F': 0
   }
-
-  // UC, US, and England use the standard 4.0 scale.
-  const first = normalized.charAt(0)
-  const map: Record<string, number> = { A: 4, B: 3, C: 2, D: 1, F: 0 }
-  return map[first] ?? 0
+  return map[normalized] ?? 0
 }
 
 function computeSubjectResult(subj: Subject) {
@@ -370,6 +384,10 @@ function recomputeGPA() {
     const key = subjectKey(subj)
     const scoreIdx = selectedScoreIndicesBySubject.value[key] ?? 0
     if (scoreIdx === 0) continue
+
+    // UC only counts A–G eligible courses.
+    if (region === 'UC' && !isSubjectUCEligible(subj)) continue
+
     const score = safeGet(scoreMapForSubject(subj), scoreIdx)
     if (!score) continue
     unweightedPoints += unweightedPointsForLetter(score.letter ?? '', region)
