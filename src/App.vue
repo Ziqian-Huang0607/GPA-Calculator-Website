@@ -11,10 +11,8 @@ const isWide = ref(false)
 let mql: MediaQueryList | null = null
 function checkWide() { isWide.value = mql?.matches ?? false }
 
-// Install menu
-const showInstallMenu = ref(false)
+// Install
 const deferredPrompt = ref<any>(null)
-const installMenuRef = ref<HTMLElement | null>(null)
 
 function handleBeforeInstallPrompt(e: Event) {
   e.preventDefault()
@@ -25,21 +23,16 @@ function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 }
 
-function handleInstallClick(option: 'app') {
-  showInstallMenu.value = false
+function handleInstall() {
   if (isIOS()) {
-    alert('On iOS: tap the Share button in Safari, then choose "Add to Home Screen".')
+    alert('To install: tap the Share button in Safari, then choose "Add to Home Screen".')
     return
   }
   if (deferredPrompt.value) {
     deferredPrompt.value.prompt()
     deferredPrompt.value.userChoice.then(() => { deferredPrompt.value = null })
-  }
-}
-
-function handleOutsideInstallClick(e: MouseEvent) {
-  if (installMenuRef.value && !installMenuRef.value.contains(e.target as Node)) {
-    showInstallMenu.value = false
+  } else {
+    alert('Use your browser menu to install this page as an app or bookmark it.')
   }
 }
 
@@ -49,12 +42,10 @@ onMounted(() => {
   checkWide()
   mql.addEventListener('change', checkWide)
   window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-  document.addEventListener('mousedown', handleOutsideInstallClick)
 })
 onBeforeUnmount(() => {
   mql?.removeEventListener('change', checkWide)
   window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-  document.removeEventListener('mousedown', handleOutsideInstallClick)
 })
 
 // Resizable sidebar
@@ -208,25 +199,12 @@ function onDragEnd() {
             >
               Reset
             </button>
-            <div class="flex-1 relative" ref="installMenuRef">
-              <button
-                class="w-full px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
-                @click="showInstallMenu = !showInstallMenu"
-              >
-                Install
-              </button>
-              <div
-                v-if="showInstallMenu"
-                class="absolute top-full left-0 mt-1 min-w-[180px] bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden z-50"
-              >
-                <button
-                  class="w-full text-left px-4 py-2.5 text-[13px] font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-none bg-transparent cursor-pointer"
-                  @click="handleInstallClick('app')"
-                >
-                  Add to Home Screen
-                </button>
-              </div>
-            </div>
+            <button
+              class="flex-1 px-3.5 py-2 text-[14px] font-medium rounded-xl border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white dark:bg-gray-800 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600"
+              @click="handleInstall"
+            >
+              Install
+            </button>
           </div>
         </div>
 

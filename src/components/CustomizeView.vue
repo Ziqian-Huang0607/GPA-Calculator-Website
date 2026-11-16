@@ -244,7 +244,7 @@ function selectMobilePreset(id: string) {
 
             <div>
               <label class="block text-[13px] font-medium text-gray-500 dark:text-gray-400 mb-2">Schedule</label>
-              <div class="relative">
+              <div>
                 <button
                   class="w-full text-left text-[15px] font-medium rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-3 cursor-pointer"
                   @click="scheduleMenuOpen = !scheduleMenuOpen"
@@ -253,7 +253,7 @@ function selectMobilePreset(id: string) {
                 </button>
                 <div
                   v-if="scheduleMenuOpen"
-                  class="absolute z-50 mt-2 w-full max-h-72 overflow-y-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg"
+                  class="mt-2 w-full max-h-72 overflow-y-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg"
                 >
                   <div v-for="[grade, group] in groupedPresets" :key="grade">
                     <div class="px-4 py-2 text-[12px] font-semibold text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 sticky top-0">
