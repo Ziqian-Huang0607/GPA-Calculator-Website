@@ -26,14 +26,14 @@ function isIOS() {
 
 function handleInstall() {
   if (isIOS()) {
-    alert('To install: tap the Share button in Safari, then choose "Add to Home Screen".')
+    window.location.href = '/install.html'
     return
   }
   if (deferredPrompt.value) {
     deferredPrompt.value.prompt()
     deferredPrompt.value.userChoice.then(() => { deferredPrompt.value = null })
   } else {
-    alert('Use your browser menu to install this page as an app or bookmark it.')
+    window.location.href = '/install.html'
   }
 }
 

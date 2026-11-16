@@ -219,8 +219,9 @@ watch(containerWidth, async () => {
       <button
         v-for="(item, idx) in items"
         :key="idx"
-        class="segmented-item pointer-events-none"
+        class="segmented-item"
         :class="{ 'segmented-item--active': modelValue === idx }"
+        @click="emit('update:modelValue', idx)"
       >
         {{ item }}
       </button>
