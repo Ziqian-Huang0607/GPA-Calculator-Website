@@ -158,19 +158,7 @@ function scoreMapForSubject(subj: Subject): ScoreEntry[] {
   let map: ScoreEntry[] = []
   if (subj.customMap && subj.customMap.length > 0) map = subj.customMap
   else {
-    const p = currentPreset.value
-    if (p?.track && trackActive.value) {
-      const key = subjectKey(subj)
-      const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
-      const lvl = safeGet(subj.levels, lvlIdx)
-      if (lvl?.tags?.includes(p.track.id)) {
-        const trackMap = scoreMapsById.value[p.track.scoreMapId]
-        if (trackMap) map = trackMap
-      }
-    }
-    if (map.length === 0) {
-      map = scoreMapsById.value[subj.scoreMapId ?? ''] ?? scoreMapsById.value[defaultScoreMapId.value] ?? []
-    }
+    map = scoreMapsById.value[subj.scoreMapId ?? ''] ?? scoreMapsById.value[defaultScoreMapId.value] ?? []
   }
   return [BLANK_SCORE, ...map]
 }
