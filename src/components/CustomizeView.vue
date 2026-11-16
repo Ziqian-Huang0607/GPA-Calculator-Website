@@ -16,6 +16,7 @@ const emit = defineEmits<{
 
 const backend = useBackend()
 const isDark = ref(document.documentElement.classList.contains('dark'))
+const scheduleMenuOpen = ref(false)
 
 function toggleTheme() {
   isDark.value = !isDark.value
@@ -29,6 +30,8 @@ function setScoreFormat(idx: number) {
   backend.scoreDisplay.value = idx === 0 ? 'percentage' : 'letter'
 }
 
+const unweightedRegions = ['UC', 'US', 'Canada', 'England', 'Australia'] as const
+
 const presets = computed(() => backend.root.value?.presets ?? [])
 const groupedPresets = computed(() => {
   const groups: Record<string, typeof presets.value> = {}
@@ -40,9 +43,19 @@ const groupedPresets = computed(() => {
   return Object.entries(groups).sort(([a], [b]) => Number(a) - Number(b))
 })
 
+const currentPresetLabel = computed(() => {
+  const p = backend.currentPreset.value
+  return p ? `${p.name} · ${p.subtitle}` : 'Select schedule'
+})
+
 function onPresetChange(event: Event) {
   const target = event.target as HTMLSelectElement
   backend.selectPreset(target.value)
+}
+
+function selectMobilePreset(id: string) {
+  backend.selectPreset(id)
+  scheduleMenuOpen.value = false
 }
 </script>
 
@@ -69,6 +82,20 @@ function onPresetChange(event: Event) {
                 :items="['Percentage', 'Letter']"
                 :model-value="scoreFormatIndex"
                 @update:model-value="setScoreFormat"
+              />
+            </div>
+          </div>
+
+          <!-- Unweighted Scale -->
+          <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
+            <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">
+              Unweighted Scale
+            </span>
+            <div class="flex-1 min-w-0">
+              <SegmentedControl
+                :items="unweightedRegions"
+                :model-value="unweightedRegions.indexOf(backend.unweightedRegion.value)"
+                @update:model-value="backend.setUnweightedRegion(unweightedRegions[$event])"
               />
             </div>
           </div>
@@ -141,6 +168,9 @@ function onPresetChange(event: Event) {
               <div>
                 Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
               </div>
+              <div>
+                <a href="https://github.com/Ziqian-Huang0607/GPA-Calculator-Website" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">View source on GitHub</a>
+              </div>
             </div>
             <div class="flex flex-col shrink-0 ml-3 gap-1">
               <img src="../assets/idx-icon.png" alt="IDX" class="w-11 h-11 rounded-lg object-cover" />
@@ -187,6 +217,17 @@ function onPresetChange(event: Event) {
               </div>
             </div>
 
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center gap-3">
+              <span class="text-[15px] font-semibold text-black dark:text-white flex-shrink">Unweighted Scale</span>
+              <div class="flex-1 min-w-0">
+                <SegmentedControl
+                  :items="unweightedRegions"
+                  :model-value="unweightedRegions.indexOf(backend.unweightedRegion.value)"
+                  @update:model-value="backend.setUnweightedRegion(unweightedRegions[$event])"
+                />
+              </div>
+            </div>
+
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between gap-3">
               <span class="text-[15px] font-semibold text-black dark:text-white">Appearance</span>
               <button
@@ -203,25 +244,41 @@ function onPresetChange(event: Event) {
 
             <div>
               <label class="block text-[13px] font-medium text-gray-500 dark:text-gray-400 mb-2">Schedule</label>
-              <select
-                :value="backend.currentPreset.value?.id"
-                class="w-full text-[15px] font-medium rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-3 cursor-pointer appearance-none"
-                @change="onPresetChange"
-              >
-                <optgroup
-                  v-for="[grade, group] in groupedPresets"
-                  :key="grade"
-                  :label="`Grade ${grade}`"
+              <div class="relative">
+                <button
+                  class="w-full text-left text-[15px] font-medium rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-3 cursor-pointer"
+                  @click="scheduleMenuOpen = !scheduleMenuOpen"
                 >
-                  <option
-                    v-for="p in group"
-                    :key="p.id"
-                    :value="p.id"
-                  >
-                    {{ p.name }} · {{ p.subtitle }}
-                  </option>
-                </optgroup>
-              </select>
+                  <span class="block">{{ currentPresetLabel }}</span>
+                </button>
+                <div
+                  v-if="scheduleMenuOpen"
+                  class="absolute z-50 mt-2 w-full max-h-72 overflow-y-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg"
+                >
+                  <div v-for="[grade, group] in groupedPresets" :key="grade">
+                    <div class="px-4 py-2 text-[12px] font-semibold text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 sticky top-0">
+                      Grade {{ grade }}
+                    </div>
+                    <button
+                      v-for="p in group"
+                      :key="p.id"
+                      class="w-full text-left px-4 py-3 text-[14px] border-none cursor-pointer transition-colors"
+                      :class="backend.currentPreset.value?.id === p.id
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-transparent text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'"
+                      @click="selectMobilePreset(p.id)"
+                    >
+                      <span class="block font-medium">{{ p.name }}</span>
+                      <span
+                        class="block text-[12px] mt-0.5"
+                        :class="backend.currentPreset.value?.id === p.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'"
+                      >
+                        {{ p.subtitle }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <ModuleSelector
@@ -249,6 +306,9 @@ function onPresetChange(event: Event) {
                   </div>
                   <div>
                     Original iOS concept by <a href="https://github.com/michelg10" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">Michel</a>.
+                  </div>
+                  <div>
+                    <a href="https://github.com/Ziqian-Huang0607/GPA-Calculator-Website" target="_blank" class="text-blue-500 dark:text-blue-400 hover:underline">View source on GitHub</a>
                   </div>
                 </div>
                 <div class="flex flex-col shrink-0 ml-3 gap-1">

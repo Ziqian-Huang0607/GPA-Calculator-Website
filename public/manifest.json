@@ -1,0 +1,17 @@
+{
+  "name": "Indexademics GPA Calculator",
+  "short_name": "IDX GPA",
+  "description": "SHSID GPA calculator with weighted and unweighted scales.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#f9fafb",
+  "icons": [
+    {
+      "src": "/indexademics-logo.png",
+      "sizes": "284x300",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

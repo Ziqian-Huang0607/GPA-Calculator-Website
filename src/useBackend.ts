@@ -29,6 +29,7 @@ const activeSubjects = ref<Subject[]>([])
 const calculationResultText = ref('Loading...')
 const weightedGPA = ref<number | null>(null)
 const unweightedGPA = ref<number | null>(null)
+const unweightedRegion = ref<'UC' | 'US' | 'Canada' | 'England' | 'Australia'>('UC')
 const isInvalidated = ref(false)
 const isLoading = ref(true)
 const scoreMapsById = ref<Record<string, ScoreEntry[]>>({})
@@ -304,6 +305,35 @@ function evaluateRulesInternal() {
   effectiveLimitsByModule.value = effLimits
 }
 
+function unweightedPointsForLetter(letter: string, region: 'UC' | 'US' | 'Canada' | 'England' | 'Australia'): number {
+  const normalized = letter.trim().toUpperCase()
+
+  if (region === 'Canada') {
+    const map: Record<string, number> = {
+      'A/A+': 4.3, 'A+': 4.3, 'A': 4.0, 'A-': 3.7,
+      'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+      'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'C/C-': 2.0,
+      'D': 1.0, 'F': 0
+    }
+    return map[normalized] ?? 0
+  }
+
+  if (region === 'Australia') {
+    const map: Record<string, number> = {
+      'A/A+': 4, 'A+': 4, 'A': 4, 'A-': 4,
+      'B+': 3, 'B': 3, 'B-': 2,
+      'C+': 2, 'C': 1, 'C-': 1, 'C/C-': 1,
+      'D': 1, 'F': 0
+    }
+    return map[normalized] ?? 0
+  }
+
+  // UC, US, and England use the standard 4.0 scale.
+  const first = normalized.charAt(0)
+  const map: Record<string, number> = { A: 4, B: 3, C: 2, D: 1, F: 0 }
+  return map[first] ?? 0
+}
+
 function computeSubjectResult(subj: Subject) {
   const key = subjectKey(subj)
   const lvlIdx = selectedLevelIndicesBySubject.value[key] ?? 0
@@ -334,17 +364,15 @@ function recomputeGPA() {
   let unweightedPoints = 0
   let unweightedCount = 0
 
-  // Compute US-style unweighted GPA per subject, independent of weighted grouping.
+  // Compute region-specific unweighted GPA per subject, independent of weighted grouping.
+  const region = unweightedRegion.value
   for (const subj of activeSubjects.value) {
     const key = subjectKey(subj)
     const scoreIdx = selectedScoreIndicesBySubject.value[key] ?? 0
     if (scoreIdx === 0) continue
     const score = safeGet(scoreMapForSubject(subj), scoreIdx)
     if (!score) continue
-    const letterBucket = score.letter?.trim().charAt(0).toUpperCase()
-    const uwMap: Record<string, number> = { A: 4, B: 3, C: 2, D: 1, F: 0 }
-    const uw = uwMap[letterBucket] ?? 0
-    unweightedPoints += uw
+    unweightedPoints += unweightedPointsForLetter(score.letter ?? '', region)
     unweightedCount += 1
   }
 
@@ -531,6 +559,8 @@ export function useBackend() {
     calculationResultText,
     weightedGPA,
     unweightedGPA,
+    unweightedRegion,
+    setUnweightedRegion,
     isInvalidated,
     isLoading,
     scoreDisplay,
@@ -598,6 +628,11 @@ function getScoreIndex(subj: Subject): number {
 
 function getNameChoice(subj: Subject): number {
   return nameChoicesBySubject.value[subjectKey(subj)] ?? -1
+}
+
+function setUnweightedRegion(region: 'UC' | 'US' | 'Canada' | 'England' | 'Australia') {
+  unweightedRegion.value = region
+  recomputeGPA()
 }
 
 function setNameChoice(idx: number, forSubjectIndex: number) {
